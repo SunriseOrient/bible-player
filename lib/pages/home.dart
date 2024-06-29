@@ -1,3 +1,6 @@
+import 'dart:async';
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 
 class HomePage extends StatelessWidget {
@@ -139,7 +142,157 @@ class MusicList extends StatelessWidget {
         padding: const EdgeInsets.all(0),
         itemCount: 50,
         itemBuilder: (BuildContext context, int index) {
-          return ListTile(title: Text('item$index'));
+          return MusicListItem(
+            index: index,
+          );
         });
+  }
+}
+
+// 音乐列表 音乐实体
+class MusicListItem extends StatelessWidget {
+  const MusicListItem({super.key, required this.index});
+
+  final int index;
+
+  @override
+  Widget build(BuildContext context) {
+    return ListTile(
+      title: Text('item$index'),
+      // leading: PlayingIcon(
+      //   width: 20,
+      //   height: 20,
+      //   color: Colors.red,
+      // ),
+      // leading: Container(
+      //   width: 20,
+      //   height: 20,
+      //   child: Align(
+      //     alignment: Alignment.center,
+      //     child: Text(
+      //       index.toString(),
+      //       style: TextStyle(
+      //         color: Color(0xFFC0C4CC),
+      //         fontSize: 14,
+      //       ),
+      //     ),
+      //   ),
+      // ),
+      leading: Icon(
+        Icons.pause,
+        color: Color(0xFFC0C4CC),
+        size: 24,
+      ),
+    );
+  }
+}
+
+// 正在播放图标
+class PlayingIcon extends StatelessWidget {
+  const PlayingIcon({
+    super.key,
+    this.width = 20,
+    this.height = 20,
+    this.color = Colors.red,
+  });
+
+  final double width;
+  final double height;
+  final Color color;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: width,
+      height: height,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        crossAxisAlignment: CrossAxisAlignment.end,
+        children: [0.15, 0.85, 0.55].map((delay) {
+          return PlayingIconItem(
+            width: width,
+            height: height,
+            color: color,
+            delay: delay,
+            duration: Duration(milliseconds: 600),
+          );
+        }).toList(),
+      ),
+    );
+  }
+}
+
+// 正在播放图标内动画元素
+class PlayingIconItem extends StatefulWidget {
+  const PlayingIconItem({
+    super.key,
+    required this.width,
+    required this.height,
+    required this.color,
+    required this.delay,
+    required this.duration,
+  });
+
+  final double width;
+  final double height;
+  final Color color;
+
+  final double delay;
+  final Duration duration;
+
+  @override
+  State<StatefulWidget> createState() {
+    return _PlayingIconItemState();
+  }
+}
+
+// 正在播放图标内动画
+class _PlayingIconItemState extends State<PlayingIconItem>
+    with SingleTickerProviderStateMixin {
+  late AnimationController animationController;
+  late Animation<double> animation;
+  late Timer timer;
+
+  @override
+  void initState() {
+    super.initState();
+    animationController =
+        AnimationController(vsync: this, duration: widget.duration);
+    animation =
+        Tween(begin: 2.0, end: widget.height).animate(animationController);
+    timer = Timer(
+        Duration(
+            milliseconds:
+                (widget.duration.inMilliseconds * widget.delay).toInt()),
+        () => animationController.repeat(reverse: true));
+  }
+
+  @override
+  void dispose() {
+    timer.cancel();
+    animationController
+      ..stop()
+      ..dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return AnimatedBuilder(
+      animation: animation,
+      builder: (BuildContext context, Widget? child) {
+        return Container(
+          width: widget.width / 7,
+          height: animation.value,
+          decoration: BoxDecoration(
+            color: widget.color,
+            borderRadius: BorderRadius.only(
+              topRight: Radius.circular(widget.width / 12),
+              topLeft: Radius.circular(widget.width / 14),
+            ),
+          ),
+        );
+      },
+    );
   }
 }
