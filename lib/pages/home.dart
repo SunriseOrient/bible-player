@@ -22,7 +22,7 @@ class HomePage extends StatelessWidget {
                 ],
               ),
               Container(
-                height: 180,
+                height: 100,
                 width: MediaQuery.of(context).size.width,
                 alignment: Alignment.centerLeft,
                 padding: const EdgeInsets.only(left: 30),
