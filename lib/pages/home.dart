@@ -1,6 +1,7 @@
 import 'dart:async';
-import 'dart:math';
 
+import 'package:bible_player/pages/playlist.dart';
+import 'package:bible_player/pages/settings.dart';
 import 'package:flutter/material.dart';
 
 class HomePage extends StatelessWidget {
@@ -56,19 +57,95 @@ class Playcontroller extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Text("data");
+    return Padding(
+      padding: EdgeInsets.all(10.0),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          LinearProgressIndicator(
+            value: 0.4,
+            backgroundColor: Colors.grey[200], //背景颜色
+            valueColor: const AlwaysStoppedAnimation(Colors.blue),
+            borderRadius: BorderRadius.all(Radius.circular(2)),
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text("12:03"),
+              Text("12:03"),
+            ],
+          ),
+          SizedBox(
+            height: 10,
+          ),
+          Padding(
+            padding: EdgeInsets.only(top: 20, bottom: 20),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Icon(
+                  Icons.grading,
+                  size: 24,
+                ),
+                Row(
+                  children: [
+                    Icon(
+                      Icons.skip_previous,
+                      size: 40,
+                    ),
+                    SizedBox(
+                      width: 10,
+                    ),
+                    Icon(
+                      Icons.play_circle,
+                      size: 60,
+                    ),
+                    SizedBox(
+                      width: 10,
+                    ),
+                    Icon(
+                      Icons.skip_next,
+                      size: 40,
+                    )
+                  ],
+                ),
+                SizedBox(
+                  width: 20,
+                ),
+              ],
+            ),
+          )
+        ],
+      ),
+    );
   }
 }
 
 // 播单标题
-class PlaylistTitle extends StatelessWidget {
+class PlaylistTitle extends StatefulWidget {
   const PlaylistTitle({super.key});
 
   @override
+  State<StatefulWidget> createState() {
+    return PlaylistTitleState();
+  }
+}
+
+class PlaylistTitleState extends State<PlaylistTitle> {
+  _goPlaylistPage(BuildContext context) {
+    Navigator.push(
+        context, MaterialPageRoute(builder: (context) => const PlaylistPage()));
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return const Text(
-      "新约",
-      style: TextStyle(fontSize: 40, color: Colors.white, letterSpacing: 5),
+    return GestureDetector(
+      onTap: () => _goPlaylistPage(context),
+      child: const Text(
+        "新约",
+        style: TextStyle(fontSize: 40, color: Colors.white, letterSpacing: 5),
+      ),
     );
   }
 }
@@ -77,13 +154,18 @@ class PlaylistTitle extends StatelessWidget {
 class MoreButton extends StatelessWidget {
   const MoreButton({super.key});
 
+  _goSettingsPage(BuildContext context) {
+    Navigator.push(
+        context, MaterialPageRoute(builder: (context) => const SettingsPage()));
+  }
+
   @override
   Widget build(BuildContext context) {
     return IconButton(
       icon: const Icon(Icons.more_vert),
       tooltip: '更多',
       color: Colors.white,
-      onPressed: () {},
+      onPressed: () => _goSettingsPage(context),
     );
   }
 }
@@ -246,7 +328,6 @@ class PlayingIconItem extends StatefulWidget {
   }
 }
 
-// 正在播放图标内动画
 class _PlayingIconItemState extends State<PlayingIconItem>
     with SingleTickerProviderStateMixin {
   late AnimationController animationController;
