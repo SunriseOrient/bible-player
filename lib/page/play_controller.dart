@@ -12,23 +12,183 @@ class PlayController extends StatelessWidget {
       body: Stack(
         fit: StackFit.expand,
         children: [
-          Container(
-            decoration: const BoxDecoration(
-              image: DecorationImage(
-                image: AssetImage("assets/images/bg.jpg"),
-                fit: BoxFit.cover,
-              ),
-            ),
-          ),
+          // Container(
+          //   decoration: const BoxDecoration(
+          //     image: DecorationImage(
+          //       image: AssetImage("assets/images/bg.jpg"),
+          //       fit: BoxFit.cover,
+          //     ),
+          //   ),
+          // ),
           BackdropFilter(
             filter: ImageFilter.blur(sigmaX: 10.0, sigmaY: 10.0),
             child: Container(
               color: Colors.white.withAlpha(0),
             ),
           ),
-          const SafeArea(
+          SafeArea(
             child: Column(
-              children: [Text("data")],
+              children: [
+                AppBar(
+                    leading: const Icon(
+                      Icons.arrow_back,
+                    ),
+                    title: const Text(
+                      '歌曲',
+                      style: TextStyle(
+                        fontSize: 18,
+                      ),
+                    ),
+                    centerTitle: true,
+                    foregroundColor: const Color(0xFF303133),
+                    backgroundColor: Colors.transparent),
+                Expanded(
+                  child: Center(
+                    child: Padding(
+                      padding: const EdgeInsets.only(left: 60, right: 60),
+                      child: ClipRRect(
+                        borderRadius: const BorderRadius.all(
+                          Radius.circular(20),
+                        ),
+                        child: AspectRatio(
+                          aspectRatio: 1,
+                          child: Image.asset(
+                            "assets/images/bg6.jpg",
+                            fit: BoxFit.cover,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+                Column(
+                  children: [
+                    ListTile(
+                      contentPadding:
+                          const EdgeInsets.only(left: 30, right: 30),
+                      title: Text("出埃及记-第1章"),
+                      subtitle: Text("旧约/出埃及记"),
+                      trailing: GestureDetector(
+                        onTap: () {},
+                        child: const Icon(
+                          Icons.favorite,
+                          color: Colors.red,
+                        ),
+                        // child: const Icon(
+                        //   Icons.favorite_border,
+                        //   color: Colors.red,
+                        // ),
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(
+                          top: 24, left: 24, right: 24, bottom: 5),
+                      child: SliderTheme(
+                        data: const SliderThemeData(
+                          trackHeight: 2,
+                          thumbShape: RoundSliderThumbShape(
+                            enabledThumbRadius: 6,
+                          ),
+                          overlayShape: RoundSliderOverlayShape(
+                            overlayRadius: 0,
+                          ),
+                        ),
+                        child: Slider(
+                          max: 100,
+                          min: 0,
+                          divisions: 10,
+                          label: "50",
+                          value: 50,
+                          onChanged: (value) {},
+                        ),
+                      ),
+                    ),
+                    const Padding(
+                      padding: EdgeInsets.only(left: 30, right: 30, bottom: 0),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            "03:10",
+                            style: TextStyle(
+                              fontSize: 12,
+                              color: Color(0xFF909399),
+                            ),
+                          ),
+                          Text(
+                            "04:29",
+                            style: TextStyle(
+                              fontSize: 12,
+                              color: Color(0xFF909399),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(30),
+                      child: Row(
+                        children: [
+                          GestureDetector(
+                            onTap: () {},
+                            child: const Icon(
+                              Icons.shuffle,
+                              color: Color(0xFF606266),
+                              size: 24,
+                            ),
+                          ),
+                          Expanded(
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                GestureDetector(
+                                  onTap: () {},
+                                  child: const Icon(
+                                    Icons.skip_previous,
+                                    color: Color(0xFF303133),
+                                    size: 38,
+                                  ),
+                                ),
+                                const SizedBox(
+                                  width: 20,
+                                ),
+                                GestureDetector(
+                                  onTap: () {},
+                                  child: const Icon(
+                                    // Icons.pause_circle,
+                                    Icons.play_circle,
+                                    color: Colors.red,
+                                    size: 60,
+                                  ),
+                                ),
+                                const SizedBox(
+                                  width: 20,
+                                ),
+                                GestureDetector(
+                                  onTap: () {},
+                                  child: const Icon(
+                                    Icons.skip_next,
+                                    color: Color(0xFF303133),
+                                    size: 38,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                          GestureDetector(
+                            onTap: () {},
+                            child: const Icon(
+                              Icons.queue_music,
+                              color: Color(0xFF606266),
+                              size: 24,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                )
+              ],
             ),
           ),
         ],

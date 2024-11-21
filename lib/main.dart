@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
+import 'page/home.dart';
 import 'page/music_list.dart';
 import 'page/play_controller.dart';
 
@@ -17,12 +19,12 @@ class MainApp extends StatelessWidget {
       theme: ThemeData(
         scaffoldBackgroundColor: Colors.white,
         appBarTheme: const AppBarTheme(
-          backgroundColor: Colors.transparent,
+          backgroundColor: Colors.white,
           scrolledUnderElevation: 0.0,
           elevation: 0,
         ),
       ),
-      routes: {"/": (context) => const PlayController()},
+      routes: {"/": (context) => Home()},
     );
   }
 }
