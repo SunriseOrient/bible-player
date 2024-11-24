@@ -1,9 +1,8 @@
+import 'package:bible_player/page/music_list.dart';
+import 'package:bible_player/page/play_controller.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 
 import 'page/home.dart';
-import 'page/music_list.dart';
-import 'page/play_controller.dart';
 
 void main() {
   runApp(const MainApp());
@@ -24,7 +23,11 @@ class MainApp extends StatelessWidget {
           elevation: 0,
         ),
       ),
-      routes: {"/": (context) => Home()},
+      routes: {
+        "/": (context) => Home(),
+        "/music_list": (context) => MusicList(),
+        "/play_controller": (context) => PlayController(),
+      },
     );
   }
 }

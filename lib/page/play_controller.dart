@@ -30,8 +30,13 @@ class PlayController extends StatelessWidget {
             child: Column(
               children: [
                 AppBar(
-                    leading: const Icon(
-                      Icons.arrow_back,
+                    leading: GestureDetector(
+                      onTap: () {
+                        Navigator.pop(context);
+                      },
+                      child: const Icon(
+                        Icons.arrow_back,
+                      ),
                     ),
                     title: const Text(
                       '歌曲',
@@ -82,7 +87,7 @@ class PlayController extends StatelessWidget {
                     ),
                     Padding(
                       padding: const EdgeInsets.only(
-                          top: 24, left: 24, right: 24, bottom: 5),
+                          top: 50, left: 24, right: 24, bottom: 0),
                       child: SliderTheme(
                         data: const SliderThemeData(
                           trackHeight: 2,
@@ -104,7 +109,7 @@ class PlayController extends StatelessWidget {
                       ),
                     ),
                     const Padding(
-                      padding: EdgeInsets.only(left: 30, right: 30, bottom: 0),
+                      padding: EdgeInsets.only(left: 30, right: 30, bottom: 10),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
@@ -126,7 +131,10 @@ class PlayController extends StatelessWidget {
                       ),
                     ),
                     Padding(
-                      padding: const EdgeInsets.all(30),
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 30,
+                        vertical: 70,
+                      ),
                       child: Row(
                         children: [
                           GestureDetector(
@@ -134,7 +142,7 @@ class PlayController extends StatelessWidget {
                             child: const Icon(
                               Icons.shuffle,
                               color: Color(0xFF606266),
-                              size: 24,
+                              size: 28,
                             ),
                           ),
                           Expanded(
@@ -146,11 +154,11 @@ class PlayController extends StatelessWidget {
                                   child: const Icon(
                                     Icons.skip_previous,
                                     color: Color(0xFF303133),
-                                    size: 38,
+                                    size: 48,
                                   ),
                                 ),
                                 const SizedBox(
-                                  width: 20,
+                                  width: 10,
                                 ),
                                 GestureDetector(
                                   onTap: () {},
@@ -158,18 +166,18 @@ class PlayController extends StatelessWidget {
                                     // Icons.pause_circle,
                                     Icons.play_circle,
                                     color: Colors.red,
-                                    size: 60,
+                                    size: 70,
                                   ),
                                 ),
                                 const SizedBox(
-                                  width: 20,
+                                  width: 10,
                                 ),
                                 GestureDetector(
                                   onTap: () {},
                                   child: const Icon(
                                     Icons.skip_next,
                                     color: Color(0xFF303133),
-                                    size: 38,
+                                    size: 58,
                                   ),
                                 ),
                               ],
@@ -180,7 +188,7 @@ class PlayController extends StatelessWidget {
                             child: const Icon(
                               Icons.queue_music,
                               color: Color(0xFF606266),
-                              size: 24,
+                              size: 28,
                             ),
                           ),
                         ],

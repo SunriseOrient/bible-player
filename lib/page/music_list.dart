@@ -15,7 +15,12 @@ class _MusicListState extends State<MusicList> {
     return Scaffold(
       extendBody: false,
       appBar: AppBar(
-        leading: const Icon(Icons.arrow_back_ios),
+        leading: GestureDetector(
+          child: const Icon(Icons.arrow_back_ios),
+          onTap: () {
+            Navigator.pop(context);
+          },
+        ),
         title: const Text('陋室铭'),
         centerTitle: true,
       ),
@@ -64,6 +69,9 @@ class _MusicListState extends State<MusicList> {
                       // icon: const Icon(Icons.favorite_border),
                       color: Colors.red,
                     ),
+                    onTap: () {
+                      Navigator.pushNamed(context, "/play_controller");
+                    },
                   );
                 },
               ),
