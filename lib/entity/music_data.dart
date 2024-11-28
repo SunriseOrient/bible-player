@@ -88,18 +88,3 @@ class MusicSection {
     return {'name': name, 'id': id, 'mp3': mp3};
   }
 }
-
-String httpBase = "http://192.168.1.176:5500";
-
-Future<MusicSource> getMusicSource() async {
-  http.Response response =
-      await http.get(Uri.parse(httpBase + '/playlists.json'));
-
-  List<dynamic> jsonMap = jsonDecode(response.body);
-  MusicSource musicSource = MusicSource.fromJson(jsonMap);
-
-  String jsonStringBack = jsonEncode(musicSource.toJson());
-  print("JSON String: $jsonStringBack");
-
-  return musicSource;
-}

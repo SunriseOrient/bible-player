@@ -1,11 +1,18 @@
 import 'package:bible_player/page/music_list.dart';
 import 'package:bible_player/page/play_controller.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
+import 'notifier/music_model.dart';
 import 'page/home.dart';
 
 void main() {
-  runApp(const MainApp());
+  runApp(
+    ChangeNotifierProvider(
+      create: (_) => MusicModel(),
+      child: const MainApp(),
+    ),
+  );
 }
 
 class MainApp extends StatelessWidget {
@@ -24,7 +31,7 @@ class MainApp extends StatelessWidget {
         ),
       ),
       routes: {
-        "/": (context) => Home(),
+        "/": (context) => const Home(),
         "/music_list": (context) => MusicList(),
         "/play_controller": (context) => PlayController(),
       },
