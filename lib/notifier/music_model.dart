@@ -12,6 +12,12 @@ class MusicModel extends ChangeNotifier {
   int _chapterIndex = -1;
   int _sectionIndex = -1;
 
+  int get groupIndex => _groupIndex;
+  int get chapterIndex => _chapterIndex;
+  int get sectionIndex => _sectionIndex;
+
+  String get subtitle => getSubtitleByIndex(_groupIndex, _chapterIndex);
+
   Future<MusicSource> loadMusicSource() async {
     http.Response response =
         await http.get(Uri.parse('${Config.httpBase}/playlists.json'));
@@ -50,5 +56,14 @@ class MusicModel extends ChangeNotifier {
     MusicChapter? chapter = getCurrentChapter();
     if (chapter == null) return null;
     return _sectionIndex > -1 ? chapter.sections[_sectionIndex] : null;
+  }
+
+  String getSubtitleByIndex(groupIndex, chapterIndex) {
+    MusicGroup? group = groupIndex > -1 ? source.data[groupIndex] : null;
+    if (group == null) return "";
+    MusicChapter? chapter =
+        chapterIndex > -1 ? group.chapters[chapterIndex] : null;
+    if (chapter == null) return "";
+    return "${group.title}/${chapter.name}";
   }
 }

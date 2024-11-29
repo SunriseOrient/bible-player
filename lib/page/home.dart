@@ -9,7 +9,7 @@ class Home extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Provider.of<MusicModel>(context, listen: false).loadMusicSource();
+    context.read<MusicModel>().loadMusicSource();
     return Scaffold(
       extendBody: true,
       appBar: AppBar(),
@@ -108,10 +108,10 @@ class MusicChapterBox extends StatelessWidget {
       ),
       child: GestureDetector(
         onTap: () {
-          Provider.of<MusicModel>(context, listen: false).updateIndex(
-            groupIndex: groupIndex,
-            chapterIndex: chapterIndex,
-          );
+          context.read<MusicModel>().updateIndex(
+                groupIndex: groupIndex,
+                chapterIndex: chapterIndex,
+              );
           Navigator.pushNamed(context, '/music_list');
         },
         child: Stack(

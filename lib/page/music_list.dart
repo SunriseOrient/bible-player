@@ -2,8 +2,10 @@ import 'package:bible_player/notifier/music_model.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../common/favorites_button.dart';
 import '../common/playing_icon.dart';
 import '../entity/music_data.dart';
+import '../notifier/favorites_model.dart';
 
 class MusicList extends StatelessWidget {
   const MusicList({super.key});
@@ -68,15 +70,15 @@ class MusicList extends StatelessWidget {
                   itemBuilder: (context, index) {
                     return ListTile(
                       title: Text(sections[index].name),
-                      leading: const PlayingIcon(),
-                      trailing: IconButton(
-                        onPressed: () {},
-                        icon: const Icon(Icons.favorite),
-                        // icon: const Icon(Icons.favorite_border),
-                        color: Colors.red,
+                      // leading: const PlayingIcon(),
+                      trailing: FavoritesButton(
+                        sections[index],
+                        groupIndex: musicModel.groupIndex,
+                        chapterIndex: musicModel.chapterIndex,
                       ),
                       onTap: () {
-                        Provider.of<MusicModel>(context, listen: false)
+                        context
+                            .read<MusicModel>()
                             .updateIndex(sectionIndex: index);
                         Navigator.pushNamed(context, "/play_controller");
                       },

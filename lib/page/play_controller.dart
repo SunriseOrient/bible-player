@@ -1,6 +1,11 @@
 import 'dart:ui';
 
+import 'package:bible_player/notifier/music_model.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+
+import '../common/favorites_button.dart';
+import '../entity/music_data.dart';
 
 class PlayController extends StatelessWidget {
   const PlayController({super.key});
@@ -68,23 +73,23 @@ class PlayController extends StatelessWidget {
                 ),
                 Column(
                   children: [
-                    ListTile(
-                      contentPadding:
-                          const EdgeInsets.only(left: 30, right: 30),
-                      title: Text("出埃及记-第1章"),
-                      subtitle: Text("旧约/出埃及记"),
-                      trailing: GestureDetector(
-                        onTap: () {},
-                        child: const Icon(
-                          Icons.favorite,
-                          color: Colors.red,
-                        ),
-                        // child: const Icon(
-                        //   Icons.favorite_border,
-                        //   color: Colors.red,
-                        // ),
-                      ),
-                    ),
+                    Consumer<MusicModel>(builder: (context, musicModel, child) {
+                      MusicSection? section = musicModel.getCurrentSection();
+                      String title = section != null ? section.name : "";
+                      return ListTile(
+                        contentPadding:
+                            const EdgeInsets.only(left: 30, right: 30),
+                        title: Text(title),
+                        subtitle: Text(musicModel.subtitle),
+                        trailing: section != null
+                            ? FavoritesButton(
+                                section,
+                                groupIndex: musicModel.groupIndex,
+                                chapterIndex: musicModel.chapterIndex,
+                              )
+                            : const SizedBox.shrink(),
+                      );
+                    }),
                     Padding(
                       padding: const EdgeInsets.only(
                           top: 50, left: 24, right: 24, bottom: 0),

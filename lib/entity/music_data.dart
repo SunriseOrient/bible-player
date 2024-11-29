@@ -88,3 +88,10 @@ class MusicSection {
     return {'name': name, 'id': id, 'mp3': mp3};
   }
 }
+
+class FavoriteMusicSection {
+  MusicSection section;
+  String subtitle;
+
+  FavoriteMusicSection(this.section, this.subtitle);
+}

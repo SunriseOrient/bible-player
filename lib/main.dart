@@ -1,3 +1,4 @@
+import 'package:bible_player/notifier/favorites_model.dart';
 import 'package:bible_player/page/music_list.dart';
 import 'package:bible_player/page/play_controller.dart';
 import 'package:flutter/material.dart';
@@ -7,12 +8,13 @@ import 'notifier/music_model.dart';
 import 'page/home.dart';
 
 void main() {
-  runApp(
-    ChangeNotifierProvider(
-      create: (_) => MusicModel(),
-      child: const MainApp(),
-    ),
-  );
+  runApp(MultiProvider(
+    providers: [
+      ChangeNotifierProvider<MusicModel>(create: (_) => MusicModel()),
+      ChangeNotifierProvider<FavoritesModel>(create: (_) => FavoritesModel()),
+    ],
+    child: const MainApp(),
+  ));
 }
 
 class MainApp extends StatelessWidget {
