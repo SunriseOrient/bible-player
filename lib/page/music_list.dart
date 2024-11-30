@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 
 import '../common/favorites_button.dart';
 import '../entity/music_data.dart';
+import '../notifier/player_model.dart';
 
 class MusicList extends StatelessWidget {
   const MusicList({super.key});
@@ -76,6 +77,7 @@ class MusicList extends StatelessWidget {
                         context
                             .read<MusicModel>()
                             .updateIndex(sectionIndex: index);
+                        context.read<PlayerModel>().play(sections[index]);
                         Navigator.pushNamed(context, "/play_controller");
                       },
                     );

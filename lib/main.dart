@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import 'notifier/music_model.dart';
+import 'notifier/player_model.dart';
 import 'page/navigation.dart';
 
 void main() {
@@ -12,6 +13,7 @@ void main() {
     providers: [
       ChangeNotifierProvider<MusicModel>(create: (_) => MusicModel()),
       ChangeNotifierProvider<FavoritesModel>(create: (_) => FavoritesModel()),
+      ChangeNotifierProvider<PlayerModel>(create: (_) => PlayerModel()),
     ],
     child: const MainApp(),
   ));

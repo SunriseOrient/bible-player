@@ -3,13 +3,31 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../entity/music_data.dart';
+import '../notifier/player_model.dart';
 
-class Home extends StatelessWidget {
+class Home extends StatefulWidget {
   const Home({super.key});
 
   @override
+  State<Home> createState() => _HomeState();
+}
+
+class _HomeState extends State<Home> {
+  @override
+  void initState() {
+    super.initState();
+    _initEnv();
+  }
+
+  _initEnv() async {
+    MusicSource source = await context.read<MusicModel>().loadMusicSource();
+    if (mounted) {
+      await context.read<PlayerModel>().setMusicSource(source);
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
-    context.read<MusicModel>().loadMusicSource();
     return Scaffold(
       extendBody: true,
       appBar: AppBar(),

@@ -50,13 +50,13 @@ class Favorites extends StatelessWidget {
             ),
             Expanded(
               child: Consumer<FavoritesModel>(builder: (context, model, child) {
-                List<FavoriteMusicSection> sections = model.sections;
+                List<MusicSection> sections = model.sections;
                 return ListView.builder(
                   itemCount: sections.length,
                   itemBuilder: (context, index) {
                     return ListTile(
-                      title: Text(sections[index].section.name),
-                      trailing: FavoritesButton(sections[index].section),
+                      title: Text(sections[index].name),
+                      trailing: FavoritesButton(sections[index]),
                       onTap: () {
                         context
                             .read<MusicModel>()

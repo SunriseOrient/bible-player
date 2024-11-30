@@ -17,7 +17,7 @@ class FavoritesButton extends StatelessWidget {
         if (favoritesModel.has(section.id)) {
           favoritesModel.remove(section.id);
         } else {
-          favoritesModel.add(section.id, FavoriteMusicSection(section));
+          favoritesModel.add(section.id, section);
         }
       },
       icon: Consumer<FavoritesModel>(
