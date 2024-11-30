@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import 'notifier/music_model.dart';
-import 'page/home.dart';
+import 'page/navigation.dart';
 
 void main() {
   runApp(MultiProvider(
@@ -33,7 +33,7 @@ class MainApp extends StatelessWidget {
         ),
       ),
       routes: {
-        "/": (context) => const Home(),
+        "/": (context) => Navigation(),
         "/music_list": (context) => MusicList(),
         "/play_controller": (context) => PlayController(),
       },

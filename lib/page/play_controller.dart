@@ -82,11 +82,7 @@ class PlayController extends StatelessWidget {
                         title: Text(title),
                         subtitle: Text(musicModel.subtitle),
                         trailing: section != null
-                            ? FavoritesButton(
-                                section,
-                                groupIndex: musicModel.groupIndex,
-                                chapterIndex: musicModel.chapterIndex,
-                              )
+                            ? FavoritesButton(section)
                             : const SizedBox.shrink(),
                       );
                     }),

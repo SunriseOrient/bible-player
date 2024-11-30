@@ -91,7 +91,6 @@ class MusicSection {
 
 class FavoriteMusicSection {
   MusicSection section;
-  String subtitle;
 
-  FavoriteMusicSection(this.section, this.subtitle);
+  FavoriteMusicSection(this.section);
 }

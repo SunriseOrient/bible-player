@@ -1,29 +1,20 @@
-import 'package:bible_player/notifier/music_model.dart';
+import 'package:bible_player/notifier/favorites_model.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../common/favorites_button.dart';
 import '../entity/music_data.dart';
+import '../notifier/music_model.dart';
 
-class MusicList extends StatelessWidget {
-  const MusicList({super.key});
+class Favorites extends StatelessWidget {
+  const Favorites({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      extendBody: false,
+      extendBody: true,
       appBar: AppBar(
-        leading: GestureDetector(
-          child: const Icon(Icons.arrow_back_ios),
-          onTap: () {
-            Navigator.pop(context);
-          },
-        ),
-        title: Consumer<MusicModel>(builder: (context, musicModel, child) {
-          MusicChapter? chapter = musicModel.getCurrentChapter();
-          return Text(chapter != null ? chapter.name : '');
-        }),
-        centerTitle: true,
+        title: const Text("我喜欢"),
       ),
       body: SafeArea(
         child: Column(
@@ -58,20 +49,14 @@ class MusicList extends StatelessWidget {
               height: 10.0,
             ),
             Expanded(
-              child:
-                  Consumer<MusicModel>(builder: (context, musicModel, child) {
-                MusicChapter? chapter = musicModel.getCurrentChapter();
-                List<MusicSection> sections =
-                    chapter != null ? chapter.sections : [];
+              child: Consumer<FavoritesModel>(builder: (context, model, child) {
+                List<FavoriteMusicSection> sections = model.sections;
                 return ListView.builder(
                   itemCount: sections.length,
                   itemBuilder: (context, index) {
                     return ListTile(
-                      title: Text(sections[index].name),
-                      // leading: const PlayingIcon(),
-                      trailing: FavoritesButton(
-                        sections[index],
-                      ),
+                      title: Text(sections[index].section.name),
+                      trailing: FavoritesButton(sections[index].section),
                       onTap: () {
                         context
                             .read<MusicModel>()
