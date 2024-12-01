@@ -1,7 +1,9 @@
 import 'dart:ui';
 
 import 'package:bible_player/notifier/music_model.dart';
+import 'package:bible_player/notifier/player_model.dart';
 import 'package:flutter/material.dart';
+import 'package:just_audio/just_audio.dart';
 import 'package:provider/provider.dart';
 
 import '../common/favorites_button.dart';
@@ -12,19 +14,13 @@ class PlayController extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    AudioPlayer player = context.read<PlayerModel>().player;
+
     return Scaffold(
       extendBody: true,
       body: Stack(
         fit: StackFit.expand,
         children: [
-          // Container(
-          //   decoration: const BoxDecoration(
-          //     image: DecorationImage(
-          //       image: AssetImage("assets/images/bg.jpg"),
-          //       fit: BoxFit.cover,
-          //     ),
-          //   ),
-          // ),
           BackdropFilter(
             filter: ImageFilter.blur(sigmaX: 10.0, sigmaY: 10.0),
             child: Container(
@@ -138,20 +134,37 @@ class PlayController extends StatelessWidget {
                       ),
                       child: Row(
                         children: [
-                          GestureDetector(
-                            onTap: () {},
-                            child: const Icon(
-                              Icons.shuffle,
-                              color: Color(0xFF606266),
-                              size: 28,
-                            ),
+                          StreamBuilder<bool>(
+                            stream: player.shuffleModeEnabledStream,
+                            builder: (context, snapshot) {
+                              final isEnabled = snapshot.data;
+                              if (isEnabled == true) {
+                                return GestureDetector(
+                                  onTap: () {},
+                                  child: const Icon(
+                                    Icons.shuffle,
+                                    color: Color(0xFF606266),
+                                    size: 28,
+                                  ),
+                                );
+                              } else {
+                                return GestureDetector(
+                                  onTap: () {},
+                                  child: const Icon(
+                                    Icons.shuffle,
+                                    color: Color(0xFF606266),
+                                    size: 28,
+                                  ),
+                                );
+                              }
+                            },
                           ),
                           Expanded(
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
                                 GestureDetector(
-                                  onTap: () {},
+                                  onTap: () => player.seekToPrevious(),
                                   child: const Icon(
                                     Icons.skip_previous,
                                     color: Color(0xFF303133),
@@ -161,20 +174,37 @@ class PlayController extends StatelessWidget {
                                 const SizedBox(
                                   width: 10,
                                 ),
-                                GestureDetector(
-                                  onTap: () {},
-                                  child: const Icon(
-                                    // Icons.pause_circle,
-                                    Icons.play_circle,
-                                    color: Colors.red,
-                                    size: 70,
-                                  ),
+                                StreamBuilder<PlayerState>(
+                                  stream: player.playerStateStream,
+                                  builder: (context, snapshot) {
+                                    final playerState = snapshot.data;
+                                    final playing = playerState?.playing;
+                                    if (playing == true) {
+                                      return GestureDetector(
+                                        onTap: () => player.pause(),
+                                        child: const Icon(
+                                          Icons.pause_circle,
+                                          color: Colors.red,
+                                          size: 70,
+                                        ),
+                                      );
+                                    } else {
+                                      return GestureDetector(
+                                        onTap: () => player.play(),
+                                        child: const Icon(
+                                          Icons.play_circle,
+                                          color: Colors.red,
+                                          size: 70,
+                                        ),
+                                      );
+                                    }
+                                  },
                                 ),
                                 const SizedBox(
                                   width: 10,
                                 ),
                                 GestureDetector(
-                                  onTap: () {},
+                                  onTap: () => player.seekToNext(),
                                   child: const Icon(
                                     Icons.skip_next,
                                     color: Color(0xFF303133),
