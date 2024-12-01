@@ -21,7 +21,8 @@ class MusicModel extends ChangeNotifier {
   Future<MusicSource> loadMusicSource() async {
     http.Response response =
         await http.get(Uri.parse('${Config.httpBase}/playlists.json'));
-    List<dynamic> jsonMap = jsonDecode(response.body);
+    List<dynamic> jsonMap =
+        jsonDecode(const Utf8Decoder().convert(response.bodyBytes));
     source = MusicSource.fromJson(jsonMap);
     notifyListeners();
     return source;
