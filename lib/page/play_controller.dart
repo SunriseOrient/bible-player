@@ -7,6 +7,7 @@ import 'package:just_audio/just_audio.dart';
 import 'package:provider/provider.dart';
 
 import '../common/favorites_button.dart';
+import '../common/play_mode_button.dart';
 import '../entity/music_data.dart';
 
 class PlayController extends StatelessWidget {
@@ -134,31 +135,7 @@ class PlayController extends StatelessWidget {
                       ),
                       child: Row(
                         children: [
-                          StreamBuilder<bool>(
-                            stream: player.shuffleModeEnabledStream,
-                            builder: (context, snapshot) {
-                              final isEnabled = snapshot.data;
-                              if (isEnabled == true) {
-                                return GestureDetector(
-                                  onTap: () {},
-                                  child: const Icon(
-                                    Icons.shuffle,
-                                    color: Color(0xFF606266),
-                                    size: 28,
-                                  ),
-                                );
-                              } else {
-                                return GestureDetector(
-                                  onTap: () {},
-                                  child: const Icon(
-                                    Icons.shuffle,
-                                    color: Color(0xFF606266),
-                                    size: 28,
-                                  ),
-                                );
-                              }
-                            },
-                          ),
+                          PlayModeButton(player),
                           Expanded(
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.center,
