@@ -1,3 +1,7 @@
+import 'dart:io';
+import 'package:path/path.dart' as p;
+import 'package:path_provider/path_provider.dart';
+
 import 'package:bible_player/config.dart';
 import 'package:flutter/material.dart';
 import 'package:just_audio/just_audio.dart';
@@ -20,15 +24,28 @@ class PlayerModel extends ChangeNotifier {
     List<MusicSection> sections =
         group.chapters[int.parse(idArray[1])].sections;
 
-    List<AudioSource> audioSource = [];
+    List<LockCachingAudioSource> audioSource = [];
     for (var section in sections) {
-      audioSource
-          .add(AudioSource.uri(Uri.parse('${Config.httpBase}/${section.mp3}')));
+      audioSource.add(LockCachingAudioSource(
+          Uri.parse('${Config.httpBase}/${section.mp3}'),
+          tag: section,
+          cacheFile: await _getCacheFilePath(section.name)));
     }
 
-    await player
-        .setAudioSource(ConcatenatingAudioSource(children: audioSource));
+    await player.setAudioSource(ConcatenatingAudioSource(
+        useLazyPreparation: true,
+        shuffleOrder: DefaultShuffleOrder(),
+        children: audioSource));
+    await player.setLoopMode(LoopMode.all);
+    await player.setShuffleModeEnabled(false);
     loadedListId = listId;
+  }
+
+  _getCacheFilePath(String fileName) async {
+    Directory? downDir = await getDownloadsDirectory();
+    if (downDir != null) {
+      return File(p.join(downDir.path, fileName));
+    }
   }
 
   play(MusicSection section) async {

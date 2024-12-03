@@ -67,4 +67,11 @@ class MusicModel extends ChangeNotifier {
     if (chapter == null) return "";
     return "${group.title}/${chapter.name}";
   }
+
+  String getSubtitleBySectionId(String id) {
+    List<String> idArray = id.split("_");
+    MusicGroup group = source.data[int.parse(idArray[0])];
+    MusicChapter chapter = group.chapters[int.parse(idArray[1])];
+    return "${group.title}/${chapter.name}";
+  }
 }

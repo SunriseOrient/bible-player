@@ -8,3 +8,11 @@ enum PlayMode {
   // 列表顺序播放
   loopOff,
 }
+
+class PositionData {
+  final Duration position;
+  final Duration bufferedPosition;
+  final Duration duration;
+
+  PositionData(this.position, this.bufferedPosition, this.duration);
+}

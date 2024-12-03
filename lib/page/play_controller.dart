@@ -5,18 +5,40 @@ import 'package:bible_player/notifier/player_model.dart';
 import 'package:flutter/material.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:provider/provider.dart';
+import 'package:rxdart/rxdart.dart';
 
 import '../common/favorites_button.dart';
 import '../common/play_mode_button.dart';
+import '../common/seek_bar.dart';
 import '../entity/music_data.dart';
+import '../entity/play_mode.dart';
 
-class PlayController extends StatelessWidget {
+class PlayController extends StatefulWidget {
   const PlayController({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    AudioPlayer player = context.read<PlayerModel>().player;
+  State<PlayController> createState() => _PlayControllerState();
+}
 
+class _PlayControllerState extends State<PlayController> {
+  late AudioPlayer player;
+
+  @override
+  void initState() {
+    super.initState();
+    player = context.read<PlayerModel>().player;
+  }
+
+  Stream<PositionData> get _positionDataStream =>
+      Rx.combineLatest3<Duration, Duration, Duration?, PositionData>(
+          player.positionStream,
+          player.bufferedPositionStream,
+          player.durationStream,
+          (position, bufferedPosition, duration) => PositionData(
+              position, bufferedPosition, duration ?? Duration.zero));
+
+  @override
+  Widget build(BuildContext context) {
     return Scaffold(
       extendBody: true,
       body: Stack(
@@ -70,68 +92,46 @@ class PlayController extends StatelessWidget {
                 ),
                 Column(
                   children: [
-                    Consumer<MusicModel>(builder: (context, musicModel, child) {
-                      MusicSection? section = musicModel.getCurrentSection();
-                      String title = section != null ? section.name : "";
-                      return ListTile(
-                        contentPadding:
-                            const EdgeInsets.only(left: 30, right: 30),
-                        title: Text(title),
-                        subtitle: Text(musicModel.subtitle),
-                        trailing: section != null
-                            ? FavoritesButton(section)
-                            : const SizedBox.shrink(),
-                      );
-                    }),
+                    StreamBuilder(
+                      stream: player.currentIndexStream,
+                      builder: (context, snapshot) {
+                        int currentIndex = snapshot.data ?? 0;
+                        List<IndexedAudioSource>? sequence = player.sequence;
+                        if (sequence == null) return const ListTile();
+                        MusicSection section = sequence[currentIndex].tag;
+                        String subtitle = context
+                            .read<MusicModel>()
+                            .getSubtitleBySectionId(section.id);
+                        return ListTile(
+                          contentPadding:
+                              const EdgeInsets.only(left: 30, right: 30),
+                          title: Text(section.name),
+                          subtitle: Text(subtitle),
+                          trailing: FavoritesButton(section),
+                        );
+                      },
+                    ),
                     Padding(
                       padding: const EdgeInsets.only(
-                          top: 50, left: 24, right: 24, bottom: 0),
-                      child: SliderTheme(
-                        data: const SliderThemeData(
-                          trackHeight: 2,
-                          thumbShape: RoundSliderThumbShape(
-                            enabledThumbRadius: 6,
-                          ),
-                          overlayShape: RoundSliderOverlayShape(
-                            overlayRadius: 0,
-                          ),
-                        ),
-                        child: Slider(
-                          max: 100,
-                          min: 0,
-                          divisions: 10,
-                          label: "50",
-                          value: 50,
-                          onChanged: (value) {},
-                        ),
-                      ),
-                    ),
-                    const Padding(
-                      padding: EdgeInsets.only(left: 30, right: 30, bottom: 10),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(
-                            "03:10",
-                            style: TextStyle(
-                              fontSize: 12,
-                              color: Color(0xFF909399),
-                            ),
-                          ),
-                          Text(
-                            "04:29",
-                            style: TextStyle(
-                              fontSize: 12,
-                              color: Color(0xFF909399),
-                            ),
-                          ),
-                        ],
+                          top: 40, left: 24, right: 24, bottom: 0),
+                      child: StreamBuilder<PositionData>(
+                        stream: _positionDataStream,
+                        builder: (context, snapshot) {
+                          final positionData = snapshot.data;
+                          return SeekBar(
+                            duration: positionData?.duration ?? Duration.zero,
+                            position: positionData?.position ?? Duration.zero,
+                            bufferedPosition:
+                                positionData?.bufferedPosition ?? Duration.zero,
+                            onChangeEnd: player.seek,
+                          );
+                        },
                       ),
                     ),
                     Padding(
                       padding: const EdgeInsets.symmetric(
                         horizontal: 30,
-                        vertical: 70,
+                        vertical: 40,
                       ),
                       child: Row(
                         children: [

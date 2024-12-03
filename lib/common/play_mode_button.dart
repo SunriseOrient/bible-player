@@ -41,8 +41,8 @@ class _PlayModeButtonState extends State<PlayModeButton> {
       await widget.player.setLoopMode(LoopMode.off);
     }
     if (mode == PlayMode.shuffle) {
-      await widget.player.setShuffleModeEnabled(true);
       await widget.player.setLoopMode(LoopMode.all);
+      await widget.player.setShuffleModeEnabled(true);
     }
   }
 
