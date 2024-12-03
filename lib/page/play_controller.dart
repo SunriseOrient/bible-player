@@ -3,9 +3,9 @@ import 'dart:ui';
 import 'package:bible_player/notifier/music_model.dart';
 import 'package:bible_player/notifier/player_model.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:just_audio/just_audio.dart';
-import 'package:provider/provider.dart';
-import 'package:rxdart/rxdart.dart';
+import 'package:rxdart/rxdart.dart' as prefix;
 
 import '../common/favorites_button.dart';
 import '../common/play_mode_button.dart';
@@ -26,11 +26,11 @@ class _PlayControllerState extends State<PlayController> {
   @override
   void initState() {
     super.initState();
-    player = context.read<PlayerModel>().player;
+    player = Get.find<PlayerModel>().player;
   }
 
   Stream<PositionData> get _positionDataStream =>
-      Rx.combineLatest3<Duration, Duration, Duration?, PositionData>(
+      prefix.Rx.combineLatest3<Duration, Duration, Duration?, PositionData>(
           player.positionStream,
           player.bufferedPositionStream,
           player.durationStream,
@@ -54,27 +54,31 @@ class _PlayControllerState extends State<PlayController> {
             child: Column(
               children: [
                 AppBar(
-                    leading: GestureDetector(
-                      onTap: () {
-                        Navigator.pop(context);
-                      },
-                      child: const Icon(
-                        Icons.arrow_back,
-                      ),
+                  leading: GestureDetector(
+                    onTap: () {
+                      Navigator.pop(context);
+                    },
+                    child: const Icon(
+                      Icons.arrow_back,
                     ),
-                    title: const Text(
-                      '歌曲',
-                      style: TextStyle(
-                        fontSize: 18,
-                      ),
+                  ),
+                  title: const Text(
+                    '歌曲',
+                    style: TextStyle(
+                      fontSize: 18,
                     ),
-                    centerTitle: true,
-                    foregroundColor: const Color(0xFF303133),
-                    backgroundColor: Colors.transparent),
+                  ),
+                  centerTitle: true,
+                  foregroundColor: const Color(0xFF303133),
+                  backgroundColor: Colors.transparent,
+                ),
                 Expanded(
                   child: Center(
                     child: Padding(
-                      padding: const EdgeInsets.only(left: 60, right: 60),
+                      padding: const EdgeInsets.only(
+                        left: 60,
+                        right: 60,
+                      ),
                       child: ClipRRect(
                         borderRadius: const BorderRadius.all(
                           Radius.circular(20),
@@ -99,8 +103,7 @@ class _PlayControllerState extends State<PlayController> {
                         List<IndexedAudioSource>? sequence = player.sequence;
                         if (sequence == null) return const ListTile();
                         MusicSection section = sequence[currentIndex].tag;
-                        String subtitle = context
-                            .read<MusicModel>()
+                        String subtitle = Get.find<MusicModel>()
                             .getSubtitleBySectionId(section.id);
                         return ListTile(
                           contentPadding:
@@ -113,7 +116,11 @@ class _PlayControllerState extends State<PlayController> {
                     ),
                     Padding(
                       padding: const EdgeInsets.only(
-                          top: 40, left: 24, right: 24, bottom: 0),
+                        top: 40,
+                        left: 24,
+                        right: 24,
+                        bottom: 0,
+                      ),
                       child: StreamBuilder<PositionData>(
                         stream: _positionDataStream,
                         builder: (context, snapshot) {
@@ -192,7 +199,9 @@ class _PlayControllerState extends State<PlayController> {
                             ),
                           ),
                           GestureDetector(
-                            onTap: () {},
+                            onTap: () {
+                              Navigator.pop(context);
+                            },
                             child: const Icon(
                               Icons.queue_music,
                               color: Color(0xFF606266),

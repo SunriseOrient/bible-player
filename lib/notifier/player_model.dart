@@ -1,21 +1,24 @@
 import 'dart:io';
-import 'package:path/path.dart' as p;
+import 'package:bible_player/notifier/music_model.dart';
+import 'package:get/get.dart';
+import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
 
 import 'package:bible_player/config.dart';
-import 'package:flutter/material.dart';
 import 'package:just_audio/just_audio.dart';
 
 import '../entity/music_data.dart';
 
-class PlayerModel extends ChangeNotifier {
+class PlayerModel extends GetxController {
   AudioPlayer player = AudioPlayer();
   late MusicSource _musicSource;
 
   String? loadedListId;
 
-  setMusicSource(MusicSource musicSource) {
-    _musicSource = musicSource;
+  @override
+  onInit() {
+    super.onInit();
+    _musicSource = Get.find<MusicModel>().source;
   }
 
   _setMusicList(String listId) async {
@@ -44,7 +47,7 @@ class PlayerModel extends ChangeNotifier {
   _getCacheFilePath(String fileName) async {
     Directory? downDir = await getDownloadsDirectory();
     if (downDir != null) {
-      return File(p.join(downDir.path, fileName));
+      return File(join(downDir.path, fileName));
     }
   }
 

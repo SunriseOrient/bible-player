@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
+import 'package:get/get.dart';
 
 import '../entity/music_data.dart';
 import '../notifier/favorites_model.dart';
@@ -11,7 +11,7 @@ class FavoritesButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    FavoritesModel favoritesModel = context.read<FavoritesModel>();
+    FavoritesModel favoritesModel = Get.find<FavoritesModel>();
     return IconButton(
       onPressed: () {
         if (favoritesModel.has(section.id)) {
@@ -20,9 +20,9 @@ class FavoritesButton extends StatelessWidget {
           favoritesModel.add(section.id, section);
         }
       },
-      icon: Consumer<FavoritesModel>(
-        builder: (context, modal, child) {
-          if (modal.has(section.id)) {
+      icon: GetBuilder<FavoritesModel>(
+        builder: (favoritesModel) {
+          if (favoritesModel.has(section.id)) {
             return const Icon(
               Icons.favorite,
               color: Colors.red,

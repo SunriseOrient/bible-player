@@ -1,20 +1,20 @@
-import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 import '../entity/music_data.dart';
 
-class FavoritesModel extends ChangeNotifier {
+class FavoritesModel extends GetxController {
   final Map<String, MusicSection> _sectionsMap = {};
 
   List<MusicSection> get sections => _sectionsMap.values.toList();
 
   remove(String id) {
     _sectionsMap.remove(id);
-    notifyListeners();
+    update();
   }
 
   add(String id, MusicSection section) {
     _sectionsMap.addAll({id: section});
-    notifyListeners();
+    update();
   }
 
   has(String id) {

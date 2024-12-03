@@ -1,8 +1,9 @@
 import 'package:bible_player/notifier/music_model.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
+import 'package:get/get.dart';
 
 import '../entity/music_data.dart';
+import '../notifier/favorites_model.dart';
 import '../notifier/player_model.dart';
 
 class Home extends StatefulWidget {
@@ -16,14 +17,13 @@ class _HomeState extends State<Home> {
   @override
   void initState() {
     super.initState();
-    _initEnv();
+    _initController();
   }
 
-  _initEnv() async {
-    MusicSource source = await context.read<MusicModel>().loadMusicSource();
-    if (mounted) {
-      await context.read<PlayerModel>().setMusicSource(source);
-    }
+  _initController() async {
+    await Get.put(MusicModel()).loadMusicSource();
+    Get.put(FavoritesModel());
+    Get.put(PlayerModel());
   }
 
   @override
@@ -43,8 +43,8 @@ class _HomeState extends State<Home> {
               ),
             ),
             Expanded(
-              child: Consumer<MusicModel>(
-                builder: (context, musicModel, child) {
+              child: GetBuilder<MusicModel>(
+                builder: (musicModel) {
                   MusicSource source = musicModel.source;
                   return ListView.builder(
                     itemCount: source.data.length,
@@ -126,10 +126,10 @@ class MusicChapterBox extends StatelessWidget {
       ),
       child: GestureDetector(
         onTap: () {
-          context.read<MusicModel>().updateIndex(
-                groupIndex: groupIndex,
-                chapterIndex: chapterIndex,
-              );
+          Get.find<MusicModel>().updateIndex(
+            groupIndex: groupIndex,
+            chapterIndex: chapterIndex,
+          );
           Navigator.pushNamed(context, '/music_list');
         },
         child: Stack(

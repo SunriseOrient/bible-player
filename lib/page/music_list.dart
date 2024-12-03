@@ -1,8 +1,9 @@
 import 'package:bible_player/notifier/music_model.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
+import 'package:get/get.dart';
 
 import '../common/favorites_button.dart';
+import '../common/play_panel.dart';
 import '../entity/music_data.dart';
 import '../notifier/player_model.dart';
 
@@ -20,10 +21,12 @@ class MusicList extends StatelessWidget {
             Navigator.pop(context);
           },
         ),
-        title: Consumer<MusicModel>(builder: (context, musicModel, child) {
-          MusicChapter? chapter = musicModel.getCurrentChapter();
-          return Text(chapter != null ? chapter.name : '');
-        }),
+        title: GetBuilder<MusicModel>(
+          builder: (musicModel) {
+            MusicChapter? chapter = musicModel.getCurrentChapter();
+            return Text(chapter != null ? chapter.name : '');
+          },
+        ),
         centerTitle: true,
       ),
       body: SafeArea(
@@ -59,32 +62,31 @@ class MusicList extends StatelessWidget {
               height: 10.0,
             ),
             Expanded(
-              child:
-                  Consumer<MusicModel>(builder: (context, musicModel, child) {
-                MusicChapter? chapter = musicModel.getCurrentChapter();
-                List<MusicSection> sections =
-                    chapter != null ? chapter.sections : [];
-                return ListView.builder(
-                  itemCount: sections.length,
-                  itemBuilder: (context, index) {
-                    return ListTile(
-                      title: Text(sections[index].name),
-                      // leading: const PlayingIcon(),
-                      trailing: FavoritesButton(
-                        sections[index],
-                      ),
-                      onTap: () {
-                        context
-                            .read<MusicModel>()
-                            .updateIndex(sectionIndex: index);
-                        context.read<PlayerModel>().play(sections[index]);
-                        Navigator.pushNamed(context, "/play_controller");
-                      },
-                    );
-                  },
-                );
-              }),
-            )
+              child: GetBuilder<MusicModel>(
+                builder: (musicModel) {
+                  MusicChapter? chapter = musicModel.getCurrentChapter();
+                  List<MusicSection> sections =
+                      chapter != null ? chapter.sections : [];
+                  return ListView.builder(
+                    itemCount: sections.length,
+                    itemBuilder: (context, index) {
+                      return ListTile(
+                        title: Text(sections[index].name),
+                        // leading: const PlayingIcon(),
+                        trailing: FavoritesButton(
+                          sections[index],
+                        ),
+                        onTap: () {
+                          Get.find<PlayerModel>().play(sections[index]);
+                          Navigator.pushNamed(context, "/play_controller");
+                        },
+                      );
+                    },
+                  );
+                },
+              ),
+            ),
+            PlayPanel()
           ],
         ),
       ),

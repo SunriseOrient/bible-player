@@ -1,10 +1,9 @@
 import 'package:bible_player/notifier/favorites_model.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
+import 'package:get/get.dart';
 
 import '../common/favorites_button.dart';
 import '../entity/music_data.dart';
-import '../notifier/music_model.dart';
 
 class Favorites extends StatelessWidget {
   const Favorites({super.key});
@@ -49,8 +48,8 @@ class Favorites extends StatelessWidget {
               height: 10.0,
             ),
             Expanded(
-              child: Consumer<FavoritesModel>(builder: (context, model, child) {
-                List<MusicSection> sections = model.sections;
+              child: GetBuilder<FavoritesModel>(builder: (favoritesModel) {
+                List<MusicSection> sections = favoritesModel.sections;
                 return ListView.builder(
                   itemCount: sections.length,
                   itemBuilder: (context, index) {
@@ -58,9 +57,6 @@ class Favorites extends StatelessWidget {
                       title: Text(sections[index].name),
                       trailing: FavoritesButton(sections[index]),
                       onTap: () {
-                        context
-                            .read<MusicModel>()
-                            .updateIndex(sectionIndex: index);
                         Navigator.pushNamed(context, "/play_controller");
                       },
                     );

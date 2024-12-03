@@ -1,9 +1,12 @@
 import 'package:bible_player/page/home.dart';
 import 'package:flutter/material.dart';
 
+import '../common/play_panel.dart';
 import 'favorites.dart';
 
 class Navigation extends StatefulWidget {
+  const Navigation({super.key});
+
   @override
   State<Navigation> createState() => _NavigationState();
 }
@@ -19,7 +22,6 @@ class _NavigationState extends State<Navigation> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      extendBody: true,
       bottomNavigationBar: BottomNavigationBar(
         showSelectedLabels: false,
         showUnselectedLabels: false,
@@ -44,7 +46,12 @@ class _NavigationState extends State<Navigation> {
           ),
         ],
       ),
-      body: [const Home(), Favorites()][currentIndex],
+      body: Column(
+        children: [
+          Expanded(child: [const Home(), const Favorites()][currentIndex]),
+          PlayPanel(),
+        ],
+      ),
     );
   }
 }
