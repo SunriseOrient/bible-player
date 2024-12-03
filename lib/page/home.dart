@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import '../entity/music_data.dart';
 import '../notifier/favorites_model.dart';
 import '../notifier/player_model.dart';
+import '../service/keep_cache.dart';
 
 class Home extends StatefulWidget {
   const Home({super.key});
@@ -17,13 +18,14 @@ class _HomeState extends State<Home> {
   @override
   void initState() {
     super.initState();
-    _initController();
+    _initEvn();
   }
 
-  _initController() async {
+  _initEvn() async {
     await Get.put(MusicModel()).loadMusicSource();
     Get.put(FavoritesModel());
     Get.put(PlayerModel());
+    KeepCache().run();
   }
 
   @override

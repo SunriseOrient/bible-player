@@ -3,7 +3,7 @@ import 'package:get/get.dart';
 import '../entity/music_data.dart';
 
 class FavoritesModel extends GetxController {
-  final Map<String, MusicSection> _sectionsMap = {};
+  Map<String, MusicSection> _sectionsMap = {};
 
   List<MusicSection> get sections => _sectionsMap.values.toList();
 
@@ -19,5 +19,10 @@ class FavoritesModel extends GetxController {
 
   has(String id) {
     return _sectionsMap.containsKey(id);
+  }
+
+  recoveredState(Map<String, MusicSection> sectionsMap) {
+    _sectionsMap = sectionsMap;
+    update();
   }
 }
