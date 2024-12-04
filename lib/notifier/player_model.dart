@@ -11,21 +11,35 @@ import '../entity/music_data.dart';
 
 class PlayerModel extends GetxController {
   AudioPlayer player = AudioPlayer();
-  late MusicSource _musicSource;
+  MusicModel musicModel = Get.find<MusicModel>();
 
   String? loadedListId;
+  List<LockCachingAudioSource>? loadedList;
+  MusicSection? currentSection;
 
   @override
   onInit() {
     super.onInit();
-    _musicSource = Get.find<MusicModel>().source;
+    _onSectionIndexChange();
+  }
+
+  _onSectionIndexChange() {
+    player.currentIndexStream.listen((index) {
+      print("索引变化$index");
+      if (index == null) return;
+      if (loadedList == null) return;
+      currentSection = loadedList![index].tag;
+      print("当前播放$currentSection");
+      update(["currentSection"]);
+    });
   }
 
   _setMusicList(String listId) async {
-    List<String> idArray = listId.split("_");
-    MusicGroup group = _musicSource.data[int.parse(idArray[0])];
-    List<MusicSection> sections =
-        group.chapters[int.parse(idArray[1])].sections;
+    List<int> idArray =
+        listId.split("_").map((item) => int.parse(item)).toList();
+    if (idArray[0] > musicModel.source.data.length) return;
+    MusicGroup group = musicModel.source.data[idArray[0]];
+    List<MusicSection> sections = group.chapters[idArray[1]].sections;
 
     List<LockCachingAudioSource> audioSource = [];
     for (var section in sections) {
@@ -42,6 +56,7 @@ class PlayerModel extends GetxController {
     await player.setLoopMode(LoopMode.all);
     await player.setShuffleModeEnabled(false);
     loadedListId = listId;
+    loadedList = audioSource;
   }
 
   _getCacheFilePath(String fileName) async {
@@ -51,7 +66,7 @@ class PlayerModel extends GetxController {
     }
   }
 
-  play(MusicSection section) async {
+  play(MusicSection section, {bool? noPlay}) async {
     List<String> idArray = section.id.split("_");
     String sectionIndex = idArray.removeLast();
     String listId = idArray.join("_");
@@ -59,12 +74,21 @@ class PlayerModel extends GetxController {
       await _setMusicList(listId);
     }
     await player.seek(Duration.zero, index: int.parse(sectionIndex));
-    await player.play();
+    if (noPlay != true) {
+      await player.play();
+    }
   }
+
+  playAll() {}
 
   @override
   void dispose() {
     player.dispose();
     super.dispose();
+  }
+
+  recoveredState(MusicSection section) {
+    currentSection = section;
+    update(["currentSection"]);
   }
 }

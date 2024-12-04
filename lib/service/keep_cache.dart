@@ -29,12 +29,9 @@ class KeepCache {
     });
     //
     PlayerModel playerModel = Get.find<PlayerModel>();
-    playerModel.player.currentIndexStream.listen((index) {
-      if (index == null) return;
-      List<IndexedAudioSource>? sequence = playerModel.player.sequence;
-      if (sequence == null) return;
-      MusicSection section = sequence[index].tag;
-      prefs.setString(lastPlaySection, jsonEncode(section.toJson()));
+    playerModel.addListenerId("currentSection", () {
+      prefs.setString(
+          lastPlaySection, jsonEncode(playerModel.currentSection!.toJson()));
     });
   }
 
@@ -46,5 +43,10 @@ class KeepCache {
       sectionsMap[section.id] = section;
     }
     Get.find<FavoritesModel>().recoveredState(sectionsMap);
+    //
+    String? currentSectionString = prefs.getString(lastPlaySection);
+    if (currentSectionString == null) return;
+    Get.find<PlayerModel>().recoveredState(
+        MusicSection.fromJson(jsonDecode(currentSectionString)));
   }
 }

@@ -3,9 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../entity/music_data.dart';
-import '../notifier/favorites_model.dart';
-import '../notifier/player_model.dart';
-import '../service/keep_cache.dart';
 
 class Home extends StatefulWidget {
   const Home({super.key});
@@ -18,14 +15,6 @@ class _HomeState extends State<Home> {
   @override
   void initState() {
     super.initState();
-    _initEvn();
-  }
-
-  _initEvn() async {
-    await Get.put(MusicModel()).loadMusicSource();
-    Get.put(FavoritesModel());
-    Get.put(PlayerModel());
-    KeepCache().run();
   }
 
   @override
@@ -46,6 +35,7 @@ class _HomeState extends State<Home> {
             ),
             Expanded(
               child: GetBuilder<MusicModel>(
+                id: "source",
                 builder: (musicModel) {
                   MusicSource source = musicModel.source;
                   return ListView.builder(

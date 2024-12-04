@@ -22,7 +22,7 @@ class MusicModel extends GetxController {
     List<dynamic> jsonMap =
         jsonDecode(const Utf8Decoder().convert(response.bodyBytes));
     source = MusicSource.fromJson(jsonMap);
-    update();
+    update(["source"]);
   }
 
   void updateIndex({int? groupIndex, int? chapterIndex}) {
