@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import '../common/favorites_button.dart';
 import '../common/play_panel.dart';
 import '../entity/music_data.dart';
+import '../entity/play_mode.dart';
 import '../notifier/player_model.dart';
 
 class MusicList extends StatelessWidget {
@@ -44,7 +45,9 @@ class MusicList extends StatelessWidget {
                         vertical: 10.0,
                       ),
                     ),
-                    onPressed: () => {},
+                    onPressed: () {
+                      Get.find<PlayerModel>().playAll(PlayListType.convention);
+                    },
                     child: const Row(
                       children: [
                         Icon(Icons.play_circle),
@@ -77,7 +80,8 @@ class MusicList extends StatelessWidget {
                           sections[index],
                         ),
                         onTap: () {
-                          Get.find<PlayerModel>().play(sections[index]);
+                          Get.find<PlayerModel>()
+                              .play(sections[index], PlayListType.convention);
                           Navigator.pushNamed(context, "/play_controller");
                         },
                       );

@@ -4,6 +4,8 @@ import 'package:get/get.dart';
 
 import '../common/favorites_button.dart';
 import '../entity/music_data.dart';
+import '../entity/play_mode.dart';
+import '../notifier/player_model.dart';
 
 class Favorites extends StatelessWidget {
   const Favorites({super.key});
@@ -30,7 +32,9 @@ class Favorites extends StatelessWidget {
                         vertical: 10.0,
                       ),
                     ),
-                    onPressed: () => {},
+                    onPressed: () {
+                      Get.find<PlayerModel>().playAll(PlayListType.favorites);
+                    },
                     child: const Row(
                       children: [
                         Icon(Icons.play_circle),
@@ -57,6 +61,8 @@ class Favorites extends StatelessWidget {
                       title: Text(sections[index].name),
                       trailing: FavoritesButton(sections[index]),
                       onTap: () {
+                        Get.find<PlayerModel>()
+                            .play(sections[index], PlayListType.favorites);
                         Navigator.pushNamed(context, "/play_controller");
                       },
                     );

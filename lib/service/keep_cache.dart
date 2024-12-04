@@ -12,6 +12,7 @@ class KeepCache {
   late SharedPreferences prefs;
   String lastPlaySection = "LAST_PLAY_SECTION";
   String favoritesList = "FAVORITES_LIST";
+  String listType = "LIST_TYPE";
 
   run() async {
     prefs = await SharedPreferences.getInstance();
@@ -29,9 +30,10 @@ class KeepCache {
     });
     //
     PlayerModel playerModel = Get.find<PlayerModel>();
-    playerModel.addListenerId("currentSection", () {
+    playerModel.addListenerId("playingSection", () {
       prefs.setString(
-          lastPlaySection, jsonEncode(playerModel.currentSection!.toJson()));
+          lastPlaySection, jsonEncode(playerModel.playingSection!.toJson()));
+      // prefs.setString(listType, playerModel.loadedListType.toString());
     });
   }
 
@@ -46,7 +48,7 @@ class KeepCache {
     //
     String? currentSectionString = prefs.getString(lastPlaySection);
     if (currentSectionString == null) return;
-    Get.find<PlayerModel>().recoveredState(
+    Get.find<PlayerModel>().setPlayingSection(
         MusicSection.fromJson(jsonDecode(currentSectionString)));
   }
 }

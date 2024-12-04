@@ -17,9 +17,9 @@ class _PlayPanelState extends State<PlayPanel> {
   @override
   Widget build(BuildContext context) {
     return GetBuilder<PlayerModel>(
-        id: "currentSection",
+        id: "playingSection",
         builder: (playerModel) {
-          MusicSection? currentSection = playerModel.currentSection;
+          MusicSection? currentSection = playerModel.playingSection;
           if (currentSection == null) {
             return const SizedBox.shrink();
           }
@@ -57,7 +57,7 @@ class _PlayPanelState extends State<PlayPanel> {
                     return GestureDetector(
                       onTap: () {
                         if (playerModel.loadedListId == null) {
-                          playerModel.play(currentSection);
+                          // playerModel.play(currentSection);
                         } else {
                           playerModel.player.play();
                         }
@@ -73,7 +73,7 @@ class _PlayPanelState extends State<PlayPanel> {
               ),
               onTap: () {
                 if (playerModel.loadedListId == null) {
-                  playerModel.play(currentSection, noPlay: true);
+                  // playerModel.play(currentSection, noPlay: true);
                 }
                 Navigator.pushNamed(context, "/play_controller");
               },

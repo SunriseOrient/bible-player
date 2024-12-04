@@ -16,3 +16,10 @@ class PositionData {
 
   PositionData(this.position, this.bufferedPosition, this.duration);
 }
+
+enum PlayListType {
+  // 常规
+  convention,
+  // 喜爱
+  favorites,
+}
