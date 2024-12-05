@@ -2,10 +2,10 @@ import 'dart:convert';
 
 import 'package:bible_player/notifier/favorites_model.dart';
 import 'package:get/get.dart';
-import 'package:just_audio/just_audio.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../entity/music_data.dart';
+import '../entity/play_mode.dart';
 import '../notifier/player_model.dart';
 
 class KeepCache {
@@ -30,10 +30,10 @@ class KeepCache {
     });
     //
     PlayerModel playerModel = Get.find<PlayerModel>();
-    playerModel.addListenerId("playingSection", () {
+    playerModel.addListenerId("playSection", () {
       prefs.setString(
-          lastPlaySection, jsonEncode(playerModel.playingSection!.toJson()));
-      // prefs.setString(listType, playerModel.loadedListType.toString());
+          lastPlaySection, jsonEncode(playerModel.playSection!.toJson()));
+      prefs.setString(listType, playerModel.loadListType.toString());
     });
   }
 
@@ -48,7 +48,16 @@ class KeepCache {
     //
     String? currentSectionString = prefs.getString(lastPlaySection);
     if (currentSectionString == null) return;
-    Get.find<PlayerModel>().setPlayingSection(
+    Get.find<PlayerModel>().setPlaySection(
         MusicSection.fromJson(jsonDecode(currentSectionString)));
+    //
+    String? listTypeString = prefs.getString(listType);
+    if (listTypeString == null) return;
+    PlayListType? type = PlayListType.values.firstWhereOrNull((value) {
+      return value.toString() == listTypeString;
+    });
+    if (type == null) return;
+    Get.find<PlayerModel>().setLoadListType(type);
+    print("设置加载列表类型为：$type");
   }
 }

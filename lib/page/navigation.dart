@@ -19,8 +19,16 @@ class _NavigationState extends State<Navigation> {
     super.initState();
   }
 
+  _loadRouteArguments() {
+    Map? args = ModalRoute.of(context)!.settings.arguments as Map?;
+    if (args == null) return;
+    if (args["currentIndex"] == null) return;
+    currentIndex = args["currentIndex"];
+  }
+
   @override
   Widget build(BuildContext context) {
+    _loadRouteArguments();
     return Scaffold(
       bottomNavigationBar: BottomNavigationBar(
         showSelectedLabels: false,

@@ -17,14 +17,15 @@ class PlayerModel extends GetxController {
   // 数据源模块
   MusicModel musicModel = Get.find<MusicModel>();
 
+  // 加载的清单类型
+  PlayListType? loadListType;
+  // 播放的音频
+  MusicSection? playSection;
+
   // 已加载的清单ID 喜爱列表的ID为：-1_-1
   String? loadedListId;
-  // 已加载的清单类型
-  PlayListType? loadedListType;
   // 已加载的音频列表
   List<LockCachingAudioSource>? loadedList;
-  // 正在播放的音频
-  MusicSection? playingSection;
 
   @override
   onInit() {
@@ -37,8 +38,8 @@ class PlayerModel extends GetxController {
     player.currentIndexStream.listen((index) {
       if (index == null) return;
       if (loadedList == null) return;
-      playingSection = loadedList![index].tag;
-      update(["playingSection"]);
+      playSection = loadedList![index].tag;
+      update(["playSection"]);
     });
   }
 
@@ -46,7 +47,7 @@ class PlayerModel extends GetxController {
   _setMusicList(
     List<MusicSection> sections,
     String loadedListId,
-    PlayListType loadedListType,
+    PlayListType loadListType,
   ) async {
     List<LockCachingAudioSource> audioSource = [];
     for (var section in sections) {
@@ -70,7 +71,7 @@ class PlayerModel extends GetxController {
     await player.setShuffleModeEnabled(false);
     loadedList = audioSource;
     this.loadedListId = loadedListId;
-    this.loadedListType = loadedListType;
+    this.loadListType = loadListType;
   }
 
   // 获取音频mp3缓存地址
@@ -141,18 +142,24 @@ class PlayerModel extends GetxController {
 
     if (type == PlayListType.favorites) {
       FavoritesModel favoritesModel = Get.find<FavoritesModel>();
+      _setMusicList(favoritesModel.sections, "-1_-1", PlayListType.favorites);
       fristSection = favoritesModel.sections[0];
     }
 
     if (fristSection == null) return;
     await play(fristSection, type);
-    loadedListType = type;
+    loadListType = type;
   }
 
   // 设置正在播放的音频数据
-  setPlayingSection(MusicSection section) {
-    playingSection = section;
-    update(["playingSection"]);
+  setPlaySection(MusicSection section) {
+    playSection = section;
+    update(["playSection"]);
+  }
+
+  // 设置列表的模式
+  setLoadListType(PlayListType type) {
+    loadListType = type;
   }
 
   @override

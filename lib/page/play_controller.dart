@@ -200,7 +200,17 @@ class _PlayControllerState extends State<PlayController> {
                           ),
                           GestureDetector(
                             onTap: () {
-                              Navigator.pop(context);
+                              PlayListType? type =
+                                  Get.find<PlayerModel>().loadListType;
+                              if (type == null) return;
+                              if (type == PlayListType.convention) {
+                                Navigator.pushNamed(context, "/music_list");
+                              }
+                              if (type == PlayListType.favorites) {
+                                print("携带参数跳转");
+                                Navigator.pushNamed(context, "/",
+                                    arguments: {"currentIndex": 1});
+                              }
                             },
                             child: const Icon(
                               Icons.queue_music,

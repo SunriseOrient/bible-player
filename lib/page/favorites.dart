@@ -34,6 +34,7 @@ class Favorites extends StatelessWidget {
                     ),
                     onPressed: () {
                       Get.find<PlayerModel>().playAll(PlayListType.favorites);
+                      Navigator.pushNamed(context, "/play_controller");
                     },
                     child: const Row(
                       children: [
