@@ -1,6 +1,32 @@
 import 'dart:async';
 
+import 'package:bible_player/notifier/player_model.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
+
+import '../entity/music_data.dart';
+
+class PlayListIcon extends StatelessWidget {
+  final MusicSection section;
+  final PlayerModel playerModel = Get.find<PlayerModel>();
+
+  PlayListIcon(this.section, {super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return StreamBuilder(
+        stream: playerModel.player.playingStream,
+        builder: (context, snapshot) {
+          bool? index = snapshot.data;
+          if (index != true) {
+            return const Icon(Icons.play_circle);
+          }
+          return LoadingAnimationWidget.staggeredDotsWave(
+              color: Colors.red, size: 24);
+        });
+  }
+}
 
 class PlayingIcon extends StatefulWidget {
   const PlayingIcon({super.key});
@@ -19,7 +45,6 @@ class _PlayingIconState extends State<PlayingIcon>
   late double itemWidth = width / (itemNumber * 2);
   late List<Animation> tweens = [];
   late List<AnimationController> animationControllers = [];
-  late List<Timer> timers = [];
 
   @override
   void initState() {
@@ -34,25 +59,21 @@ class _PlayingIconState extends State<PlayingIcon>
         duration: Duration(milliseconds: duration),
       );
       animationControllers.add(animationController);
-
       tweens.add(
         Tween(begin: 0.0, end: height)
             .chain(CurveTween(curve: Curves.easeInOut))
             .animate(animationController),
       );
-
-      Timer timer = Timer(
+      Future.delayed(
           Duration(milliseconds: ((i + 1) / itemNumber * duration).toInt()),
-          () => animationController.repeat(reverse: true));
-      timers.add(timer);
+          () {
+        animationController.repeat(reverse: true);
+      });
     }
   }
 
   @override
   void dispose() {
-    for (var timer in timers) {
-      timer.cancel();
-    }
     for (var controller in animationControllers) {
       controller.stop();
       controller.dispose();

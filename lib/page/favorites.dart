@@ -25,27 +25,32 @@ class Favorites extends StatelessWidget {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
-                  ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 10.0,
-                        vertical: 10.0,
-                      ),
-                    ),
-                    onPressed: () {
-                      Get.find<PlayerModel>().playAll(PlayListType.favorites);
-                      Navigator.pushNamed(context, "/play_controller");
-                    },
-                    child: const Row(
-                      children: [
-                        Icon(Icons.play_circle),
-                        SizedBox(
-                          width: 5.0,
+                  GetBuilder<FavoritesModel>(builder: (favoritesModel) {
+                    if (favoritesModel.sections.isEmpty) {
+                      return const SizedBox.shrink();
+                    }
+                    return ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 10.0,
+                          vertical: 10.0,
                         ),
-                        Text("全部播放"),
-                      ],
-                    ),
-                  ),
+                      ),
+                      onPressed: () {
+                        Get.find<PlayerModel>().playAll(PlayListType.favorites);
+                        Navigator.pushNamed(context, "/play_controller");
+                      },
+                      child: const Row(
+                        children: [
+                          Icon(Icons.play_circle),
+                          SizedBox(
+                            width: 5.0,
+                          ),
+                          Text("全部播放"),
+                        ],
+                      ),
+                    );
+                  }),
                 ],
               ),
             ),

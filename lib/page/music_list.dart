@@ -4,12 +4,15 @@ import 'package:get/get.dart';
 
 import '../common/favorites_button.dart';
 import '../common/play_panel.dart';
+import '../common/playing_icon.dart';
 import '../entity/music_data.dart';
 import '../entity/play_mode.dart';
 import '../notifier/player_model.dart';
 
 class MusicList extends StatelessWidget {
-  const MusicList({super.key});
+  final PlayerModel playerModel = Get.find<PlayerModel>();
+
+  MusicList({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -46,7 +49,7 @@ class MusicList extends StatelessWidget {
                       ),
                     ),
                     onPressed: () {
-                      Get.find<PlayerModel>().playAll(PlayListType.convention);
+                      playerModel.playAll(PlayListType.convention);
                     },
                     child: const Row(
                       children: [
@@ -73,18 +76,7 @@ class MusicList extends StatelessWidget {
                   return ListView.builder(
                     itemCount: sections.length,
                     itemBuilder: (context, index) {
-                      return ListTile(
-                        title: Text(sections[index].name),
-                        // leading: const PlayingIcon(),
-                        trailing: FavoritesButton(
-                          sections[index],
-                        ),
-                        onTap: () {
-                          Get.find<PlayerModel>()
-                              .play(sections[index], PlayListType.convention);
-                          Navigator.pushNamed(context, "/play_controller");
-                        },
-                      );
+                      return MusicListItem(sections[index], index);
                     },
                   );
                 },
@@ -95,5 +87,41 @@ class MusicList extends StatelessWidget {
         ),
       ),
     );
+  }
+}
+
+class MusicListItem extends StatefulWidget {
+  final int index;
+  final MusicSection musicSection;
+
+  const MusicListItem(this.musicSection, this.index, {super.key});
+
+  @override
+  State<MusicListItem> createState() => _MusicListItemState();
+}
+
+class _MusicListItemState extends State<MusicListItem> {
+  PlayerModel playerModel = Get.find<PlayerModel>();
+
+  @override
+  Widget build(BuildContext context) {
+    return StreamBuilder(
+        stream: playerModel.player.currentIndexStream,
+        builder: (context, snapshot) {
+          int? index = snapshot.data;
+          return ListTile(
+            title: Text(widget.musicSection.name),
+            leading: widget.index == index
+                ? PlayListIcon(widget.musicSection)
+                : null,
+            trailing: FavoritesButton(
+              widget.musicSection,
+            ),
+            onTap: () {
+              playerModel.play(widget.musicSection, PlayListType.convention);
+              Navigator.pushNamed(context, "/play_controller");
+            },
+          );
+        });
   }
 }

@@ -36,6 +36,7 @@ class PlayerModel extends GetxController {
   // 监听正在播放的索引变化
   _onSectionIndexChange() {
     player.currentIndexStream.listen((index) {
+      print("监听到音频索引变化：$index");
       if (index == null) return;
       if (loadedList == null) return;
       playSection = loadedList![index].tag;
@@ -60,6 +61,10 @@ class PlayerModel extends GetxController {
       );
     }
 
+    loadedList = audioSource;
+    this.loadedListId = loadedListId;
+    this.loadListType = loadListType;
+
     await player.setAudioSource(
       ConcatenatingAudioSource(
         useLazyPreparation: true,
@@ -69,9 +74,6 @@ class PlayerModel extends GetxController {
     );
     await player.setLoopMode(LoopMode.all);
     await player.setShuffleModeEnabled(false);
-    loadedList = audioSource;
-    this.loadedListId = loadedListId;
-    this.loadListType = loadListType;
   }
 
   // 获取音频mp3缓存地址
