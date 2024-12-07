@@ -6,13 +6,10 @@ import '../entity/music_data.dart';
 import '../notifier/music_model.dart';
 import '../notifier/player_model.dart';
 
-class PlayPanel extends StatefulWidget {
-  @override
-  State<PlayPanel> createState() => _PlayPanelState();
-}
+class PlayPanel extends StatelessWidget {
+  final MusicModel musicModel = Get.find<MusicModel>();
 
-class _PlayPanelState extends State<PlayPanel> {
-  MusicModel musicModel = Get.find<MusicModel>();
+  PlayPanel({super.key});
 
   @override
   Widget build(BuildContext context) {

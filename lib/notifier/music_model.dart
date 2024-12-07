@@ -46,6 +46,7 @@ class MusicModel extends GetxController {
   }
 
   String getSubtitleByIndex(groupIndex, chapterIndex) {
+    if (source.data.isEmpty) return "";
     MusicGroup? group = groupIndex > -1 ? source.data[groupIndex] : null;
     if (group == null) return "";
     MusicChapter? chapter =

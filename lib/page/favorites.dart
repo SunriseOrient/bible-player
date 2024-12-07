@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../common/favorites_button.dart';
+import '../common/play_list.dart';
 import '../entity/music_data.dart';
 import '../entity/play_mode.dart';
 import '../notifier/player_model.dart';
@@ -60,20 +61,10 @@ class Favorites extends StatelessWidget {
             Expanded(
               child: GetBuilder<FavoritesModel>(builder: (favoritesModel) {
                 List<MusicSection> sections = favoritesModel.sections;
-                return ListView.builder(
-                  itemCount: sections.length,
-                  itemBuilder: (context, index) {
-                    return ListTile(
-                      title: Text(sections[index].name),
-                      trailing: FavoritesButton(sections[index]),
-                      onTap: () {
-                        Get.find<PlayerModel>()
-                            .play(sections[index], PlayListType.favorites);
-                        Navigator.pushNamed(context, "/play_controller");
-                      },
-                    );
-                  },
-                );
+                return PlayList(sections, listTileTap: (section) {
+                  Get.find<PlayerModel>().play(section, PlayListType.favorites);
+                  Navigator.pushNamed(context, "/play_controller");
+                });
               }),
             )
           ],
