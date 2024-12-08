@@ -14,8 +14,6 @@ class MusicModel extends GetxController {
   int get groupIndex => _groupIndex;
   int get chapterIndex => _chapterIndex;
 
-  String get subtitle => getSubtitleByIndex(_groupIndex, _chapterIndex);
-
   Future<void> loadMusicSource() async {
     http.Response response =
         await http.get(Uri.parse('${Config.httpBase}/playlists.json'));
@@ -43,20 +41,5 @@ class MusicModel extends GetxController {
     MusicGroup? group = getCurrentGroup();
     if (group == null) return null;
     return _chapterIndex > -1 ? group.chapters[_chapterIndex] : null;
-  }
-
-  String getSubtitleByIndex(groupIndex, chapterIndex) {
-    if (source.data.isEmpty) return "";
-    MusicGroup? group = groupIndex > -1 ? source.data[groupIndex] : null;
-    if (group == null) return "";
-    MusicChapter? chapter =
-        chapterIndex > -1 ? group.chapters[chapterIndex] : null;
-    if (chapter == null) return "";
-    return "${group.title}/${chapter.name}";
-  }
-
-  String getSubtitleBySectionId(String id) {
-    List<String> idArray = id.split("_");
-    return getSubtitleByIndex(int.parse(idArray[0]), int.parse(idArray[1]));
   }
 }

@@ -103,13 +103,11 @@ class _PlayControllerState extends State<PlayController> {
                         List<IndexedAudioSource>? sequence = player.sequence;
                         if (sequence == null) return const ListTile();
                         MusicSection section = sequence[currentIndex].tag;
-                        String subtitle = Get.find<MusicModel>()
-                            .getSubtitleBySectionId(section.id);
                         return ListTile(
                           contentPadding:
                               const EdgeInsets.only(left: 30, right: 30),
                           title: Text(section.name),
-                          subtitle: Text(subtitle),
+                          subtitle: Text(section.subtitle),
                           trailing: FavoritesButton(section),
                         );
                       },

@@ -71,17 +71,19 @@ class MusicChapter {
 class MusicSection {
   String name;
   String id;
-  String mp3;
+  String url;
+  String subtitle;
 
-  MusicSection(this.name, this.id, this.mp3);
+  MusicSection(this.name, this.id, this.url, this.subtitle);
 
   // 从 JSON 创建 MusicSection 对象
   factory MusicSection.fromJson(Map<String, dynamic> json) {
-    return MusicSection(json['name'], json['id'], json['mp3']);
+    return MusicSection(
+        json['name'], json['id'], json['url'], json['subtitle']);
   }
 
   // 将 MusicSection 转换为 JSON
   Map<String, dynamic> toJson() {
-    return {'name': name, 'id': id, 'mp3': mp3};
+    return {'name': name, 'id': id, 'url': url, 'subtitle': subtitle};
   }
 }

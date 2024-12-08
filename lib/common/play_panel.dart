@@ -34,8 +34,7 @@ class PlayPanel extends StatelessWidget {
             ),
             child: ListTile(
               title: Text(currentSection.name),
-              subtitle:
-                  Text(musicModel.getSubtitleBySectionId(currentSection.id)),
+              subtitle: Text(currentSection.subtitle),
               trailing: StreamBuilder<PlayerState>(
                 stream: playerModel.player.playerStateStream,
                 builder: (context, snapshot) {
