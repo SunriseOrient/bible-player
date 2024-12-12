@@ -2,7 +2,6 @@ import 'package:bible_player/notifier/favorites_model.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import '../common/favorites_button.dart';
 import '../common/play_list.dart';
 import '../entity/music_data.dart';
 import '../entity/play_mode.dart';
@@ -19,18 +18,18 @@ class Favorites extends StatelessWidget {
         title: const Text("我喜欢"),
       ),
       body: SafeArea(
-        child: Column(
-          children: [
-            Padding(
-              padding: const EdgeInsets.only(left: 10.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  GetBuilder<FavoritesModel>(builder: (favoritesModel) {
-                    if (favoritesModel.sections.isEmpty) {
-                      return const SizedBox.shrink();
-                    }
-                    return ElevatedButton(
+        child: GetBuilder<FavoritesModel>(builder: (favoritesModel) {
+          if (favoritesModel.sections.isEmpty) {
+            return const FavoritesEmpty();
+          }
+          return Column(
+            children: [
+              Padding(
+                padding: const EdgeInsets.only(left: 10.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    ElevatedButton(
                       style: ElevatedButton.styleFrom(
                         padding: const EdgeInsets.symmetric(
                           horizontal: 10.0,
@@ -50,25 +49,49 @@ class Favorites extends StatelessWidget {
                           Text("全部播放"),
                         ],
                       ),
-                    );
-                  }),
-                ],
+                    ),
+                  ],
+                ),
               ),
-            ),
-            const SizedBox(
-              height: 10.0,
-            ),
-            Expanded(
-              child: GetBuilder<FavoritesModel>(builder: (favoritesModel) {
-                List<MusicSection> sections = favoritesModel.sections;
-                return PlayList(sections, listTileTap: (section) {
-                  Get.find<PlayerModel>().play(section, PlayListType.favorites);
-                  Navigator.pushNamed(context, "/play_controller");
-                });
-              }),
-            )
-          ],
-        ),
+              const SizedBox(
+                height: 10.0,
+              ),
+              Expanded(
+                child: GetBuilder<FavoritesModel>(builder: (favoritesModel) {
+                  List<MusicSection> sections = favoritesModel.sections;
+                  return PlayList(sections, listTileTap: (section) {
+                    Get.find<PlayerModel>()
+                        .play(section, PlayListType.favorites);
+                    Navigator.pushNamed(context, "/play_controller");
+                  });
+                }),
+              )
+            ],
+          );
+        }),
+      ),
+    );
+  }
+}
+
+class FavoritesEmpty extends StatelessWidget {
+  const FavoritesEmpty({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return const Align(
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Icon(
+            Icons.bookmark_add,
+            size: 60,
+          ),
+          SizedBox(
+            height: 10,
+          ),
+          Text("没有喜欢的音频"),
+        ],
       ),
     );
   }

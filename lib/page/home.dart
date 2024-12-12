@@ -21,34 +21,42 @@ class _HomeState extends State<Home> {
   Widget build(BuildContext context) {
     return Scaffold(
       extendBody: true,
-      appBar: AppBar(),
       body: SafeArea(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const Padding(
-              padding: EdgeInsets.only(left: 20, bottom: 40),
-              child: Text(
-                "Hello",
-                style: TextStyle(fontSize: 58, fontWeight: FontWeight.bold),
+        child: CustomScrollView(
+          slivers: [
+            const SliverAppBar(
+              flexibleSpace: FlexibleSpaceBar(
+                titlePadding:
+                    EdgeInsets.symmetric(horizontal: 20, vertical: 40),
+                title: Align(
+                  alignment: Alignment.bottomLeft,
+                  child: Text(
+                    'Hello',
+                    style: TextStyle(fontSize: 58),
+                  ),
+                ),
+                collapseMode: CollapseMode.pin,
+                expandedTitleScale: 1.5,
               ),
+              automaticallyImplyLeading: false,
+              pinned: true,
+              collapsedHeight: 160,
+              expandedHeight: 200,
             ),
-            Expanded(
-              child: GetBuilder<MusicModel>(
-                id: "source",
-                builder: (musicModel) {
-                  MusicSource source = musicModel.source;
-                  return ListView.builder(
-                    itemCount: source.data.length,
-                    itemBuilder: (context, index) {
-                      return MusicGroupBox(
-                        source.data[index],
-                        groupIndex: index,
-                      );
-                    },
-                  );
-                },
-              ),
+            GetBuilder<MusicModel>(
+              id: "source",
+              builder: (musicModel) {
+                MusicSource source = musicModel.source;
+                return SliverList.builder(
+                  itemCount: source.data.length,
+                  itemBuilder: (context, index) {
+                    return MusicGroupBox(
+                      source.data[index],
+                      groupIndex: index,
+                    );
+                  },
+                );
+              },
             ),
           ],
         ),
