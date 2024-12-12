@@ -42,7 +42,9 @@ class Favorites extends StatelessWidget {
                       },
                       child: const Row(
                         children: [
-                          Icon(Icons.play_circle),
+                          Icon(
+                            Icons.play_circle,
+                          ),
                           SizedBox(
                             width: 5.0,
                           ),
