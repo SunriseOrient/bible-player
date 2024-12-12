@@ -1,6 +1,5 @@
 import 'dart:ui';
 
-import 'package:bible_player/notifier/music_model.dart';
 import 'package:bible_player/notifier/player_model.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -205,7 +204,6 @@ class _PlayControllerState extends State<PlayController> {
                                 Navigator.pushNamed(context, "/music_list");
                               }
                               if (type == PlayListType.favorites) {
-                                print("携带参数跳转");
                                 Navigator.pushNamed(context, "/",
                                     arguments: {"currentIndex": 1});
                               }
