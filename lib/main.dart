@@ -35,6 +35,8 @@ class MainApp extends StatelessWidget {
           scrolledUnderElevation: 0.0,
           elevation: 0,
         ),
+        bottomSheetTheme:
+            const BottomSheetThemeData(backgroundColor: Colors.white),
       ),
       routes: {
         "/": (context) => Navigation(),

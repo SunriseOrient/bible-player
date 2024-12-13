@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:bible_player/notifier/favorites_model.dart';
+import 'package:bible_player/notifier/music_model.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -48,8 +49,10 @@ class KeepCache {
     //
     String? currentSectionString = prefs.getString(lastPlaySection);
     if (currentSectionString == null) return;
-    Get.find<PlayerModel>().setPlaySection(
-        MusicSection.fromJson(jsonDecode(currentSectionString)));
+    MusicSection currentSection =
+        MusicSection.fromJson(jsonDecode(currentSectionString));
+    Get.find<PlayerModel>().setPlaySection(currentSection);
+    Get.find<MusicModel>().recoveredIndex(currentSection);
     //
     String? listTypeString = prefs.getString(listType);
     if (listTypeString == null) return;

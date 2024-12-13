@@ -7,10 +7,13 @@ import 'package:just_audio/just_audio.dart';
 import 'package:rxdart/rxdart.dart' as prefix;
 
 import '../common/favorites_button.dart';
+import '../common/play_list.dart';
 import '../common/play_mode_button.dart';
 import '../common/seek_bar.dart';
 import '../entity/music_data.dart';
 import '../entity/play_mode.dart';
+import '../notifier/favorites_model.dart';
+import '../notifier/music_model.dart';
 
 class PlayController extends StatefulWidget {
   const PlayController({super.key});
@@ -197,16 +200,17 @@ class _PlayControllerState extends State<PlayController> {
                           ),
                           GestureDetector(
                             onTap: () {
-                              PlayListType? type =
-                                  Get.find<PlayerModel>().loadListType;
-                              if (type == null) return;
-                              if (type == PlayListType.convention) {
-                                Navigator.pushNamed(context, "/music_list");
-                              }
-                              if (type == PlayListType.favorites) {
-                                Navigator.pushNamed(context, "/",
-                                    arguments: {"currentIndex": 1});
-                              }
+                              // PlayListType? type =
+                              //     Get.find<PlayerModel>().loadListType;
+                              // if (type == null) return;
+                              // if (type == PlayListType.convention) {
+                              //   // Navigator.pushNamed(context, "/music_list");
+                              // }
+                              // if (type == PlayListType.favorites) {
+                              //   // Navigator.pushNamed(context, "/",
+                              //   //     arguments: {"currentIndex": 1});
+                              // }
+                              showCurrentPlayList(context);
                             },
                             child: const Icon(
                               Icons.queue_music,
@@ -226,4 +230,76 @@ class _PlayControllerState extends State<PlayController> {
       ),
     );
   }
+}
+
+showCurrentPlayList(BuildContext context) {
+  PlayerModel playerModel = Get.find<PlayerModel>();
+  MusicModel musicModel = Get.find<MusicModel>();
+  FavoritesModel favoritesModel = Get.find<FavoritesModel>();
+
+  List<MusicSection> sections = [];
+  if (playerModel.loadListType == PlayListType.convention) {
+    MusicChapter? chapter = musicModel.getCurrentChapter();
+    print("sssssss");
+    print(chapter);
+    sections = chapter != null ? chapter.sections : [];
+  }
+  if (playerModel.loadListType == PlayListType.favorites) {
+    sections = favoritesModel.sections;
+  }
+  print(playerModel.loadListType);
+  print(sections);
+
+  return showModalBottomSheet(
+    context: context,
+    builder: (BuildContext context) {
+      return Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Padding(
+            padding: const EdgeInsets.all(10),
+            child: Align(
+              child: Container(
+                width: 50,
+                height: 5,
+                decoration: const BoxDecoration(
+                  borderRadius: BorderRadius.all(Radius.circular(5)),
+                  color: Color(0xFFF4F4F5),
+                ),
+              ),
+            ),
+          ),
+          Expanded(
+            child: DefaultTabController(
+              length: 1,
+              child: Scaffold(
+                appBar: AppBar(
+                  automaticallyImplyLeading: false,
+                  titleSpacing: 0,
+                  title: const TabBar(
+                    isScrollable: true,
+                    dividerColor: Color(0xFFF4F4F5),
+                    tabAlignment: TabAlignment.start,
+                    tabs: [
+                      Tab(
+                        text: "当前播放",
+                      ),
+                    ],
+                  ),
+                ),
+                body: TabBarView(
+                  children: [
+                    PlayList(sections, listTileTap: (section) {
+                      if (playerModel.loadListType == null) return;
+                      playerModel.play(section, playerModel.loadListType!);
+                    }),
+                  ],
+                ),
+              ),
+            ),
+          ),
+        ],
+      );
+    },
+  );
 }

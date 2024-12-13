@@ -43,6 +43,8 @@ class _PlayingIconState extends State<PlayingIcon>
       vsync: this,
       duration: Duration(milliseconds: duration),
     );
+    // 初始值
+    animationController.value = 0.5;
     animationController.repeat();
   }
 

@@ -124,8 +124,10 @@ class PlayerModel extends GetxController {
   // 播放
   Future play(MusicSection section, PlayListType type, {bool? noPlay}) async {
     await _checkAndLoadMusicList(section, type);
-    int sectionIndex = int.parse(section.id.split("_").removeLast());
-    await player.seek(Duration.zero, index: sectionIndex);
+    if (type != loadListType || playSection?.id != section.id) {
+      int sectionIndex = int.parse(section.id.split("_").removeLast());
+      await player.seek(Duration.zero, index: sectionIndex);
+    }
     if (noPlay == true) return;
     await player.play();
   }

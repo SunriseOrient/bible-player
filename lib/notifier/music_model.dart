@@ -42,4 +42,11 @@ class MusicModel extends GetxController {
     if (group == null) return null;
     return _chapterIndex > -1 ? group.chapters[_chapterIndex] : null;
   }
+
+  recoveredIndex(MusicSection section) {
+    List<int> indexs =
+        section.id.split("_").map((item) => int.parse(item)).toList();
+    _groupIndex = indexs[0];
+    _chapterIndex = indexs[1];
+  }
 }
