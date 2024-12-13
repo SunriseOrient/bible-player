@@ -25,7 +25,9 @@ class PlayList extends StatelessWidget {
               MusicSection section = sections[index];
               return ListTile(
                 title: Text(section.name),
-                leading: playingIndex == index ? PlayListIcon(section) : null,
+                leading: playingIndex == index
+                    ? PlayingIcon(playerModel.player.playingStream)
+                    : null,
                 trailing: FavoritesButton(
                   section,
                 ),
