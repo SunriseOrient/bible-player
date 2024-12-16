@@ -3,17 +3,24 @@ import 'package:get/get.dart';
 import '../entity/music_data.dart';
 
 class FavoritesModel extends GetxController {
-  Map<String, MusicSection> _sectionsMap = {};
+  static String playListId = "-1_-1";
+  late MusicChapter musicChapter;
 
-  List<MusicSection> get sections => _sectionsMap.values.toList();
+  FavoritesModel() {
+    musicChapter = MusicChapter("我喜欢", playListId, []);
+  }
+
+  Map<String, MusicSection> get _sectionsMap =>
+      {for (var item in musicChapter.sections) item.id: item};
+  List<MusicSection> get sections => musicChapter.sections;
 
   remove(String id) {
-    _sectionsMap.remove(id);
+    musicChapter.sections.removeWhere((item) => item.id == id);
     update();
   }
 
-  add(String id, MusicSection section) {
-    _sectionsMap.addAll({id: section});
+  add(MusicSection section) {
+    musicChapter.sections.add(section);
     update();
   }
 
@@ -21,8 +28,8 @@ class FavoritesModel extends GetxController {
     return _sectionsMap.containsKey(id);
   }
 
-  recoveredState(Map<String, MusicSection> sectionsMap) {
-    _sectionsMap = sectionsMap;
+  recoveredMusicChapter(MusicChapter musicChapter) {
+    this.musicChapter = musicChapter;
     update();
   }
 }

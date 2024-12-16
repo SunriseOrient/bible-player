@@ -5,16 +5,35 @@ import 'package:get/get.dart';
 import '../common/play_list.dart';
 import '../common/play_panel.dart';
 import '../entity/music_data.dart';
-import '../entity/play_mode.dart';
 import '../notifier/player_model.dart';
 
-class MusicList extends StatelessWidget {
-  final PlayerModel playerModel = Get.find<PlayerModel>();
+class MusicList extends StatefulWidget {
+  const MusicList({super.key});
 
-  MusicList({super.key});
+  @override
+  State<MusicList> createState() => _MusicListState();
+}
+
+class _MusicListState extends State<MusicList> {
+  MusicChapter? chapter;
+
+  _loadRouteArguments() {
+    Map? args = ModalRoute.of(context)!.settings.arguments as Map?;
+    if (args == null) return;
+    if (args["groupIndex"] == null) return;
+    if (args["chapterIndex"] == null) return;
+    MusicChapter musicChapter = Get.find<MusicModel>()
+        .source
+        .data[args["groupIndex"]]
+        .chapters[args["chapterIndex"]];
+    setState(() {
+      chapter = musicChapter;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
+    _loadRouteArguments();
     return Scaffold(
       extendBody: false,
       appBar: AppBar(
@@ -24,12 +43,7 @@ class MusicList extends StatelessWidget {
             Navigator.pop(context);
           },
         ),
-        title: GetBuilder<MusicModel>(
-          builder: (musicModel) {
-            MusicChapter? chapter = musicModel.getCurrentChapter();
-            return Text(chapter != null ? chapter.name : '');
-          },
-        ),
+        title: Text(chapter != null ? chapter!.name : ''),
         centerTitle: true,
       ),
       body: SafeArea(
@@ -48,7 +62,9 @@ class MusicList extends StatelessWidget {
                       ),
                     ),
                     onPressed: () {
-                      playerModel.playAll(PlayListType.convention);
+                      if (chapter == null) return;
+                      Get.find<PlayerModel>().playAll(chapter!);
+                      Navigator.pushNamed(context, "/play_controller");
                     },
                     child: const Row(
                       children: [
@@ -67,18 +83,11 @@ class MusicList extends StatelessWidget {
               height: 10.0,
             ),
             Expanded(
-              child: GetBuilder<MusicModel>(
-                builder: (musicModel) {
-                  MusicChapter? chapter = musicModel.getCurrentChapter();
-                  List<MusicSection> sections =
-                      chapter != null ? chapter.sections : [];
-                  return PlayList(
-                    sections,
-                    listTileTap: (section) {
-                      playerModel.play(section, PlayListType.convention);
-                      Navigator.pushNamed(context, "/play_controller");
-                    },
-                  );
+              child: PlayList(
+                chapter?.sections ?? [],
+                listTileTap: (section) {
+                  Get.find<PlayerModel>().play(section);
+                  Navigator.pushNamed(context, "/play_controller");
                 },
               ),
             ),

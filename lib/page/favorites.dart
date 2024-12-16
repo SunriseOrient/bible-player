@@ -4,7 +4,6 @@ import 'package:get/get.dart';
 
 import '../common/play_list.dart';
 import '../entity/music_data.dart';
-import '../entity/play_mode.dart';
 import '../notifier/player_model.dart';
 
 class Favorites extends StatelessWidget {
@@ -12,10 +11,11 @@ class Favorites extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    String title = Get.find<FavoritesModel>().musicChapter.name;
     return Scaffold(
       extendBody: true,
       appBar: AppBar(
-        title: const Text("我喜欢"),
+        title: Text(title),
       ),
       body: SafeArea(
         child: GetBuilder<FavoritesModel>(builder: (favoritesModel) {
@@ -37,7 +37,8 @@ class Favorites extends StatelessWidget {
                         ),
                       ),
                       onPressed: () {
-                        Get.find<PlayerModel>().playAll(PlayListType.favorites);
+                        Get.find<PlayerModel>()
+                            .playAll(favoritesModel.musicChapter);
                         Navigator.pushNamed(context, "/play_controller");
                       },
                       child: const Row(
@@ -62,8 +63,7 @@ class Favorites extends StatelessWidget {
                 child: GetBuilder<FavoritesModel>(builder: (favoritesModel) {
                   List<MusicSection> sections = favoritesModel.sections;
                   return PlayList(sections, listTileTap: (section) {
-                    Get.find<PlayerModel>()
-                        .play(section, PlayListType.favorites);
+                    Get.find<PlayerModel>().play(section);
                     Navigator.pushNamed(context, "/play_controller");
                   });
                 }),

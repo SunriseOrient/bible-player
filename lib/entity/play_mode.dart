@@ -23,3 +23,33 @@ enum PlayListType {
   // 喜爱
   favorites,
 }
+
+class IdInfo {
+  String groupId;
+  String chapterId;
+  String sectionId;
+  int groupIndex;
+  int chapterIndex;
+  int sectionIndex;
+
+  IdInfo({
+    required this.groupId,
+    required this.chapterId,
+    required this.sectionId,
+    required this.groupIndex,
+    required this.chapterIndex,
+    required this.sectionIndex,
+  });
+
+  factory IdInfo.fromMusicSectionId(String id) {
+    List<int> ids = id.split("_").map((item) => int.parse(item)).toList();
+    return IdInfo(
+      groupId: ids[0].toString(),
+      chapterId: [ids[0], ids[1]].join("_"),
+      sectionId: id,
+      groupIndex: ids[0],
+      chapterIndex: ids[1],
+      sectionIndex: ids[2],
+    );
+  }
+}

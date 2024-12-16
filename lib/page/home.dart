@@ -44,7 +44,6 @@ class _HomeState extends State<Home> {
               expandedHeight: 200,
             ),
             GetBuilder<MusicModel>(
-              id: "source",
               builder: (musicModel) {
                 MusicSource source = musicModel.source;
                 return SliverList.builder(
@@ -126,11 +125,10 @@ class MusicChapterBox extends StatelessWidget {
       ),
       child: GestureDetector(
         onTap: () {
-          Get.find<MusicModel>().updateIndex(
-            groupIndex: groupIndex,
-            chapterIndex: chapterIndex,
-          );
-          Navigator.pushNamed(context, '/music_list');
+          Navigator.pushNamed(context, '/music_list', arguments: {
+            "groupIndex": groupIndex,
+            "chapterIndex": chapterIndex,
+          });
         },
         child: Stack(
           children: [

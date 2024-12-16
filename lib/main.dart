@@ -10,15 +10,15 @@ import 'page/navigation.dart';
 import 'service/keep_cache.dart';
 
 void main() {
-  _initEvn();
   runApp(const MainApp());
+  _initEvn();
 }
 
 _initEvn() async {
   Get.put(MusicModel()).loadMusicSource();
   Get.put(FavoritesModel());
   Get.put(PlayerModel());
-  KeepCache().run();
+  KeepCache();
 }
 
 class MainApp extends StatelessWidget {
@@ -39,9 +39,9 @@ class MainApp extends StatelessWidget {
             const BottomSheetThemeData(backgroundColor: Colors.white),
       ),
       routes: {
-        "/": (context) => Navigation(),
-        "/music_list": (context) => MusicList(),
-        "/play_controller": (context) => PlayController(),
+        "/": (context) => const Navigation(),
+        "/music_list": (context) => const MusicList(),
+        "/play_controller": (context) => const PlayController(),
       },
     );
   }

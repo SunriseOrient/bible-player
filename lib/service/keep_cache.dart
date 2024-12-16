@@ -1,66 +1,70 @@
 import 'dart:convert';
 
 import 'package:bible_player/notifier/favorites_model.dart';
-import 'package:bible_player/notifier/music_model.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../entity/music_data.dart';
-import '../entity/play_mode.dart';
 import '../notifier/player_model.dart';
 
 class KeepCache {
   late SharedPreferences prefs;
-  String lastPlaySection = "LAST_PLAY_SECTION";
-  String favoritesList = "FAVORITES_LIST";
-  String listType = "LIST_TYPE";
 
-  run() async {
+  String favoritesMusicChapter = "FAVORITES_MUSIC_CHAPTER";
+
+  String currentMusicChapter = "CURRENT_MUSIC_CHAPTER";
+  String currentMusicSection = "CURRENT_MUSIC_SECTION";
+
+  KeepCache() {
+    _run();
+  }
+
+  _run() async {
     prefs = await SharedPreferences.getInstance();
-    _loadCache();
     _listeningModification();
+    _loadCache();
   }
 
   _listeningModification() {
     FavoritesModel favoritesModel = Get.find<FavoritesModel>();
     favoritesModel.addListener(() {
-      List<String> favoritesStringList = favoritesModel.sections
-          .map((section) => jsonEncode(section.toJson()))
-          .toList();
-      prefs.setStringList(favoritesList, favoritesStringList);
+      String str = jsonEncode(favoritesModel.musicChapter.toJson());
+      prefs.setString(favoritesMusicChapter, str);
     });
     //
     PlayerModel playerModel = Get.find<PlayerModel>();
-    playerModel.addListenerId("playSection", () {
-      prefs.setString(
-          lastPlaySection, jsonEncode(playerModel.playSection!.toJson()));
-      prefs.setString(listType, playerModel.loadListType.toString());
+    playerModel.addListenerId("currentMusicChapter", () {
+      if (playerModel.currentMusicChapter == null) return;
+      prefs.setString(currentMusicChapter,
+          jsonEncode(playerModel.currentMusicChapter!.toJson()));
+    });
+    playerModel.addListenerId("currentMusicSection", () {
+      if (playerModel.currentMusicSection == null) return;
+      prefs.setString(currentMusicSection,
+          jsonEncode(playerModel.currentMusicSection!.toJson()));
     });
   }
 
   _loadCache() {
-    List<String> favoritesStringList = prefs.getStringList(favoritesList) ?? [];
-    Map<String, MusicSection> sectionsMap = {};
-    for (var favoritesString in favoritesStringList) {
-      MusicSection section = MusicSection.fromJson(jsonDecode(favoritesString));
-      sectionsMap[section.id] = section;
+    String? favoritesMusicChapterStr = prefs.getString(favoritesMusicChapter);
+    if (favoritesMusicChapterStr != null) {
+      MusicChapter musicChapter =
+          MusicChapter.fromJson(jsonDecode(favoritesMusicChapterStr));
+      Get.find<FavoritesModel>().recoveredMusicChapter(musicChapter);
     }
-    Get.find<FavoritesModel>().recoveredState(sectionsMap);
+    // 优先获取MusicSection以便初始化MusicChapter时可以正确的懒加载
+    String? currentMusicSectionStr = prefs.getString(currentMusicSection);
+    if (currentMusicSectionStr != null) {
+      MusicSection musicSection =
+          MusicSection.fromJson(jsonDecode(currentMusicSectionStr));
+      Get.find<PlayerModel>().recoveredCurrentMusicSection(musicSection);
+    }
     //
-    String? currentSectionString = prefs.getString(lastPlaySection);
-    if (currentSectionString == null) return;
-    MusicSection currentSection =
-        MusicSection.fromJson(jsonDecode(currentSectionString));
-    Get.find<PlayerModel>().setPlaySection(currentSection);
-    Get.find<MusicModel>().recoveredIndex(currentSection);
-    //
-    String? listTypeString = prefs.getString(listType);
-    if (listTypeString == null) return;
-    PlayListType? type = PlayListType.values.firstWhereOrNull((value) {
-      return value.toString() == listTypeString;
-    });
-    if (type == null) return;
-    Get.find<PlayerModel>().setLoadListType(type);
-    print("设置加载列表类型为：$type");
+    String? currentMusicChapterStr = prefs.getString(currentMusicChapter);
+    if (currentMusicChapterStr != null) {
+      MusicChapter musicChapter =
+          MusicChapter.fromJson(jsonDecode(currentMusicChapterStr));
+      Get.find<PlayerModel>().recoveredCurrentMusicChapter(musicChapter);
+    }
   }
 }

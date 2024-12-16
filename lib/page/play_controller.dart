@@ -12,8 +12,6 @@ import '../common/play_mode_button.dart';
 import '../common/seek_bar.dart';
 import '../entity/music_data.dart';
 import '../entity/play_mode.dart';
-import '../notifier/favorites_model.dart';
-import '../notifier/music_model.dart';
 
 class PlayController extends StatefulWidget {
   const PlayController({super.key});
@@ -234,17 +232,7 @@ class _PlayControllerState extends State<PlayController> {
 
 showCurrentPlayList(BuildContext context) {
   PlayerModel playerModel = Get.find<PlayerModel>();
-  MusicModel musicModel = Get.find<MusicModel>();
-  FavoritesModel favoritesModel = Get.find<FavoritesModel>();
-
-  List<MusicSection> sections = [];
-  if (playerModel.loadListType == PlayListType.convention) {
-    MusicChapter? chapter = musicModel.getCurrentChapter();
-    sections = chapter != null ? chapter.sections : [];
-  }
-  if (playerModel.loadListType == PlayListType.favorites) {
-    sections = favoritesModel.sections;
-  }
+  List<MusicSection> sections = playerModel.currentMusicChapter?.sections ?? [];
   double screenHeight = MediaQuery.of(context).size.height;
   return showModalBottomSheet(
     isScrollControlled: true,
@@ -288,8 +276,7 @@ showCurrentPlayList(BuildContext context) {
                 body: TabBarView(
                   children: [
                     PlayList(sections, listTileTap: (section) {
-                      if (playerModel.loadListType == null) return;
-                      playerModel.play(section, playerModel.loadListType!);
+                      playerModel.play(section);
                     }),
                   ],
                 ),

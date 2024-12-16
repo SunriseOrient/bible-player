@@ -18,14 +18,13 @@ class PlayList extends StatelessWidget {
     return ListView.builder(
       itemCount: sections.length,
       itemBuilder: (context, index) {
-        return StreamBuilder(
-            stream: playerModel.player.currentIndexStream,
-            builder: (context, snapshot) {
-              int? playingIndex = snapshot.data;
-              MusicSection section = sections[index];
+        MusicSection section = sections[index];
+        return GetBuilder<PlayerModel>(
+            id: "currentMusicSection",
+            builder: (playerModel) {
               return ListTile(
                 title: Text(section.name),
-                leading: playingIndex == index
+                leading: section.id == playerModel.currentMusicSection?.id
                     ? PlayingIcon(playerModel.player.playingStream)
                     : null,
                 trailing: FavoritesButton(

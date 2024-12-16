@@ -13,45 +13,45 @@ import '../entity/play_mode.dart';
 
 class PlayerModel extends GetxController {
   // 播放器实例
-  AudioPlayer player = AudioPlayer();
+  late AudioPlayer player;
   // 数据源模块
-  MusicModel musicModel = Get.find<MusicModel>();
+  late MusicModel musicModel;
 
-  // 加载的清单类型
-  PlayListType? loadListType;
-  // 播放的音频
-  MusicSection? playSection;
+  // 当前挂载的播单
+  MusicChapter? currentMusicChapter;
+  // 当前挂载的播单类型
+  PlayListType? get currentMusicChapterType {
+    if (currentMusicChapter == null) return null;
+    return currentMusicChapter!.id == FavoritesModel.playListId
+        ? PlayListType.favorites
+        : PlayListType.convention;
+  }
 
-  // 已加载的清单ID 喜爱列表的ID为：-1_-1
-  String? loadedListId;
-  // 已加载的音频列表
-  List<LockCachingAudioSource>? loadedList;
+  // 当前播放的音乐
+  MusicSection? currentMusicSection;
 
-  @override
-  onInit() {
-    super.onInit();
+  PlayerModel() {
+    player = AudioPlayer();
+    musicModel = Get.find<MusicModel>();
     _onSectionIndexChange();
   }
 
   // 监听正在播放的索引变化
   _onSectionIndexChange() {
     player.currentIndexStream.listen((index) {
-      print("监听到音频索引变化：$index");
+      print("正在播放的索引变化$index");
       if (index == null) return;
-      if (loadedList == null) return;
-      playSection = loadedList![index].tag;
-      update(["playSection"]);
+      if (currentMusicChapter == null) return;
+      currentMusicSection = currentMusicChapter!.sections[index];
+      print("正在播放的音乐${currentMusicSection!.id}");
+      update(["currentMusicSection"]);
     });
   }
 
-  // 设置音频列表
-  _setMusicList(
-    List<MusicSection> sections,
-    String loadedListId,
-    PlayListType loadListType,
-  ) async {
+  // 挂载播单
+  _setMusicChapter(MusicChapter musicChapter, {int? initIndex}) async {
     List<LockCachingAudioSource> audioSource = [];
-    for (var section in sections) {
+    for (var section in musicChapter.sections) {
       audioSource.add(
         LockCachingAudioSource(
           Uri.parse('${Config.httpBase}/${section.url}'),
@@ -60,12 +60,11 @@ class PlayerModel extends GetxController {
         ),
       );
     }
-
-    loadedList = audioSource;
-    this.loadedListId = loadedListId;
-    this.loadListType = loadListType;
+    currentMusicChapter = musicChapter;
+    update(["currentMusicChapter"]);
 
     await player.setAudioSource(
+      initialIndex: initIndex,
       ConcatenatingAudioSource(
         useLazyPreparation: true,
         shuffleOrder: DefaultShuffleOrder(),
@@ -76,7 +75,7 @@ class PlayerModel extends GetxController {
     await player.setShuffleModeEnabled(false);
   }
 
-  // 获取音频mp3缓存地址
+  // 获取音频缓存地址
   _getCacheFilePath(String fileName) async {
     Directory? downDir = await getDownloadsDirectory();
     if (downDir != null) {
@@ -84,91 +83,54 @@ class PlayerModel extends GetxController {
     }
   }
 
-  // 检查并加载列表数据
-  _checkAndLoadMusicList(MusicSection section, PlayListType type) async {
-    if (type == PlayListType.convention) {
-      final indexMap = _getListId(section);
-      String loadedListId = indexMap["id"];
-      if (loadedListId == this.loadedListId) return;
-      MusicGroup group = musicModel.source.data[indexMap["groupIndex"]];
-      await _setMusicList(
-        group.chapters[indexMap["chapterIndex"]].sections,
-        loadedListId,
-        type,
-      );
+  // 检查并且设置播单
+  _checkAndSetMusicChapter(MusicSection section) async {
+    IdInfo idInfo = IdInfo.fromMusicSectionId(section.id);
+    if (idInfo.chapterId != currentMusicChapter?.id) {
+      MusicModel musicModel = Get.find();
+      MusicChapter chapter = musicModel
+          .source.data[idInfo.groupIndex].chapters[idInfo.chapterIndex];
+      await _setMusicChapter(chapter, initIndex: idInfo.sectionIndex);
     }
-    if (type == PlayListType.favorites) {
-      String loadedListId = "-1_-1";
-      if (loadedListId == this.loadedListId) return;
-      await _setMusicList(
-        Get.find<FavoritesModel>().sections,
-        loadedListId,
-        type,
-      );
-    }
-  }
-
-  // 获取列表ID
-  _getListId(MusicSection section) {
-    List<int> indexs =
-        section.id.split("_").map((item) => int.parse(item)).toList();
-    int sectionIndex = indexs.removeLast();
-    return {
-      "sectionIndex": sectionIndex,
-      "id": indexs.join("_"),
-      "groupIndex": indexs[0],
-      "chapterIndex": indexs[1],
-    };
   }
 
   // 播放
-  Future play(MusicSection section, PlayListType type, {bool? noPlay}) async {
-    await _checkAndLoadMusicList(section, type);
-    if (type != loadListType || playSection?.id != section.id) {
+  Future play(MusicSection section) async {
+    await _checkAndSetMusicChapter(section);
+    if (section.id != currentMusicSection?.id) {
       int sectionIndex = int.parse(section.id.split("_").removeLast());
       await player.seek(Duration.zero, index: sectionIndex);
     }
-    if (noPlay == true) return;
-    await player.play();
+    if (!player.playing) {
+      await player.play();
+    }
   }
 
   // 播放全部
-  playAll(PlayListType type) async {
-    MusicSection? fristSection;
-
-    if (type == PlayListType.convention) {
-      MusicModel musicModel = Get.find<MusicModel>();
-      MusicChapter? musicChapter = musicModel.getCurrentChapter();
-      if (musicChapter == null) return;
-      if (musicChapter.sections.isEmpty) return;
-      fristSection = musicChapter.sections[0];
+  playAll(MusicChapter musicChapter) async {
+    if (musicChapter.id != currentMusicChapter?.id) {
+      await _setMusicChapter(musicChapter);
     }
-
-    if (type == PlayListType.favorites) {
-      FavoritesModel favoritesModel = Get.find<FavoritesModel>();
-      _setMusicList(favoritesModel.sections, "-1_-1", PlayListType.favorites);
-      fristSection = favoritesModel.sections[0];
-    }
-
-    if (fristSection == null) return;
-    await play(fristSection, type);
-    loadListType = type;
-  }
-
-  // 设置正在播放的音频数据
-  setPlaySection(MusicSection section) {
-    playSection = section;
-    update(["playSection"]);
-  }
-
-  // 设置列表的模式
-  setLoadListType(PlayListType type) {
-    loadListType = type;
+    await player.seek(Duration.zero, index: 0);
+    await player.play();
   }
 
   @override
   void dispose() {
     player.dispose();
     super.dispose();
+  }
+
+  recoveredCurrentMusicSection(MusicSection currentMusicSection) {
+    this.currentMusicSection = currentMusicSection;
+    update(["currentMusicSection"]);
+  }
+
+  // recoveredCurrentMusicSection必须优先调用
+  recoveredCurrentMusicChapter(MusicChapter currentMusicChapter) async {
+    if (currentMusicSection == null) return;
+    IdInfo info = IdInfo.fromMusicSectionId(currentMusicSection!.id);
+    await _setMusicChapter(currentMusicChapter, initIndex: info.sectionIndex);
+    update(["currentMusicChapter"]);
   }
 }

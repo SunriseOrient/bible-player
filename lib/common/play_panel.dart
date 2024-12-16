@@ -14,10 +14,10 @@ class PlayPanel extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GetBuilder<PlayerModel>(
-        id: "playSection",
+        id: "currentMusicSection",
         builder: (playerModel) {
-          MusicSection? currentSection = playerModel.playSection;
-          if (currentSection == null) {
+          MusicSection? currentMusicSection = playerModel.currentMusicSection;
+          if (currentMusicSection == null) {
             return const SizedBox.shrink();
           }
           return Container(
@@ -33,8 +33,8 @@ class PlayPanel extends StatelessWidget {
               ],
             ),
             child: ListTile(
-              title: Text(currentSection.name),
-              subtitle: Text(currentSection.subtitle),
+              title: Text(currentMusicSection.name),
+              subtitle: Text(currentMusicSection.subtitle),
               trailing: StreamBuilder<PlayerState>(
                 stream: playerModel.player.playerStateStream,
                 builder: (context, snapshot) {
@@ -52,12 +52,7 @@ class PlayPanel extends StatelessWidget {
                   } else {
                     return GestureDetector(
                       onTap: () {
-                        if (playerModel.loadedListId == null) {
-                          playerModel.play(
-                              currentSection, playerModel.loadListType!);
-                        } else {
-                          playerModel.player.play();
-                        }
+                        playerModel.player.play();
                       },
                       child: const Icon(
                         Icons.play_circle,
@@ -69,10 +64,6 @@ class PlayPanel extends StatelessWidget {
                 },
               ),
               onTap: () {
-                if (playerModel.loadedListId == null) {
-                  playerModel.play(currentSection, playerModel.loadListType!,
-                      noPlay: true);
-                }
                 Navigator.pushNamed(context, "/play_controller");
               },
             ),
