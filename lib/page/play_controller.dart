@@ -240,17 +240,15 @@ showCurrentPlayList(BuildContext context) {
   List<MusicSection> sections = [];
   if (playerModel.loadListType == PlayListType.convention) {
     MusicChapter? chapter = musicModel.getCurrentChapter();
-    print("sssssss");
-    print(chapter);
     sections = chapter != null ? chapter.sections : [];
   }
   if (playerModel.loadListType == PlayListType.favorites) {
     sections = favoritesModel.sections;
   }
-  print(playerModel.loadListType);
-  print(sections);
-
+  double screenHeight = MediaQuery.of(context).size.height;
   return showModalBottomSheet(
+    isScrollControlled: true,
+    constraints: BoxConstraints(maxHeight: screenHeight * 3 / 4),
     context: context,
     builder: (BuildContext context) {
       return Column(
