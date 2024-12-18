@@ -16,7 +16,7 @@ Widget _createIpv6Tip() {
       style: TextStyle(fontSize: 18),
     ),
     backgroundColor: Colors.white,
-    shadowColor: const Color.fromARGB(80, 0, 0, 0),
+    shadowColor: Color.fromARGB(80, 0, 0, 0),
     shape: RoundedRectangleBorder(
       side: BorderSide(color: Color.fromARGB(10, 0, 0, 0)),
       borderRadius: BorderRadius.all(Radius.circular(20.0)),
