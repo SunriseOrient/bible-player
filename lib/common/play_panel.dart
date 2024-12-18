@@ -3,13 +3,10 @@ import 'package:get/get.dart';
 import 'package:just_audio/just_audio.dart';
 
 import '../entity/music_data.dart';
-import '../notifier/music_model.dart';
 import '../notifier/player_model.dart';
 
 class PlayPanel extends StatelessWidget {
-  final MusicModel musicModel = Get.find<MusicModel>();
-
-  PlayPanel({super.key});
+  const PlayPanel({super.key});
 
   @override
   Widget build(BuildContext context) {

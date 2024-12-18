@@ -8,6 +8,7 @@ import 'notifier/favorites_model.dart';
 import 'notifier/music_model.dart';
 import 'notifier/player_model.dart';
 import 'page/navigation.dart';
+import 'service/evn_check.dart';
 import 'service/keep_cache.dart';
 
 void main() {
@@ -16,9 +17,11 @@ void main() {
 }
 
 _initEvn() async {
-  Get.put(MusicModel()).loadMusicSource();
+  MusicModel musicModel = Get.put(MusicModel());
   Get.put(FavoritesModel());
   Get.put(PlayerModel());
+  if (!await evnCheck()) return;
+  musicModel.loadMusicSource();
   KeepCache();
 }
 
