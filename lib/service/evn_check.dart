@@ -9,8 +9,8 @@ Future<bool> evnCheck() async {
 }
 
 Widget _createIpv6Tip() {
-  return AlertDialog(
-    title: const Text(
+  return const AlertDialog(
+    title: Text(
       "网络环境不支持",
       textAlign: TextAlign.center,
       style: TextStyle(fontSize: 18),
