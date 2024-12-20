@@ -5,10 +5,14 @@ plugins {
     id "dev.flutter.flutter-gradle-plugin"
 }
 
+ext {
+    appName = "福音播放器"
+}
+
 android {
     namespace = "com.example.bible_player"
     compileSdk = flutter.compileSdkVersion
-    ndkVersion = flutter.ndkVersion
+    ndkVersion = flutter.ndkVersion 
 
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_1_8
@@ -28,6 +32,8 @@ android {
         targetSdk = flutter.targetSdkVersion
         versionCode = flutter.versionCode
         versionName = flutter.versionName
+        archivesBaseName = "$appName-v$versionName"
+        manifestPlaceholders["androidLabel"] = appName
     }
 
     buildTypes {
