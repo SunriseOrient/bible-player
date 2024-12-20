@@ -20,7 +20,7 @@ _initEvn() async {
   MusicModel musicModel = Get.put(MusicModel());
   Get.put(FavoritesModel());
   Get.put(PlayerModel());
-  if (!await evnCheck()) return;
+  if (!await networkCheck()) return;
   musicModel.loadMusicSource();
   KeepCache();
 }
