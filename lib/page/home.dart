@@ -85,17 +85,19 @@ class MusicGroupBox extends StatelessWidget {
         ),
         Container(
           margin: const EdgeInsets.only(bottom: 30, top: 10),
-          height: 200,
+          height: 220,
           child: ListView.builder(
             scrollDirection: Axis.horizontal,
             itemCount: musicGroup.chapters.length,
             itemBuilder: (context, index) {
-              double paddingRight =
-                  index == musicGroup.chapters.length - 1 ? 20 : 10;
               double paddingLeft = index == 0 ? 20 : 0;
               return Padding(
-                padding:
-                    EdgeInsets.only(right: paddingRight, left: paddingLeft),
+                padding: EdgeInsets.only(
+                  right: 20,
+                  left: paddingLeft,
+                  top: 10,
+                  bottom: 10,
+                ),
                 child: MusicChapterBox(
                   musicGroup.chapters[index],
                   groupIndex: groupIndex,
@@ -120,35 +122,47 @@ class MusicChapterBox extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ClipRRect(
-      borderRadius: const BorderRadius.all(
-        Radius.circular(10),
-      ),
-      child: GestureDetector(
-        onTap: () {
-          Navigator.pushNamed(context, '/music_list', arguments: {
-            "groupIndex": groupIndex,
-            "chapterIndex": chapterIndex,
-          });
-        },
-        child: Stack(
-          children: [
-            Container(
-              width: 180,
-              height: double.maxFinite,
-              color: const Color(0xFFF5F5F5),
-              child: Image.network(
-                "${Config.httpBase}/封面/${musicChapter.id}.png",
-                fit: BoxFit.fitHeight,
-              ),
+    return GestureDetector(
+      onTap: () {
+        Navigator.pushNamed(context, '/music_list', arguments: {
+          "groupIndex": groupIndex,
+          "chapterIndex": chapterIndex,
+        });
+      },
+      child: Container(
+        width: 180,
+        decoration: BoxDecoration(
+          borderRadius: const BorderRadius.all(
+            Radius.circular(15),
+          ),
+          color: const Color(0xFFF5F5F5),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(0.1),
+              offset: const Offset(1, 1),
+              blurRadius: 5,
+              spreadRadius: 1,
             ),
-            Positioned(
-              bottom: 0,
-              left: 0,
-              right: 0,
-              height: 50,
-              child: Container(
-                color: const Color.fromARGB(100, 255, 255, 255),
+          ],
+        ),
+        child: Padding(
+          padding: const EdgeInsets.only(
+            top: 20.0,
+            right: 20.0,
+            left: 20.0,
+          ),
+          child: Column(
+            children: [
+              ClipRRect(
+                borderRadius: const BorderRadius.all(
+                  Radius.circular(15),
+                ),
+                child: Image.network(
+                  "${Config.httpBase}/封面/${musicChapter.id}.png",
+                  fit: BoxFit.cover,
+                ),
+              ),
+              Expanded(
                 child: Center(
                   child: Text(
                     musicChapter.name,
@@ -160,8 +174,8 @@ class MusicChapterBox extends StatelessWidget {
                   ),
                 ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );

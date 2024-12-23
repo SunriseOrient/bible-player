@@ -1,5 +1,6 @@
 import 'dart:ui';
 
+import 'package:bible_player/config.dart';
 import 'package:bible_player/notifier/player_model.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -83,13 +84,19 @@ class _PlayControllerState extends State<PlayController> {
                         borderRadius: const BorderRadius.all(
                           Radius.circular(20),
                         ),
-                        child: AspectRatio(
-                          aspectRatio: 1,
-                          child: Image.asset(
-                            "assets/images/bg6.jpg",
-                            fit: BoxFit.cover,
-                          ),
-                        ),
+                        child: GetBuilder<PlayerModel>(
+                            id: "currentMusicChapter",
+                            builder: (playerModel) {
+                              if (playerModel.currentMusicChapter == null) {
+                                return const SizedBox();
+                              }
+                              String musicChapterId =
+                                  playerModel.currentMusicChapter!.id;
+                              return Image.network(
+                                "${Config.httpBase}/封面/$musicChapterId.png",
+                                fit: BoxFit.cover,
+                              );
+                            }),
                       ),
                     ),
                   ),
