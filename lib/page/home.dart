@@ -2,6 +2,7 @@ import 'package:bible_player/notifier/music_model.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import '../config.dart';
 import '../entity/music_data.dart';
 
 class Home extends StatefulWidget {
@@ -134,21 +135,29 @@ class MusicChapterBox extends StatelessWidget {
           children: [
             Container(
               width: 180,
+              height: double.maxFinite,
               color: const Color(0xFFF5F5F5),
+              child: Image.network(
+                "${Config.httpBase}/封面/${musicChapter.id}.png",
+                fit: BoxFit.fitHeight,
+              ),
             ),
             Positioned(
               bottom: 0,
               left: 0,
               right: 0,
               height: 50,
-              child: Center(
-                child: Text(
-                  musicChapter.name,
-                  style: const TextStyle(
-                      color: Colors.black,
-                      fontSize: 16,
-                      fontWeight: FontWeight.w600,
-                      letterSpacing: 1.0),
+              child: Container(
+                color: const Color.fromARGB(100, 255, 255, 255),
+                child: Center(
+                  child: Text(
+                    musicChapter.name,
+                    style: const TextStyle(
+                        color: Colors.black,
+                        fontSize: 16,
+                        fontWeight: FontWeight.w600,
+                        letterSpacing: 1.0),
+                  ),
                 ),
               ),
             ),
