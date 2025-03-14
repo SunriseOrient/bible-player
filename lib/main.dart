@@ -8,7 +8,7 @@ import 'notifier/favorites_model.dart';
 import 'notifier/music_model.dart';
 import 'notifier/player_model.dart';
 import 'page/navigation.dart';
-import 'service/evn_check.dart';
+// import 'service/evn_check.dart';
 import 'service/keep_cache.dart';
 
 void main() {
@@ -20,7 +20,7 @@ _initEvn() async {
   MusicModel musicModel = Get.put(MusicModel());
   Get.put(FavoritesModel());
   Get.put(PlayerModel());
-  if (!await networkCheck()) return;
+  // if (!await networkCheck()) return;
   musicModel.loadMusicSource();
   KeepCache();
 }
@@ -36,14 +36,21 @@ class MainApp extends StatelessWidget {
       navigatorKey: navigatorKey,
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
+        colorScheme: ColorScheme.fromSeed(seedColor: Colors.red),
         scaffoldBackgroundColor: Colors.white,
         appBarTheme: const AppBarTheme(
           backgroundColor: Colors.white,
           scrolledUnderElevation: 0.0,
           elevation: 0,
         ),
-        bottomSheetTheme:
-            const BottomSheetThemeData(backgroundColor: Colors.white),
+        bottomSheetTheme: const BottomSheetThemeData(
+          backgroundColor: Colors.white,
+        ),
+        elevatedButtonTheme: ElevatedButtonThemeData(
+          style: ElevatedButton.styleFrom(
+            foregroundColor: Colors.red,
+          ),
+        ),
       ),
       routes: {
         "/": (context) => const Navigation(),

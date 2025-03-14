@@ -205,16 +205,6 @@ class _PlayControllerState extends State<PlayController> {
                           ),
                           GestureDetector(
                             onTap: () {
-                              // PlayListType? type =
-                              //     Get.find<PlayerModel>().loadListType;
-                              // if (type == null) return;
-                              // if (type == PlayListType.convention) {
-                              //   // Navigator.pushNamed(context, "/music_list");
-                              // }
-                              // if (type == PlayListType.favorites) {
-                              //   // Navigator.pushNamed(context, "/",
-                              //   //     arguments: {"currentIndex": 1});
-                              // }
                               showCurrentPlayList(context);
                             },
                             child: const Icon(
@@ -271,6 +261,8 @@ showCurrentPlayList(BuildContext context) {
                   titleSpacing: 0,
                   title: const TabBar(
                     isScrollable: true,
+                    indicatorColor: Colors.black,
+                    labelColor: Colors.black,
                     dividerColor: Color(0xFFF4F4F5),
                     tabAlignment: TabAlignment.start,
                     tabs: [

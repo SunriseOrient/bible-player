@@ -31,9 +31,21 @@ class _HomeState extends State<Home> {
                     EdgeInsets.symmetric(horizontal: 20, vertical: 40),
                 title: Align(
                   alignment: Alignment.bottomLeft,
-                  child: Text(
-                    'Hello',
-                    style: TextStyle(fontSize: 58),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        'Hello',
+                        style:
+                            TextStyle(fontSize: 36, color: Color(0xff1F2937)),
+                      ),
+                      Text(
+                        '与主同行，聆听生命真理',
+                        style:
+                            TextStyle(fontSize: 14, color: Color(0xff6B7280)),
+                      )
+                    ],
                   ),
                 ),
                 collapseMode: CollapseMode.pin,
@@ -41,8 +53,8 @@ class _HomeState extends State<Home> {
               ),
               automaticallyImplyLeading: false,
               pinned: true,
-              collapsedHeight: 160,
-              expandedHeight: 200,
+              collapsedHeight: 145,
+              expandedHeight: 170,
             ),
             GetBuilder<MusicModel>(
               builder: (musicModel) {
@@ -58,6 +70,69 @@ class _HomeState extends State<Home> {
                 );
               },
             ),
+            SliverToBoxAdapter(
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 20),
+                child: Container(
+                  margin: const EdgeInsets.only(bottom: 30),
+                  decoration: const BoxDecoration(
+                    borderRadius: BorderRadius.all(
+                      Radius.circular(12),
+                    ),
+                    color: Color(0xFFF5F5F5),
+                  ),
+                  child: const Padding(
+                    padding: EdgeInsets.all(16.0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Row(
+                          children: [
+                            Text(
+                              "“",
+                              style: TextStyle(
+                                color: Color(0xFF6B7280),
+                              ),
+                            ),
+                            SizedBox(width: 5),
+                            Text(
+                              "每日金句",
+                              style: TextStyle(
+                                color: Color(0xFF6B7280),
+                              ),
+                            )
+                          ],
+                        ),
+                        SizedBox(
+                          height: 10,
+                        ),
+                        Text(
+                          "你们要先求他的国和他的义，这些东西都要加给你们了。",
+                          style: TextStyle(
+                            color: Color(0xFF1F2937),
+                            fontSize: 18,
+                          ),
+                        ),
+                        SizedBox(
+                          height: 10,
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: [
+                            Text(
+                              "马太福音 6:33",
+                              style: TextStyle(
+                                color: Color(0xFF6B7280),
+                              ),
+                            ),
+                          ],
+                        )
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+            )
           ],
         ),
       ),
@@ -85,7 +160,7 @@ class MusicGroupBox extends StatelessWidget {
         ),
         Container(
           margin: const EdgeInsets.only(bottom: 30, top: 10),
-          height: 220,
+          height: 156,
           child: ListView.builder(
             scrollDirection: Axis.horizontal,
             itemCount: musicGroup.chapters.length,
@@ -130,50 +205,44 @@ class MusicChapterBox extends StatelessWidget {
         });
       },
       child: Container(
-        width: 180,
-        decoration: BoxDecoration(
-          borderRadius: const BorderRadius.all(
-            Radius.circular(15),
+        width: 163,
+        decoration: const BoxDecoration(
+          borderRadius: BorderRadius.all(
+            Radius.circular(12),
           ),
-          color: const Color(0xFFF5F5F5),
-          boxShadow: [
-            BoxShadow(
-              color: Colors.black.withOpacity(0.1),
-              offset: const Offset(1, 1),
-              blurRadius: 5,
-              spreadRadius: 1,
-            ),
-          ],
+          color: Color(0xFFF5F5F5),
         ),
         child: Padding(
           padding: const EdgeInsets.only(
-            top: 20.0,
-            right: 20.0,
-            left: 20.0,
+            right: 16.0,
+            left: 16.0,
+            bottom: 16.0,
           ),
           child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.end,
             children: [
-              ClipRRect(
-                borderRadius: const BorderRadius.all(
-                  Radius.circular(15),
-                ),
-                child: Image.network(
-                  "${Config.httpBase}/封面/${musicChapter.id}.png",
-                  fit: BoxFit.cover,
-                ),
+              const Padding(
+                padding: EdgeInsets.all(10.0),
+                child: Icon(Icons.ac_unit, size: 38),
               ),
-              Expanded(
-                child: Center(
-                  child: Text(
-                    musicChapter.name,
-                    style: const TextStyle(
-                        color: Colors.black,
-                        fontSize: 16,
-                        fontWeight: FontWeight.w600,
-                        letterSpacing: 1.0),
-                  ),
-                ),
+              Text(
+                musicChapter.name,
+                style: const TextStyle(
+                    color: Colors.black,
+                    fontSize: 16,
+                    fontWeight: FontWeight.w600,
+                    letterSpacing: 1.0),
               ),
+              const SizedBox(height: 4),
+              const Text(
+                "耶稣基督的启示",
+                style: TextStyle(
+                    color: Color(0xFF6B7280),
+                    fontSize: 14,
+                    fontWeight: FontWeight.w600,
+                    letterSpacing: 1.0),
+              )
             ],
           ),
         ),

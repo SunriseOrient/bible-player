@@ -91,7 +91,7 @@ class _MusicListState extends State<MusicList> {
                 },
               ),
             ),
-            PlayPanel()
+            const PlayPanel()
           ],
         ),
       ),

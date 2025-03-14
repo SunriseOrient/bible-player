@@ -88,6 +88,8 @@ class SeekBarState extends State<SeekBar> {
             SliderTheme(
               data: const SliderThemeData(
                 trackHeight: 2,
+                activeTrackColor: Colors.red,
+                thumbColor: Colors.red,
                 thumbShape: RoundSliderThumbShape(
                   enabledThumbRadius: 6,
                 ),
