@@ -6,6 +6,7 @@ import 'package:get/get.dart';
 
 import 'notifier/favorites_model.dart';
 import 'notifier/music_model.dart';
+import 'notifier/one_sentence_model.dart';
 import 'notifier/player_model.dart';
 import 'page/navigation.dart';
 // import 'service/evn_check.dart';
@@ -18,10 +19,12 @@ void main() {
 
 _initEvn() async {
   MusicModel musicModel = Get.put(MusicModel());
+  OneSentenceModel oneSentenceModel = Get.put(OneSentenceModel());
   Get.put(FavoritesModel());
   Get.put(PlayerModel());
   // if (!await networkCheck()) return;
   musicModel.loadMusicSource();
+  oneSentenceModel.loadOneSentence();
   KeepCache();
 }
 

@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 
 import '../entity/chapter_icon.dart';
 import '../entity/music_data.dart';
+import '../notifier/one_sentence_model.dart';
 
 class Home extends StatefulWidget {
   const Home({super.key});
@@ -70,69 +71,76 @@ class _HomeState extends State<Home> {
                 );
               },
             ),
-            SliverToBoxAdapter(
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 20),
-                child: Container(
-                  margin: const EdgeInsets.only(bottom: 30),
-                  decoration: const BoxDecoration(
-                    borderRadius: BorderRadius.all(
-                      Radius.circular(12),
-                    ),
-                    color: Color(0xFFF5F5F5),
-                  ),
-                  child: const Padding(
-                    padding: EdgeInsets.all(16.0),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Row(
-                          children: [
-                            Text(
-                              "“",
-                              style: TextStyle(
-                                color: Color(0xFF6B7280),
-                              ),
-                            ),
-                            SizedBox(width: 5),
-                            Text(
-                              "每日金句",
-                              style: TextStyle(
-                                color: Color(0xFF6B7280),
-                              ),
-                            )
-                          ],
+            GetBuilder<OneSentenceModel>(
+              builder: (oneSentenceModel) {
+                return SliverToBoxAdapter(
+                  child: Visibility(
+                    visible: oneSentenceModel.text != "",
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 20),
+                      child: Container(
+                        margin: const EdgeInsets.only(bottom: 30),
+                        decoration: const BoxDecoration(
+                          borderRadius: BorderRadius.all(
+                            Radius.circular(12),
+                          ),
+                          color: Color(0xFFF5F5F5),
                         ),
-                        SizedBox(
-                          height: 10,
-                        ),
-                        Text(
-                          "你们要先求他的国和他的义，这些东西都要加给你们了。",
-                          style: TextStyle(
-                            color: Color(0xFF1F2937),
-                            fontSize: 18,
+                        child: Padding(
+                          padding: const EdgeInsets.all(16.0),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              const Row(
+                                children: [
+                                  Text(
+                                    "“",
+                                    style: TextStyle(
+                                      color: Color(0xFF6B7280),
+                                    ),
+                                  ),
+                                  SizedBox(width: 5),
+                                  Text(
+                                    "每日金句",
+                                    style: TextStyle(
+                                      color: Color(0xFF6B7280),
+                                    ),
+                                  )
+                                ],
+                              ),
+                              const SizedBox(
+                                height: 10,
+                              ),
+                              Text(
+                                oneSentenceModel.text,
+                                style: const TextStyle(
+                                  color: Color(0xFF1F2937),
+                                  fontSize: 18,
+                                ),
+                              ),
+                              const SizedBox(
+                                height: 10,
+                              ),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.end,
+                                children: [
+                                  Text(
+                                    '${oneSentenceModel.book} ${oneSentenceModel.chapter}:${oneSentenceModel.verse}',
+                                    style: const TextStyle(
+                                      color: Color(0xFF6B7280),
+                                    ),
+                                  ),
+                                ],
+                              )
+                            ],
                           ),
                         ),
-                        SizedBox(
-                          height: 10,
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          children: [
-                            Text(
-                              "马太福音 6:33",
-                              style: TextStyle(
-                                color: Color(0xFF6B7280),
-                              ),
-                            ),
-                          ],
-                        )
-                      ],
+                      ),
                     ),
                   ),
-                ),
-              ),
-            )
+                );
+              },
+            ),
           ],
         ),
       ),
