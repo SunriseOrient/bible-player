@@ -45,17 +45,20 @@ class MusicGroup {
 class MusicChapter {
   String name;
   String id;
+  String desc;
+  String icon;
 
   List<MusicSection> sections;
 
-  MusicChapter(this.name, this.id, this.sections);
+  MusicChapter(this.name, this.id, this.desc, this.icon, this.sections);
 
   // 从 JSON 创建 MusicChapter 对象
   factory MusicChapter.fromJson(Map<String, dynamic> json) {
     var list = (json['sections'] as List)
         .map((itemJson) => MusicSection.fromJson(itemJson))
         .toList();
-    return MusicChapter(json['name'], json['id'], list);
+    return MusicChapter(
+        json['name'], json['id'], json['desc'], json['icon'], list);
   }
 
   // 将 MusicChapter 转换为 JSON
@@ -63,6 +66,8 @@ class MusicChapter {
     return {
       'name': name,
       "id": id,
+      "desc": desc,
+      "icon": icon,
       'sections': sections.map((item) => item.toJson()).toList(),
     };
   }

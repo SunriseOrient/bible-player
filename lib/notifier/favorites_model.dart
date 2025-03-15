@@ -7,7 +7,7 @@ class FavoritesModel extends GetxController {
   late MusicChapter musicChapter;
 
   FavoritesModel() {
-    musicChapter = MusicChapter("我喜欢", playListId, []);
+    musicChapter = MusicChapter("我喜欢", playListId, "", "", []);
   }
 
   Map<String, MusicSection> get _sectionsMap =>

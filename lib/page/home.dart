@@ -2,7 +2,7 @@ import 'package:bible_player/notifier/music_model.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import '../config.dart';
+import '../entity/chapter_icon.dart';
 import '../entity/music_data.dart';
 
 class Home extends StatefulWidget {
@@ -222,26 +222,31 @@ class MusicChapterBox extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
-              const Padding(
-                padding: EdgeInsets.all(10.0),
-                child: Icon(Icons.ac_unit, size: 38),
+              Padding(
+                padding: const EdgeInsets.all(10.0),
+                child: Icon(
+                  chapterIcons[musicChapter.icon],
+                  size: 38,
+                ),
               ),
               Text(
                 musicChapter.name,
                 style: const TextStyle(
-                    color: Colors.black,
-                    fontSize: 16,
-                    fontWeight: FontWeight.w600,
-                    letterSpacing: 1.0),
+                  color: Colors.black,
+                  fontSize: 16,
+                  fontWeight: FontWeight.w600,
+                  letterSpacing: 1.0,
+                ),
               ),
               const SizedBox(height: 4),
-              const Text(
-                "耶稣基督的启示",
-                style: TextStyle(
-                    color: Color(0xFF6B7280),
-                    fontSize: 14,
-                    fontWeight: FontWeight.w600,
-                    letterSpacing: 1.0),
+              Text(
+                musicChapter.desc,
+                style: const TextStyle(
+                  color: Color(0xFF6B7280),
+                  fontSize: 14,
+                  fontWeight: FontWeight.w600,
+                  letterSpacing: 1.0,
+                ),
               )
             ],
           ),
