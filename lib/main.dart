@@ -1,3 +1,4 @@
+import 'package:audio_service/audio_service.dart';
 import 'package:bible_player/page/music_list.dart';
 import 'package:bible_player/page/play_controller.dart';
 import 'package:bible_player/service/toast.dart';
@@ -11,6 +12,7 @@ import 'notifier/player_model.dart';
 import 'page/navigation.dart';
 // import 'service/evn_check.dart';
 import 'service/keep_cache.dart';
+import 'service/audio_player_handler.dart';
 
 void main() {
   runApp(const MainApp());
@@ -25,6 +27,7 @@ _initEvn() async {
   // if (!await networkCheck()) return;
   musicModel.loadMusicSource();
   oneSentenceModel.loadOneSentence();
+  Get.put(AudioPlayerHandler()).init();
   KeepCache();
 }
 
