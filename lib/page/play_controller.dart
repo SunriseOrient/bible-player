@@ -5,7 +5,6 @@ import 'package:bible_player/notifier/player_model.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:just_audio/just_audio.dart';
-import 'package:rxdart/rxdart.dart' as prefix;
 
 import '../common/favorites_button.dart';
 import '../common/play_list.dart';
@@ -29,14 +28,6 @@ class _PlayControllerState extends State<PlayController> {
     super.initState();
     playerModel = Get.find<PlayerModel>();
   }
-
-  // Stream<PositionData> get _positionDataStream =>
-  //     prefix.Rx.combineLatest3<Duration, Duration, Duration?, PositionData>(
-  //         player.positionStream,
-  //         player.bufferedPositionStream,
-  //         player.durationStream,
-  //         (position, bufferedPosition, duration) => PositionData(
-  //             position, bufferedPosition, duration ?? Duration.zero));
 
   @override
   Widget build(BuildContext context) {
