@@ -73,66 +73,75 @@ class _HomeState extends State<Home> {
             ),
             GetBuilder<OneSentenceModel>(
               builder: (oneSentenceModel) {
+                Duration duration = const Duration(milliseconds: 300);
+                bool isShow = oneSentenceModel.text != "";
                 return SliverToBoxAdapter(
-                  child: Visibility(
-                    visible: oneSentenceModel.text != "",
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 20),
-                      child: Container(
-                        margin: const EdgeInsets.only(bottom: 30),
-                        decoration: const BoxDecoration(
-                          borderRadius: BorderRadius.all(
-                            Radius.circular(12),
+                  child: AnimatedSize(
+                    duration: duration,
+                    curve: Curves.easeInOut,
+                    alignment: Alignment.topCenter,
+                    child: AnimatedOpacity(
+                      opacity: isShow ? 1 : 0,
+                      duration: duration,
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 20),
+                        child: Container(
+                          height: isShow ? null : 0,
+                          margin: const EdgeInsets.only(bottom: 30),
+                          decoration: const BoxDecoration(
+                            borderRadius: BorderRadius.all(
+                              Radius.circular(12),
+                            ),
+                            color: Color(0xFFF5F5F5),
                           ),
-                          color: Color(0xFFF5F5F5),
-                        ),
-                        child: Padding(
-                          padding: const EdgeInsets.all(16.0),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              const Row(
-                                children: [
-                                  Text(
-                                    "“",
-                                    style: TextStyle(
-                                      color: Color(0xFF6B7280),
+                          child: Padding(
+                            padding: const EdgeInsets.all(16.0),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                const Row(
+                                  children: [
+                                    Text(
+                                      "“",
+                                      style: TextStyle(
+                                        color: Color(0xFF6B7280),
+                                      ),
                                     ),
-                                  ),
-                                  SizedBox(width: 5),
-                                  Text(
-                                    "每日金句",
-                                    style: TextStyle(
-                                      color: Color(0xFF6B7280),
-                                    ),
-                                  )
-                                ],
-                              ),
-                              const SizedBox(
-                                height: 10,
-                              ),
-                              Text(
-                                oneSentenceModel.text,
-                                style: const TextStyle(
-                                  color: Color(0xFF1F2937),
-                                  fontSize: 18,
+                                    SizedBox(width: 5),
+                                    Text(
+                                      "每日金句",
+                                      style: TextStyle(
+                                        color: Color(0xFF6B7280),
+                                      ),
+                                    )
+                                  ],
                                 ),
-                              ),
-                              const SizedBox(
-                                height: 10,
-                              ),
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.end,
-                                children: [
-                                  Text(
-                                    '${oneSentenceModel.book} ${oneSentenceModel.chapter}:${oneSentenceModel.verse}',
-                                    style: const TextStyle(
-                                      color: Color(0xFF6B7280),
-                                    ),
+                                const SizedBox(
+                                  height: 10,
+                                ),
+                                Text(
+                                  oneSentenceModel.text,
+                                  style: const TextStyle(
+                                    color: Color(0xFF1F2937),
+                                    fontSize: 18,
                                   ),
-                                ],
-                              )
-                            ],
+                                ),
+                                const SizedBox(
+                                  height: 10,
+                                ),
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.end,
+                                  children: [
+                                    Text(
+                                      '${oneSentenceModel.book} ${oneSentenceModel.chapter}:${oneSentenceModel.verse}',
+                                      style: const TextStyle(
+                                        color: Color(0xFF6B7280),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            ),
                           ),
                         ),
                       ),
