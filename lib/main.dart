@@ -3,6 +3,7 @@ import 'package:bible_player/page/music_list.dart';
 import 'package:bible_player/page/play_controller.dart';
 import 'package:bible_player/service/toast.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 
 import 'notifier/favorites_model.dart';
@@ -15,6 +16,13 @@ import 'service/keep_cache.dart';
 import 'service/audio_player_handler.dart';
 
 void main() {
+  SystemChrome.setSystemUIOverlayStyle(
+    const SystemUiOverlayStyle(
+      statusBarColor: Colors.transparent,
+      statusBarIconBrightness: Brightness.dark,
+      statusBarBrightness: Brightness.light,
+    ),
+  );
   runApp(const MainApp());
   _initEvn();
 }
