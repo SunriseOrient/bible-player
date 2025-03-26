@@ -2,47 +2,38 @@ import 'package:audio_service/audio_service.dart';
 import 'package:get/get.dart';
 import 'package:just_audio/just_audio.dart';
 
+import '../entity/music_data.dart';
 import '../notifier/player_model.dart';
 
 class AudioPlayerHandler extends BaseAudioHandler with SeekHandler {
-  // static final _item = MediaItem(
-  //   id: 'https://s3.amazonaws.com/scifri-episodes/scifri20181123-episode.mp3',
-  //   album: "aaa",
-  //   title: "bbb",
-  //   artist: "artistScience Friday and WNYC Studios",
-  //   duration: Duration(milliseconds: 5739820),
-  // );
-
   late PlayerModel playerModel;
   late AudioPlayerHandler audioHandler;
 
   AudioPlayerHandler() {
     playerModel = Get.find<PlayerModel>();
-  }
-
-  init() async {
-    audioHandler = await AudioService.init(
-      builder: () => AudioPlayerHandler(),
-      config: const AudioServiceConfig(
-        androidNotificationChannelId: 'com.example.bible_player.channel.audio',
-        androidNotificationChannelName: 'Bible Player',
-        androidNotificationOngoing: true,
-      ),
-    );
-
-    playerModel.addListenerId("currentMusicSection", () {
-      mediaItem.add(MediaItem(
-        id: 'https://s3.amazonaws.com/scifri-episodes/scifri20181123-episode.mp3',
-        album: "Science Friday",
-        title: "A Salute To Head-Scratching Science",
-        artist: "Science Friday and WNYC Studios",
-        duration: const Duration(milliseconds: 5739820),
-      ));
-    });
 
     playerModel.player.playbackEventStream
         .map(_transformEvent)
         .pipe(playbackState);
+
+    playerModel.positionDataStream.listen((positionData) {
+      MediaItem? mediaItemValue = mediaItem.value;
+      if (mediaItemValue == null) return;
+      mediaItem.add(mediaItemValue.copyWith(duration: positionData.duration));
+    });
+
+    playerModel.addListenerId("currentMusicSection", () {
+      MusicSection? currentMusicSection = playerModel.currentMusicSection;
+      MusicChapter? currentMusicChapter = playerModel.currentMusicChapter;
+      if (currentMusicSection == null) return;
+      if (currentMusicChapter == null) return;
+      mediaItem.add(MediaItem(
+        id: currentMusicSection.id,
+        album: currentMusicChapter.name,
+        title: currentMusicSection.name,
+        artist: currentMusicSection.subtitle,
+      ));
+    });
   }
 
   @override
@@ -50,6 +41,12 @@ class AudioPlayerHandler extends BaseAudioHandler with SeekHandler {
 
   @override
   Future<void> pause() => playerModel.player.pause();
+
+  @override
+  Future<void> skipToNext() => playerModel.player.seekToNext();
+
+  @override
+  Future<void> skipToPrevious() => playerModel.player.seekToPrevious();
 
   @override
   Future<void> seek(Duration position) => playerModel.player.seek(position);

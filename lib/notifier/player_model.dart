@@ -4,6 +4,7 @@ import 'package:bible_player/notifier/music_model.dart';
 import 'package:get/get.dart';
 import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:rxdart/rxdart.dart' as prefix;
 
 import 'package:bible_player/config.dart';
 import 'package:just_audio/just_audio.dart';
@@ -13,7 +14,7 @@ import '../entity/play_mode.dart';
 
 class PlayerModel extends GetxController {
   // 播放器实例
-  late AudioPlayer player;
+  final AudioPlayer player = AudioPlayer();
   // 数据源模块
   late MusicModel musicModel;
 
@@ -30,8 +31,15 @@ class PlayerModel extends GetxController {
   // 当前播放的音乐
   MusicSection? currentMusicSection;
 
+  Stream<PositionData> get positionDataStream =>
+      prefix.Rx.combineLatest3<Duration, Duration, Duration?, PositionData>(
+          player.positionStream,
+          player.bufferedPositionStream,
+          player.durationStream,
+          (position, bufferedPosition, duration) => PositionData(
+              position, bufferedPosition, duration ?? Duration.zero));
+
   PlayerModel() {
-    player = AudioPlayer();
     musicModel = Get.find<MusicModel>();
     _onSectionIndexChange();
   }

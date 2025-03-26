@@ -22,21 +22,21 @@ class PlayController extends StatefulWidget {
 }
 
 class _PlayControllerState extends State<PlayController> {
-  late AudioPlayer player;
+  late PlayerModel playerModel;
 
   @override
   void initState() {
     super.initState();
-    player = Get.find<PlayerModel>().player;
+    playerModel = Get.find<PlayerModel>();
   }
 
-  Stream<PositionData> get _positionDataStream =>
-      prefix.Rx.combineLatest3<Duration, Duration, Duration?, PositionData>(
-          player.positionStream,
-          player.bufferedPositionStream,
-          player.durationStream,
-          (position, bufferedPosition, duration) => PositionData(
-              position, bufferedPosition, duration ?? Duration.zero));
+  // Stream<PositionData> get _positionDataStream =>
+  //     prefix.Rx.combineLatest3<Duration, Duration, Duration?, PositionData>(
+  //         player.positionStream,
+  //         player.bufferedPositionStream,
+  //         player.durationStream,
+  //         (position, bufferedPosition, duration) => PositionData(
+  //             position, bufferedPosition, duration ?? Duration.zero));
 
   @override
   Widget build(BuildContext context) {
@@ -104,10 +104,11 @@ class _PlayControllerState extends State<PlayController> {
                 Column(
                   children: [
                     StreamBuilder(
-                      stream: player.currentIndexStream,
+                      stream: playerModel.player.currentIndexStream,
                       builder: (context, snapshot) {
                         int currentIndex = snapshot.data ?? 0;
-                        List<IndexedAudioSource>? sequence = player.sequence;
+                        List<IndexedAudioSource>? sequence =
+                            playerModel.player.sequence;
                         if (sequence == null) return const ListTile();
                         MusicSection section = sequence[currentIndex].tag;
                         return ListTile(
@@ -127,7 +128,7 @@ class _PlayControllerState extends State<PlayController> {
                         bottom: 0,
                       ),
                       child: StreamBuilder<PositionData>(
-                        stream: _positionDataStream,
+                        stream: playerModel.positionDataStream,
                         builder: (context, snapshot) {
                           final positionData = snapshot.data;
                           return SeekBar(
@@ -135,7 +136,7 @@ class _PlayControllerState extends State<PlayController> {
                             position: positionData?.position ?? Duration.zero,
                             bufferedPosition:
                                 positionData?.bufferedPosition ?? Duration.zero,
-                            onChangeEnd: player.seek,
+                            onChangeEnd: playerModel.player.seek,
                           );
                         },
                       ),
@@ -147,13 +148,14 @@ class _PlayControllerState extends State<PlayController> {
                       ),
                       child: Row(
                         children: [
-                          PlayModeButton(player),
+                          PlayModeButton(playerModel.player),
                           Expanded(
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
                                 GestureDetector(
-                                  onTap: () => player.seekToPrevious(),
+                                  onTap: () =>
+                                      playerModel.player.seekToPrevious(),
                                   child: const Icon(
                                     Icons.skip_previous,
                                     color: Color(0xFF303133),
@@ -164,13 +166,13 @@ class _PlayControllerState extends State<PlayController> {
                                   width: 10,
                                 ),
                                 StreamBuilder<PlayerState>(
-                                  stream: player.playerStateStream,
+                                  stream: playerModel.player.playerStateStream,
                                   builder: (context, snapshot) {
                                     final playerState = snapshot.data;
                                     final playing = playerState?.playing;
                                     if (playing == true) {
                                       return GestureDetector(
-                                        onTap: () => player.pause(),
+                                        onTap: () => playerModel.player.pause(),
                                         child: const Icon(
                                           Icons.pause_circle,
                                           color: Colors.red,
@@ -179,7 +181,7 @@ class _PlayControllerState extends State<PlayController> {
                                       );
                                     } else {
                                       return GestureDetector(
-                                        onTap: () => player.play(),
+                                        onTap: () => playerModel.player.play(),
                                         child: const Icon(
                                           Icons.play_circle,
                                           color: Colors.red,
@@ -193,7 +195,7 @@ class _PlayControllerState extends State<PlayController> {
                                   width: 10,
                                 ),
                                 GestureDetector(
-                                  onTap: () => player.seekToNext(),
+                                  onTap: () => playerModel.player.seekToNext(),
                                   child: const Icon(
                                     Icons.skip_next,
                                     color: Color(0xFF303133),

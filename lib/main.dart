@@ -27,7 +27,16 @@ _initEvn() async {
   // if (!await networkCheck()) return;
   musicModel.loadMusicSource();
   oneSentenceModel.loadOneSentence();
-  Get.put(AudioPlayerHandler()).init();
+
+  await AudioService.init(
+    builder: () => AudioPlayerHandler(),
+    config: const AudioServiceConfig(
+      androidNotificationChannelId: 'com.example.bible_player.channel.audio',
+      androidNotificationChannelName: 'Bible Player',
+      androidNotificationOngoing: true,
+    ),
+  );
+
   KeepCache();
 }
 
