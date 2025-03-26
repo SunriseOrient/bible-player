@@ -242,7 +242,9 @@ class MusicChapterBox extends StatelessWidget {
               Padding(
                 padding: const EdgeInsets.all(10.0),
                 child: Icon(
-                  chapterIcons[musicChapter.icon],
+                  musicChapter.icon == ""
+                      ? Icons.album
+                      : chapterIcons[musicChapter.icon],
                   size: 38,
                 ),
               ),
