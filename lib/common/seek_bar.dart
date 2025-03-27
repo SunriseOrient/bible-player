@@ -48,7 +48,7 @@ class SeekBarState extends State<SeekBar> {
           children: [
             // 缓存加载条
             Padding(
-              padding: const EdgeInsets.all(6.0),
+              padding: const EdgeInsets.all(5.0),
               child: SliderTheme(
                 data: const SliderThemeData(
                   trackHeight: 2,
