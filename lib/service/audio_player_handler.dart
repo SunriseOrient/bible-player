@@ -5,6 +5,7 @@ import 'package:just_audio/just_audio.dart';
 import '../entity/music_data.dart';
 import '../notifier/player_model.dart';
 
+/// 后台播放服务 控制面板播放控制卡片
 class AudioPlayerHandler extends BaseAudioHandler with SeekHandler {
   late PlayerModel playerModel;
   late AudioPlayerHandler audioHandler;

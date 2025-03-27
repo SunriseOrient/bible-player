@@ -5,12 +5,14 @@ import 'package:http/http.dart' as http;
 
 import '../service/toast.dart';
 
+/// 每日金句模块
 class OneSentenceModel extends GetxController {
   String book = "";
   int chapter = 0;
   int verse = 0;
   String text = "";
 
+  /// 加载每日金句
   Future<void> loadOneSentence() async {
     try {
       http.Response response =

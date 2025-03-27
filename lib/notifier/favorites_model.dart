@@ -2,6 +2,7 @@ import 'package:get/get.dart';
 
 import '../entity/music_data.dart';
 
+/// 我喜欢模块
 class FavoritesModel extends GetxController {
   static String playListId = "-1_-1";
   late MusicChapter musicChapter;

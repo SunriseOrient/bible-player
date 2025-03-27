@@ -7,6 +7,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../entity/music_data.dart';
 import '../notifier/player_model.dart';
 
+/// 播放状态缓存服务
 class KeepCache {
   late SharedPreferences prefs;
 

@@ -11,15 +11,18 @@ import 'notifier/music_model.dart';
 import 'notifier/one_sentence_model.dart';
 import 'notifier/player_model.dart';
 import 'page/navigation.dart';
-// import 'service/evn_check.dart';
 import 'service/keep_cache.dart';
 import 'service/audio_player_handler.dart';
 
 void main() {
+  // 覆盖android系统样式
   SystemChrome.setSystemUIOverlayStyle(
     const SystemUiOverlayStyle(
+      // 去除顶部状态栏灰色背景
       statusBarColor: Colors.transparent,
+      // 设置顶部状态栏文字颜色（安卓）
       statusBarIconBrightness: Brightness.dark,
+      // 设置顶部状态栏文字颜色（苹果）
       statusBarBrightness: Brightness.light,
     ),
   );
@@ -27,6 +30,7 @@ void main() {
   _initEvn();
 }
 
+/// 环境初始化
 _initEvn() async {
   MusicModel musicModel = Get.put(MusicModel());
   OneSentenceModel oneSentenceModel = Get.put(OneSentenceModel());
@@ -36,11 +40,13 @@ _initEvn() async {
   musicModel.loadMusicSource();
   oneSentenceModel.loadOneSentence();
 
+  // 初始化后台播放服务
   await AudioService.init(
     builder: () => AudioPlayerHandler(),
     config: const AudioServiceConfig(
       androidNotificationChannelId: 'com.example.bible_player.channel.audio',
       androidNotificationChannelName: 'Bible Player',
+      // 标记为持续播放，播放中无法从控制面板中移除播放卡片
       androidNotificationOngoing: true,
     ),
   );

@@ -12,6 +12,7 @@ import 'package:just_audio/just_audio.dart';
 import '../entity/music_data.dart';
 import '../entity/play_mode.dart';
 
+/// 音频播放管理模块
 class PlayerModel extends GetxController {
   // 播放器实例
   final AudioPlayer player = AudioPlayer();
