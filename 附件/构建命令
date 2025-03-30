@@ -1,5 +1,7 @@
 flutter build apk --release
 
+node .\scripts\build.mjs -z
+
 build\app\outputs\apk\release
 
 https://bible-api.com/data/cuv/random
