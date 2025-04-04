@@ -44,11 +44,11 @@ Future<bool> networkCheck() async {
   final List<ConnectivityResult> connectivityResult =
       await (Connectivity().checkConnectivity());
   if (connectivityResult.contains(ConnectivityResult.none)) {
-    Toast.showDialog(_createNoNetworkTip());
+    Toast.showDialog((context) => _createNoNetworkTip());
     return false;
   }
   if (!await ipv6Test()) {
-    Toast.showDialog(_createIpv6Tip());
+    Toast.showDialog((context) => _createIpv6Tip());
     return false;
   }
   return true;

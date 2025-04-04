@@ -13,9 +13,12 @@ import 'notifier/player_model.dart';
 import 'page/navigation.dart';
 import 'service/keep_cache.dart';
 import 'service/audio_player_handler.dart';
+import 'service/update_check.dart';
 
 void main() {
-  // 覆盖android系统样式
+  // 确保 package_info_plus、flutter_downloader 插件初始化
+  WidgetsFlutterBinding.ensureInitialized();
+  // 覆盖 android 系统样式
   SystemChrome.setSystemUIOverlayStyle(
     const SystemUiOverlayStyle(
       // 去除顶部状态栏灰色背景
@@ -28,6 +31,8 @@ void main() {
   );
   runApp(const MainApp());
   _initEvn();
+  // 更新检查
+  UpdateCheck.checkUpdate();
 }
 
 /// 环境初始化

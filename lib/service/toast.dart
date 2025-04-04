@@ -51,9 +51,10 @@ class Toast {
     });
   }
 
-  static showDialog(Widget widget) {
-    if (_navigatorKey == null) return;
-    OverlayEntry overlayEntry = OverlayEntry(
+  static showDialog(Widget Function(OverlayEntry) builder) {
+    if (_navigatorKey == null) return null;
+    late OverlayEntry overlayEntry;
+    overlayEntry = OverlayEntry(
       builder: (context) => Positioned(
         top: 0,
         bottom: 0,
@@ -62,15 +63,12 @@ class Toast {
         child: Material(
           color: Colors.transparent,
           child: Align(
-            child: widget,
+            child: builder(overlayEntry),
           ),
         ),
       ),
     );
 
     _navigatorKey!.currentState?.overlay?.insert(overlayEntry);
-    // Future.delayed(const Duration(seconds: 3), () {
-    //   overlayEntry.remove();
-    // });
   }
 }
