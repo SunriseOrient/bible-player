@@ -101,13 +101,15 @@ class UpdateCheck {
 
   // 下载更新
   static void _downloadUpdate(UpdateInfo updateInfo) async {
+    await Permission.notification.request();
+
     PermissionStatus status = await Permission.requestInstallPackages.request();
     if (!status.isGranted) return;
 
     await FlutterDownloader.initialize(debug: true, ignoreSsl: true);
     initPort();
 
-    Directory? downloadsDir = Directory("/storage/emulated/0/Download/");
+    Directory? downloadsDir = Directory("/storage/emulated/0/Download");
     if (!downloadsDir.existsSync()) {
       downloadsDir = await getDownloadsDirectory();
     }
@@ -115,7 +117,10 @@ class UpdateCheck {
     print("下载目录: ${downloadsDir.path}");
 
     localPath = "${downloadsDir.path}/${updateInfo.fileName}";
-    File(localPath!).deleteSync();
+    File localFile = File(localPath!);
+    if (localFile.existsSync()) {
+      localFile.deleteSync();
+    }
 
     taskId = await FlutterDownloader.enqueue(
       url:

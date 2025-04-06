@@ -3,7 +3,8 @@
   "version": "1.0.0",
   "description": "",
   "scripts": {
-    "build": "node ./build.mjs -z"
+    "build": "node ./build.mjs -z",
+    "create:lists": "node ./create_playlists.js ./source/_歌单数据"
   },
   "author": "",
   "license": "ISC",
