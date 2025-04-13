@@ -1,0 +1,20 @@
+{
+  "buildFiles": [
+    "D:\\Flutter\\packages\\flutter_tools\\gradle\\src\\main\\groovy\\CMakeLists.txt"
+  ],
+  "cleanCommandsComponents": [
+    [
+      "D:\\Andord_SDK\\cmake\\3.22.1\\bin\\ninja.exe",
+      "-C",
+      "E:\\CodeRepository\\GitHub\\bible-player\\android\\app\\.cxx\\Debug\\3i521lm5\\armeabi-v7a",
+      "clean"
+    ]
+  ],
+  "buildTargetsCommandComponents": [
+    "D:\\Andord_SDK\\cmake\\3.22.1\\bin\\ninja.exe",
+    "-C",
+    "E:\\CodeRepository\\GitHub\\bible-player\\android\\app\\.cxx\\Debug\\3i521lm5\\armeabi-v7a",
+    "{LIST_OF_TARGETS_TO_BUILD}"
+  ],
+  "libraries": {}
+}
