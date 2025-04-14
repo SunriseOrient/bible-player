@@ -11,6 +11,7 @@ import 'notifier/music_model.dart';
 import 'notifier/one_sentence_model.dart';
 import 'notifier/player_model.dart';
 import 'page/navigation.dart';
+import 'page/settings.dart';
 import 'service/keep_cache.dart';
 import 'service/audio_player_handler.dart';
 import 'service/update_check.dart';
@@ -90,6 +91,7 @@ class MainApp extends StatelessWidget {
         "/": (context) => const Navigation(),
         "/music_list": (context) => const MusicList(),
         "/play_controller": (context) => const PlayController(),
+        "/settings": (context) => const Settings(),
       },
     );
   }
