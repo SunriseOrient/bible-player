@@ -24,152 +24,132 @@ class _HomeState extends State<Home> {
     return Scaffold(
       extendBody: true,
       body: SafeArea(
-        child: Stack(
-          fit: StackFit.expand,
-          children: [
-            CustomScrollView(
-              slivers: [
-                const SliverAppBar(
-                  flexibleSpace: FlexibleSpaceBar(
-                    titlePadding: EdgeInsets.symmetric(
-                      horizontal: 20,
-                      vertical: 40,
-                    ),
-                    title: Align(
-                      alignment: Alignment.bottomLeft,
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            'Hello',
-                            style:
-                                TextStyle(fontSize: 36, color: Color(0xff1F2937)),
-                          ),
-                          Text(
-                            '与主同行，聆听生命真理',
-                            style:
-                                TextStyle(fontSize: 14, color: Color(0xff6B7280)),
-                          )
-                        ],
+        child: CustomScrollView(
+          slivers: [
+            const SliverAppBar(
+              flexibleSpace: FlexibleSpaceBar(
+                titlePadding:
+                    EdgeInsets.symmetric(horizontal: 20, vertical: 40),
+                title: Align(
+                  alignment: Alignment.bottomLeft,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        'Hello',
+                        style:
+                            TextStyle(fontSize: 36, color: Color(0xff1F2937)),
                       ),
-                    ),
-                    collapseMode: CollapseMode.pin,
-                    expandedTitleScale: 1.5,
+                      Text(
+                        '与主同行，聆听生命真理',
+                        style:
+                            TextStyle(fontSize: 14, color: Color(0xff6B7280)),
+                      )
+                    ],
                   ),
-                  automaticallyImplyLeading: false,
-                  pinned: true,
-                  collapsedHeight: 145,
-                  expandedHeight: 170,
                 ),
-                GetBuilder<MusicModel>(
-                  builder: (musicModel) {
-                    MusicSource source = musicModel.source;
-                    return SliverList.builder(
-                      itemCount: source.data.length,
-                      itemBuilder: (context, index) {
-                        return MusicGroupBox(
-                          source.data[index],
-                          groupIndex: index,
-                        );
-                      },
+                collapseMode: CollapseMode.pin,
+                expandedTitleScale: 1.5,
+              ),
+              automaticallyImplyLeading: false,
+              pinned: true,
+              collapsedHeight: 145,
+              expandedHeight: 170,
+            ),
+            GetBuilder<MusicModel>(
+              builder: (musicModel) {
+                MusicSource source = musicModel.source;
+                return SliverList.builder(
+                  itemCount: source.data.length,
+                  itemBuilder: (context, index) {
+                    return MusicGroupBox(
+                      source.data[index],
+                      groupIndex: index,
                     );
                   },
-                ),
-                GetBuilder<OneSentenceModel>(
-                  builder: (oneSentenceModel) {
-                    Duration duration = const Duration(milliseconds: 300);
-                    bool isShow = oneSentenceModel.text != "";
-                    return SliverToBoxAdapter(
-                      child: AnimatedSize(
-                        duration: duration,
-                        curve: Curves.easeInOut,
-                        alignment: Alignment.topCenter,
-                        child: AnimatedOpacity(
-                          opacity: isShow ? 1 : 0,
-                          duration: duration,
+                );
+              },
+            ),
+            GetBuilder<OneSentenceModel>(
+              builder: (oneSentenceModel) {
+                Duration duration = const Duration(milliseconds: 300);
+                bool isShow = oneSentenceModel.text != "";
+                return SliverToBoxAdapter(
+                  child: AnimatedSize(
+                    duration: duration,
+                    curve: Curves.easeInOut,
+                    alignment: Alignment.topCenter,
+                    child: AnimatedOpacity(
+                      opacity: isShow ? 1 : 0,
+                      duration: duration,
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 20),
+                        child: Container(
+                          height: isShow ? null : 0,
+                          margin: const EdgeInsets.only(bottom: 30),
+                          decoration: const BoxDecoration(
+                            borderRadius: BorderRadius.all(
+                              Radius.circular(12),
+                            ),
+                            color: Color(0xFFF5F5F5),
+                          ),
                           child: Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 20),
-                            child: Container(
-                              height: isShow ? null : 0,
-                              margin: const EdgeInsets.only(bottom: 30),
-                              decoration: const BoxDecoration(
-                                borderRadius: BorderRadius.all(
-                                  Radius.circular(12),
-                                ),
-                                color: Color(0xFFF5F5F5),
-                              ),
-                              child: Padding(
-                                padding: const EdgeInsets.all(16.0),
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
+                            padding: const EdgeInsets.all(16.0),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                const Row(
                                   children: [
-                                    const Row(
-                                      children: [
-                                        Text(
-                                          "“",
-                                          style: TextStyle(
-                                            color: Color(0xFF6B7280),
-                                          ),
-                                        ),
-                                        SizedBox(width: 5),
-                                        Text(
-                                          "每日金句",
-                                          style: TextStyle(
-                                            color: Color(0xFF6B7280),
-                                          ),
-                                        )
-                                      ],
-                                    ),
-                                    const SizedBox(
-                                      height: 10,
-                                    ),
                                     Text(
-                                      oneSentenceModel.text,
-                                      style: const TextStyle(
-                                        color: Color(0xFF1F2937),
-                                        fontSize: 18,
+                                      "“",
+                                      style: TextStyle(
+                                        color: Color(0xFF6B7280),
                                       ),
                                     ),
-                                    const SizedBox(
-                                      height: 10,
-                                    ),
-                                    Row(
-                                      mainAxisAlignment: MainAxisAlignment.end,
-                                      children: [
-                                        Text(
-                                          '${oneSentenceModel.book} ${oneSentenceModel.chapter}:${oneSentenceModel.verse}',
-                                          style: const TextStyle(
-                                            color: Color(0xFF6B7280),
-                                          ),
-                                        ),
-                                      ],
+                                    SizedBox(width: 5),
+                                    Text(
+                                      "每日金句",
+                                      style: TextStyle(
+                                        color: Color(0xFF6B7280),
+                                      ),
+                                    )
+                                  ],
+                                ),
+                                const SizedBox(
+                                  height: 10,
+                                ),
+                                Text(
+                                  oneSentenceModel.text,
+                                  style: const TextStyle(
+                                    color: Color(0xFF1F2937),
+                                    fontSize: 18,
+                                  ),
+                                ),
+                                const SizedBox(
+                                  height: 10,
+                                ),
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.end,
+                                  children: [
+                                    Text(
+                                      '${oneSentenceModel.book} ${oneSentenceModel.chapter}:${oneSentenceModel.verse}',
+                                      style: const TextStyle(
+                                        color: Color(0xFF6B7280),
+                                      ),
                                     ),
                                   ],
                                 ),
-                              ),
+                              ],
                             ),
                           ),
                         ),
                       ),
-                    );
-                  },
-                ),
-              ],
+                    ),
+                  ),
+                );
+              },
             ),
-            Positioned(
-              top: 20,
-              right: 16,
-              child: GestureDetector(
-                onTap: () {
-                  Navigator.pushNamed(context, '/settings');
-                },
-                child: const Icon(
-                  Icons.more_vert,
-                  size: 20,
-                ),
-              ),
-            )
           ],
         ),
       ),
