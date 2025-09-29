@@ -69,7 +69,7 @@ class MainApp extends StatelessWidget {
     Toast.init(navigatorKey);
     return MaterialApp(
       navigatorKey: navigatorKey,
-      debugShowCheckedModeBanner: !kReleaseMode,
+      debugShowCheckedModeBanner: false,
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.red),
         scaffoldBackgroundColor: Colors.white,
