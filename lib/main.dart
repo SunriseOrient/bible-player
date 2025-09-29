@@ -2,6 +2,7 @@ import 'package:audio_service/audio_service.dart';
 import 'package:bible_player/page/music_list.dart';
 import 'package:bible_player/page/play_controller.dart';
 import 'package:bible_player/service/toast.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
@@ -68,7 +69,7 @@ class MainApp extends StatelessWidget {
     Toast.init(navigatorKey);
     return MaterialApp(
       navigatorKey: navigatorKey,
-      debugShowCheckedModeBanner: false,
+      debugShowCheckedModeBanner: !kReleaseMode,
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.red),
         scaffoldBackgroundColor: Colors.white,

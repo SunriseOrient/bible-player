@@ -5,6 +5,7 @@ import 'dart:ui';
 
 import 'package:app_version_compare/app_version_compare.dart';
 import 'package:bible_player/service/toast.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_downloader/flutter_downloader.dart';
 import 'package:package_info_plus/package_info_plus.dart';
@@ -19,6 +20,7 @@ class UpdateCheck {
   static final ReceivePort _port = ReceivePort();
   static String? taskId;
   static String? localPath;
+  static String env = kReleaseMode ? "RELEASE" : "DEBUG";
 
   static Future<void> checkUpdate() async {
     UpdateInfo? updateInfo = await _getUpdateInfo();
@@ -39,8 +41,8 @@ class UpdateCheck {
   // 获取更新信息 release-data.json
   static Future<UpdateInfo?> _getUpdateInfo() async {
     try {
-      http.Response response = await http
-          .get(Uri.parse('${Config.httpBase}/update_data/release-data.json'));
+      http.Response response = await http.get(
+          Uri.parse('${Config.httpBase}/update_data/$env/new-version.json'));
       dynamic jsonMap =
           jsonDecode(const Utf8Decoder().convert(response.bodyBytes));
       UpdateInfo updateInfo = UpdateInfo.fromJson(jsonMap);
@@ -124,7 +126,7 @@ class UpdateCheck {
 
     taskId = await FlutterDownloader.enqueue(
       url:
-          '${Config.httpBase}/update_data/v${updateInfo.version}/${updateInfo.fileName}',
+          '${Config.httpBase}/update_data/$env/v${updateInfo.version}/${updateInfo.fileName}',
       savedDir: downloadsDir.path,
       fileName: updateInfo.fileName,
       saveInPublicStorage: true,
