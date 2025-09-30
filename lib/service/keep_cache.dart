@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:math';
 
 import 'package:bible_player/notifier/favorites_model.dart';
 import 'package:flutter/material.dart';
