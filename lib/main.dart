@@ -20,40 +20,34 @@ import 'page/navigation.dart';
 import 'page/setting.dart';
 import 'service/keep_cache.dart';
 import 'service/audio_player_handler.dart';
-import 'service/update_check.dart';
+import 'service/update_service.dart';
 
 void main() {
-  // 确保 package_info_plus、flutter_downloader 插件初始化
+  // 确保 框架已经初始化
   WidgetsFlutterBinding.ensureInitialized();
-  // 覆盖 android 系统样式
-  SystemChrome.setSystemUIOverlayStyle(
-    const SystemUiOverlayStyle(
-      // 去除顶部状态栏灰色背景
-      statusBarColor: Colors.transparent,
-      // 设置顶部状态栏文字颜色（安卓）
-      statusBarIconBrightness: Brightness.dark,
-      // 设置顶部状态栏文字颜色（苹果）
-      statusBarBrightness: Brightness.light,
-    ),
-  );
+
+  // 初始化系统样式
+  _initSystemStyle();
+
   runApp(const MainApp());
-  _initEvn();
+
+  // 加载Models
+  _loadModels();
+  // if (!await networkCheck()) return;
+  // 初始化环境model
+  _initModels();
+  KeepCache();
+  // 初始化后台播放卡片
+  _initAudioBackgroundCard();
+  // 初始化百度统计
   _initBaiduAnalytics();
+
   // 更新检查
-  UpdateCheck.checkUpdate();
+  UpdateService.check();
 }
 
-/// 环境初始化
-_initEvn() async {
-  MusicModel musicModel = Get.put(MusicModel());
-  OneSentenceModel oneSentenceModel = Get.put(OneSentenceModel());
-  Get.put(FavoritesModel());
-  Get.put(PlayerModel());
-  Get.put(SettingModel());
-  // if (!await networkCheck()) return;
-  musicModel.loadMusicSource();
-  oneSentenceModel.loadOneSentence();
-
+// 初始化后台播放卡片
+_initAudioBackgroundCard() async {
   // 初始化后台播放服务
   await AudioService.init(
     builder: () => AudioPlayerHandler(),
@@ -64,8 +58,38 @@ _initEvn() async {
       androidNotificationOngoing: true,
     ),
   );
+}
 
-  KeepCache();
+// 初始化环境model
+_initSystemStyle() {
+  if (Platform.isAndroid) {
+    // 覆盖 android 系统样式
+    SystemChrome.setSystemUIOverlayStyle(
+      const SystemUiOverlayStyle(
+        // 去除顶部状态栏灰色背景
+        statusBarColor: Colors.transparent,
+        // 设置顶部状态栏文字颜色（安卓）
+        statusBarIconBrightness: Brightness.dark,
+        // 设置顶部状态栏文字颜色（苹果）
+        statusBarBrightness: Brightness.light,
+      ),
+    );
+  }
+}
+
+// 加载Models
+_loadModels() async {
+  Get.put(MusicModel());
+  Get.put(OneSentenceModel());
+  Get.put(FavoritesModel());
+  Get.put(PlayerModel());
+  Get.put(SettingModel());
+}
+
+// 环境初始化
+_initModels() async {
+  Get.find<MusicModel>().loadMusicSource();
+  Get.find<OneSentenceModel>().loadOneSentence();
 }
 
 // 初始化百度统计

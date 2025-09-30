@@ -16,13 +16,13 @@ import '../config.dart';
 import '../entity/update_info.dart';
 import 'package:http/http.dart' as http;
 
-class UpdateCheck {
+class UpdateService {
   static final ReceivePort _port = ReceivePort();
   static String? taskId;
   static String? localPath;
   static String env = kReleaseMode ? "RELEASE" : "DEBUG";
 
-  static Future<void> checkUpdate() async {
+  static Future<void> check() async {
     UpdateInfo? updateInfo = await _getUpdateInfo();
     if (updateInfo == null) return;
 
