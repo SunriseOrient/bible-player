@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:audio_service/audio_service.dart';
+import 'package:bible_player/notifier/setting_model.dart';
 import 'package:bible_player/page/music_list.dart';
 import 'package:bible_player/page/play_controller.dart';
 import 'package:bible_player/service/toast.dart';
@@ -16,6 +17,7 @@ import 'notifier/music_model.dart';
 import 'notifier/one_sentence_model.dart';
 import 'notifier/player_model.dart';
 import 'page/navigation.dart';
+import 'page/setting.dart';
 import 'service/keep_cache.dart';
 import 'service/audio_player_handler.dart';
 import 'service/update_check.dart';
@@ -47,6 +49,7 @@ _initEvn() async {
   OneSentenceModel oneSentenceModel = Get.put(OneSentenceModel());
   Get.put(FavoritesModel());
   Get.put(PlayerModel());
+  Get.put(SettingModel());
   // if (!await networkCheck()) return;
   musicModel.loadMusicSource();
   oneSentenceModel.loadOneSentence();
@@ -119,6 +122,7 @@ class MainApp extends StatelessWidget {
         "/": (context) => const Navigation(),
         "/music_list": (context) => const MusicList(),
         "/play_controller": (context) => const PlayController(),
+        "/setting": (context) => const Setting(),
       },
     );
   }

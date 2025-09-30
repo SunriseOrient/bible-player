@@ -1,11 +1,15 @@
 import 'dart:convert';
+import 'dart:math';
 
 import 'package:bible_player/notifier/favorites_model.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../entity/music_data.dart';
+import '../entity/setting_data.dart';
 import '../notifier/player_model.dart';
+import '../notifier/setting_model.dart';
 
 /// 播放状态缓存服务
 class KeepCache {
@@ -15,6 +19,8 @@ class KeepCache {
 
   String currentMusicChapter = "CURRENT_MUSIC_CHAPTER";
   String currentMusicSection = "CURRENT_MUSIC_SECTION";
+
+  String settingData = "SETTING_DATA";
 
   KeepCache() {
     _run();
@@ -44,6 +50,12 @@ class KeepCache {
       prefs.setString(currentMusicSection,
           jsonEncode(playerModel.currentMusicSection!.toJson()));
     });
+    //
+    SettingModel settingModel = Get.find<SettingModel>();
+    settingModel.addListenerId("settingChange", () {
+      debugPrint(jsonEncode(settingModel.settings!.toJson()));
+      prefs.setString(settingData, jsonEncode(settingModel.settings!.toJson()));
+    });
   }
 
   _loadCache() {
@@ -66,6 +78,12 @@ class KeepCache {
       MusicChapter musicChapter =
           MusicChapter.fromJson(jsonDecode(currentMusicChapterStr));
       Get.find<PlayerModel>().recoveredCurrentMusicChapter(musicChapter);
+    }
+    // 设置
+    String? settingDataStr = prefs.getString(settingData);
+    if (settingDataStr != null) {
+      Get.find<SettingModel>().settings =
+          SettingData.fromJson(jsonDecode(settingDataStr));
     }
   }
 }

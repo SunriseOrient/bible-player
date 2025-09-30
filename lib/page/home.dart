@@ -155,10 +155,14 @@ class _HomeState extends State<Home> {
                 ),
               ],
             ),
-            const Positioned(
+            Positioned(
               top: 16,
               right: 16,
-              child: Icon(Icons.menu),
+              child: GestureDetector(
+                  onTap: () {
+                    Navigator.pushNamed(context, '/setting');
+                  },
+                  child: const Icon(Icons.menu)),
             )
           ],
         ),
