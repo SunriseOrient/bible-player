@@ -166,6 +166,14 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
+  flutter_baidu_mob_stat:
+    dependency: "direct main"
+    description:
+      name: flutter_baidu_mob_stat
+      sha256: bbaff54b5690a0c4d6544cfbcb6cfd556a9df9ccea8b82d0ea1760164237c423
+      url: "https://pub.flutter-io.cn"
+    source: hosted
+    version: "1.2.9"
   flutter_cache_manager:
     dependency: transitive
     description:

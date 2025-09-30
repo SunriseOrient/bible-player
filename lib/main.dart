@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:audio_service/audio_service.dart';
 import 'package:bible_player/page/music_list.dart';
 import 'package:bible_player/page/play_controller.dart';
@@ -5,7 +7,9 @@ import 'package:bible_player/service/toast.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_baidu_mob_stat/fl_baidu_mob_stat_ys.dart';
 import 'package:get/get.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 
 import 'notifier/favorites_model.dart';
 import 'notifier/music_model.dart';
@@ -32,6 +36,7 @@ void main() {
   );
   runApp(const MainApp());
   _initEvn();
+  _initBaiduAnalytics();
   // 更新检查
   UpdateCheck.checkUpdate();
 }
@@ -58,6 +63,29 @@ _initEvn() async {
   );
 
   KeepCache();
+}
+
+// 初始化百度统计
+_initBaiduAnalytics() async {
+  if (kReleaseMode) {
+    if (Platform.isAndroid) {
+      await FlBaiduMobStatYs().init();
+    }
+
+    await FlBaiduMobStatYs().setApiKey(androidKey: 'cf9256fff0', iosKey: '');
+
+    String channelName = 'default';
+    if (Platform.isAndroid) channelName += '-android';
+    if (Platform.isIOS) channelName += '-ios';
+    PackageInfo packageInfo = await PackageInfo.fromPlatform();
+
+    await FlBaiduMobStatYs().setAppChannel(channelName);
+    await FlBaiduMobStatYs().setAppVersionName(packageInfo.version);
+    await FlBaiduMobStatYs().setDebug(!kReleaseMode);
+
+    final String? testDeviceId = await FlBaiduMobStatYs().getTestDeviceId();
+    debugPrint("TestDeviceId: $testDeviceId");
+  }
 }
 
 class MainApp extends StatelessWidget {

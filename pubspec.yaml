@@ -49,6 +49,7 @@ dependencies:
   app_version_compare: ^1.0.3
   flutter_downloader: ^1.11.8
   permission_handler: ^11.4.0
+  flutter_baidu_mob_stat: ^1.2.9
 
 dev_dependencies:
   flutter_test:
