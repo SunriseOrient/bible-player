@@ -18,25 +18,24 @@ import 'notifier/one_sentence_model.dart';
 import 'notifier/player_model.dart';
 import 'page/navigation.dart';
 import 'page/setting.dart';
-import 'service/keep_cache.dart';
+import 'service/cache_service.dart';
 import 'service/audio_player_handler.dart';
 import 'service/update_service.dart';
 
-void main() {
+main() async {
   // 确保 框架已经初始化
   WidgetsFlutterBinding.ensureInitialized();
 
   // 初始化系统样式
   _initSystemStyle();
+  // 加载Models
+  _loadModels();
 
   runApp(const MainApp());
 
-  // 加载Models
-  _loadModels();
   // if (!await networkCheck()) return;
   // 初始化环境model
   _initModels();
-  KeepCache();
   // 初始化后台播放卡片
   _initAudioBackgroundCard();
   // 初始化百度统计
@@ -44,6 +43,8 @@ void main() {
 
   // 更新检查
   UpdateService.check();
+  // 初始化缓存服务
+  CacheService.init();
 }
 
 // 初始化后台播放卡片

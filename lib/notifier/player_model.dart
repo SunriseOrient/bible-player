@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'package:bible_player/notifier/favorites_model.dart';
 import 'package:bible_player/notifier/music_model.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
@@ -48,11 +49,11 @@ class PlayerModel extends GetxController {
   // 监听正在播放的索引变化
   _onSectionIndexChange() {
     player.currentIndexStream.listen((index) {
-      print("正在播放的索引变化$index");
+      debugPrint("正在播放的索引变化$index");
       if (index == null) return;
       if (currentMusicChapter == null) return;
       currentMusicSection = currentMusicChapter!.sections[index];
-      print("正在播放的音乐${currentMusicSection!.id}");
+      debugPrint("正在播放的音乐${currentMusicSection!.id}");
       update(["currentMusicSection"]);
     });
   }
@@ -88,6 +89,7 @@ class PlayerModel extends GetxController {
   _getCacheFilePath(String fileName) async {
     Directory? downDir = await getDownloadsDirectory();
     if (downDir != null) {
+      debugPrint("下载目录：${join(downDir.path, fileName)}");
       return File(join(downDir.path, fileName));
     }
   }

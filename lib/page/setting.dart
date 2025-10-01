@@ -20,6 +20,7 @@ class _SettingState extends State<Setting> {
 
     SettingModel settingModel = Get.find<SettingModel>();
     setState(() {
+      if (settingModel.settings == null) return;
       settings = settingModel.settings!;
     });
   }

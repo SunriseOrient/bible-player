@@ -29,10 +29,10 @@ class UpdateService {
     PackageInfo packageInfo = await PackageInfo.fromPlatform();
     AppVersion remoteVersion = AppVersion.fromString(updateInfo.version);
     AppVersion appCurrentVersion = AppVersion.fromString(packageInfo.version);
-    print("当前版本: ${packageInfo.version}");
-    print("远程版本: ${updateInfo.version}");
+    debugPrint("当前版本: ${packageInfo.version}");
+    debugPrint("远程版本: ${updateInfo.version}");
     if (appCurrentVersion >= remoteVersion) {
-      print("当前版本为最新版本");
+      debugPrint("当前版本为最新版本");
       return;
     }
     _showUpdateDialog(updateInfo);
@@ -46,10 +46,10 @@ class UpdateService {
       dynamic jsonMap =
           jsonDecode(const Utf8Decoder().convert(response.bodyBytes));
       UpdateInfo updateInfo = UpdateInfo.fromJson(jsonMap);
-      print("获取更新信息成功: ${updateInfo.toJson()}");
+      debugPrint("获取更新信息成功: ${updateInfo.toJson()}");
       return updateInfo;
     } catch (e) {
-      print("获取更新信息失败: $e");
+      debugPrint("获取更新信息失败: $e");
       return null;
     }
   }
@@ -116,7 +116,7 @@ class UpdateService {
       downloadsDir = await getDownloadsDirectory();
     }
     if (downloadsDir == null) return;
-    print("下载目录: ${downloadsDir.path}");
+    debugPrint("下载目录: ${downloadsDir.path}");
 
     localPath = "${downloadsDir.path}/${updateInfo.fileName}";
     File localFile = File(localPath!);
