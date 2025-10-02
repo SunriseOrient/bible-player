@@ -1,0 +1,15 @@
+-dontwarn com.baidu.helios.OnGetIdResultCallback
+-dontwarn okhttp3.HttpUrl
+-dontwarn okhttp3.Interceptor$Chain
+-dontwarn okhttp3.Interceptor
+-dontwarn okhttp3.MediaType
+-dontwarn okhttp3.Request$Builder
+-dontwarn okhttp3.Request
+-dontwarn okhttp3.RequestBody
+-dontwarn okhttp3.Response
+-dontwarn okio.Buffer
+-dontwarn okio.BufferedSink
+-dontwarn okio.ByteString
+-dontwarn okio.GzipSink
+-dontwarn okio.Okio
+-dontwarn okio.Sink
