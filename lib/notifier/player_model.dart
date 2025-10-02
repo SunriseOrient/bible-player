@@ -89,7 +89,6 @@ class PlayerModel extends GetxController {
   _getCacheFilePath(String fileName) async {
     Directory? downDir = await getDownloadsDirectory();
     if (downDir != null) {
-      debugPrint("下载目录：${join(downDir.path, fileName)}");
       return File(join(downDir.path, fileName));
     }
   }

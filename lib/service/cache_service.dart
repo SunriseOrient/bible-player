@@ -33,13 +33,13 @@ class CacheService {
   static _listeningModification() {
     _listenFavoritesModelModification();
     _listenPlayerModelModification();
-    _listenSettingDataModification();
+    // _listenSettingDataModification();
   }
 
   static _loadCache() {
     _loadFavoritesModelCache();
     _loadPlayerModelData();
-    _loadSettingData();
+    // _loadSettingData();
   }
 
   // 我喜欢数据修改监听

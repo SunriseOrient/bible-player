@@ -84,7 +84,7 @@ _loadModels() async {
   Get.put(OneSentenceModel());
   Get.put(FavoritesModel());
   Get.put(PlayerModel());
-  Get.put(SettingModel());
+  // Get.put(SettingModel());
 }
 
 // 环境初始化
