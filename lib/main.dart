@@ -1,14 +1,13 @@
 import 'dart:io';
 
 import 'package:audio_service/audio_service.dart';
-import 'package:bible_player/notifier/setting_model.dart';
 import 'package:bible_player/page/music_list.dart';
 import 'package:bible_player/page/play_controller.dart';
+import 'package:bible_player/service/baidu_mob_stat.dart';
 import 'package:bible_player/service/toast.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_baidu_mob_stat/fl_baidu_mob_stat_ys.dart';
 import 'package:get/get.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 
@@ -97,21 +96,21 @@ _initModels() async {
 _initBaiduAnalytics() async {
   if (kReleaseMode) {
     if (Platform.isAndroid) {
-      await FlBaiduMobStatYs().init();
+      await BaiduMobStat().init();
     }
 
-    await FlBaiduMobStatYs().setApiKey(androidKey: 'cf9256fff0', iosKey: '');
+    await BaiduMobStat().setApiKey(androidKey: 'cf9256fff0', iosKey: '');
 
     String channelName = 'default';
     if (Platform.isAndroid) channelName += '-android';
     if (Platform.isIOS) channelName += '-ios';
     PackageInfo packageInfo = await PackageInfo.fromPlatform();
 
-    await FlBaiduMobStatYs().setAppChannel(channelName);
-    await FlBaiduMobStatYs().setAppVersionName(packageInfo.version);
-    await FlBaiduMobStatYs().setDebug(!kReleaseMode);
+    await BaiduMobStat().setAppChannel(channelName);
+    await BaiduMobStat().setAppVersionName(packageInfo.version);
+    await BaiduMobStat().setDebug(!kReleaseMode);
 
-    final String? testDeviceId = await FlBaiduMobStatYs().getTestDeviceId();
+    final String? testDeviceId = await BaiduMobStat().getTestDeviceId();
     debugPrint("TestDeviceId: $testDeviceId");
   }
 }
