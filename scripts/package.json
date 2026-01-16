@@ -3,9 +3,10 @@
   "version": "1.0.0",
   "description": "",
   "scripts": {
-    "build:apk:x": "node ./build-apk.mjs -x",
-    "build:apk:y": "node ./build-apk.mjs -y",
+    "build:apk": "node ./build-apk.mjs",
     "build:apk:z": "node ./build-apk.mjs -z",
+    "build:apk:y": "node ./build-apk.mjs -y",
+    "build:apk:x": "node ./build-apk.mjs -x",
     "generate:playlists": "node ./generate-playlists.js"
   },
   "author": "",

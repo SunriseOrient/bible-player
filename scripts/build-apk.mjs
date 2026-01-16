@@ -50,16 +50,22 @@ async function run(option) {
       nextVersion = semver.inc(versionArr[0], "major");
     } else if (option.minor) {
       nextVersion = semver.inc(versionArr[0], "minor");
-    } else {
+    } else if (option.patch) {
       nextVersion = semver.inc(versionArr[0], "patch");
     }
-    pubspecStr = pubspecStr.replace(
-      pubspec.version,
-      [nextVersion, versionArr[1]].join("+")
-    );
-    writeFileSync(pubspecPath, pubspecStr, {
-      encoding: "utf8",
-    });
+
+    if (nextVersion) {
+      pubspecStr = pubspecStr.replace(
+        pubspec.version,
+        [nextVersion, versionArr[1]].join("+")
+      );
+      writeFileSync(pubspecPath, pubspecStr, {
+        encoding: "utf8",
+      });
+    }
+
+    nextVersion = versionArr[0];
+
     console.log(`开始构建新版本：${nextVersion}，请稍等...`);
 
     //
@@ -70,7 +76,7 @@ async function run(option) {
     const apkFileName = filesName.find((name) => name.includes(".apk"));
     const packageDir = join(outPutDir, `v${nextVersion}/`);
     if (existsSync(packageDir)) {
-      fs.removeSync(packageDir)
+      fs.removeSync(packageDir);
     }
     mkdirSync(packageDir);
     copyFileSync(

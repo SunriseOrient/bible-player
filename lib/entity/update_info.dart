@@ -1,6 +1,7 @@
 class UpdateInfo {
   bool hasUpdate;
   bool isBetaUser;
+  // 升级模式: "force" 强制升级, "ask" 提示升级，"beta" 仅测试用户升级
   String? upgradeMode;
   LatestVersion? latestVersion;
 
