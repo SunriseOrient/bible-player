@@ -84,7 +84,7 @@ class _PlayControllerState extends State<PlayController> {
                               String musicChapterId =
                                   playerModel.currentMusicChapter!.id;
                               return Image.network(
-                                "${Config.httpBase}/source/封面/$musicChapterId.png",
+                                playerModel.currentMusicChapter!.coverUrl,
                                 fit: BoxFit.cover,
                               );
                             }),

@@ -64,7 +64,7 @@ class PlayerModel extends GetxController {
     for (var section in musicChapter.sections) {
       audioSource.add(
         LockCachingAudioSource(
-          Uri.parse('${Config.httpBase}/${section.url}'),
+          Uri.parse(section.url),
           tag: section,
           cacheFile: await _getCacheFilePath(section.name),
         ),

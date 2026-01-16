@@ -41,7 +41,7 @@ main() async {
   _initBaiduAnalytics();
 
   // 更新检查
-  UpdateService.check();
+  // UpdateService.check();
   // 初始化缓存服务
   CacheService.init();
 }

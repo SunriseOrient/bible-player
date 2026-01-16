@@ -47,18 +47,20 @@ class MusicChapter {
   String id;
   String desc;
   String icon;
+  String coverUrl;
 
   List<MusicSection> sections;
 
-  MusicChapter(this.name, this.id, this.desc, this.icon, this.sections);
+  MusicChapter(
+      this.name, this.id, this.desc, this.icon, this.coverUrl, this.sections);
 
   // 从 JSON 创建 MusicChapter 对象
   factory MusicChapter.fromJson(Map<String, dynamic> json) {
     var list = (json['sections'] as List)
         .map((itemJson) => MusicSection.fromJson(itemJson))
         .toList();
-    return MusicChapter(
-        json['name'], json['id'], json['desc'], json['icon'], list);
+    return MusicChapter(json['name'], json['id'], json['desc'], json['icon'],
+        json['coverUrl'] ?? '', list);
   }
 
   // 将 MusicChapter 转换为 JSON
@@ -68,6 +70,7 @@ class MusicChapter {
       "id": id,
       "desc": desc,
       "icon": icon,
+      "coverUrl": coverUrl,
       'sections': sections.map((item) => item.toJson()).toList(),
     };
   }
