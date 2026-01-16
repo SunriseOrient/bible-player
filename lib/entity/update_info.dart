@@ -1,26 +1,60 @@
 class UpdateInfo {
-  String lastVersion;
-  String version;
-  String fileName;
-  String time;
-  List<String> upgradeInstructions;
+  bool hasUpdate;
+  bool isBetaUser;
+  String? upgradeMode;
+  LatestVersion? latestVersion;
 
-  UpdateInfo(this.lastVersion, this.version, this.fileName, this.time,
-      this.upgradeInstructions);
+  UpdateInfo(
+      this.hasUpdate, this.isBetaUser, this.upgradeMode, this.latestVersion);
 
   factory UpdateInfo.fromJson(Map<String, dynamic> json) {
-    var upgradeInstructions = List<String>.from(json['upgradeInstructions']);
-    return UpdateInfo(json['lastVersion'], json['version'], json['fileName'],
-        json['time'], upgradeInstructions);
+    return UpdateInfo(
+      json['hasUpdate'],
+      json['isBetaUser'],
+      json['upgradeMode'],
+      json['latestVersion'] != null
+          ? LatestVersion.fromJson(json['latestVersion'])
+          : null,
+    );
   }
 
   Map<String, dynamic> toJson() {
     return {
-      'lastVersion': lastVersion,
+      'hasUpdate': hasUpdate,
+      'isBetaUser': isBetaUser,
+      'upgradeMode': upgradeMode,
+      'latestVersion': latestVersion?.toJson(),
+    };
+  }
+}
+
+class LatestVersion {
+  String version;
+  String changelog;
+  String downloadUrl;
+  String status;
+  String createdAt;
+
+  LatestVersion(this.version, this.changelog, this.downloadUrl, this.status,
+      this.createdAt);
+
+  factory LatestVersion.fromJson(Map<String, dynamic> json) {
+    return LatestVersion(
+      json['version'],
+      json['changelog'],
+      json['downloadUrl'],
+      json['status'],
+      json['createdAt'],
+    );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
       'version': version,
-      'fileName': fileName,
-      'time': time,
-      'upgradeInstructions': upgradeInstructions
+      'changelog': changelog,
+      'downloadUrl': downloadUrl,
+      'status': status,
+      'createdAt': createdAt,
     };
   }
 }

@@ -15,6 +15,7 @@ import 'package:permission_handler/permission_handler.dart';
 import '../config.dart';
 import '../entity/update_info.dart';
 import 'package:http/http.dart' as http;
+import '../utils/device_utils.dart';
 
 class UpdateService {
   static final ReceivePort _port = ReceivePort();
@@ -24,25 +25,35 @@ class UpdateService {
 
   static Future<void> check() async {
     UpdateInfo? updateInfo = await _getUpdateInfo();
-    if (updateInfo == null) return;
+    // if (updateInfo == null) return;
 
-    PackageInfo packageInfo = await PackageInfo.fromPlatform();
-    AppVersion remoteVersion = AppVersion.fromString(updateInfo.version);
-    AppVersion appCurrentVersion = AppVersion.fromString(packageInfo.version);
-    debugPrint("当前版本: ${packageInfo.version}");
-    debugPrint("远程版本: ${updateInfo.version}");
-    if (appCurrentVersion >= remoteVersion) {
-      debugPrint("当前版本为最新版本");
-      return;
-    }
-    _showUpdateDialog(updateInfo);
+    // PackageInfo packageInfo = await PackageInfo.fromPlatform();
+    // AppVersion remoteVersion = AppVersion.fromString(updateInfo.version);
+    // AppVersion appCurrentVersion = AppVersion.fromString(packageInfo.version);
+    // debugPrint("当前版本: ${packageInfo.version}");
+    // debugPrint("远程版本: ${updateInfo.version}");
+    // if (appCurrentVersion >= remoteVersion) {
+    //   debugPrint("当前版本为最新版本");
+    //   return;
+    // }
+    // _showUpdateDialog(updateInfo);
   }
 
   // 获取更新信息 release-data.json
   static Future<UpdateInfo?> _getUpdateInfo() async {
     try {
-      http.Response response = await http.get(
-          Uri.parse('${Config.httpBase}/update_data/$env/new-version.json'));
+      PackageInfo packageInfo = await PackageInfo.fromPlatform();
+      String deviceId = await DeviceUtils.getDeviceUniqueId();
+      final Map<String, dynamic> params = {
+        "appId": "bible-player",
+        "version": packageInfo.version,
+        "userIdentifier": deviceId
+      };
+      http.Response response = await http.post(
+        Uri.parse(Config.updateCheckUrl),
+        headers: {"Content-Type": "application/json"},
+        body: jsonEncode(params),
+      );
       dynamic jsonMap =
           jsonDecode(const Utf8Decoder().convert(response.bodyBytes));
       UpdateInfo updateInfo = UpdateInfo.fromJson(jsonMap);
@@ -56,81 +67,81 @@ class UpdateService {
 
   // 显示更新提示对话框
   static void _showUpdateDialog(UpdateInfo updateInfo) {
-    Toast.showDialog((overlayEntry) => AlertDialog(
-          title: Text(
-            "V${updateInfo.version} 新版来袭！",
-            textAlign: TextAlign.center,
-            style: const TextStyle(fontSize: 18),
-          ),
-          backgroundColor: Colors.white,
-          shadowColor: const Color.fromARGB(80, 0, 0, 0),
-          shape: const RoundedRectangleBorder(
-            side: BorderSide(color: Color.fromARGB(10, 0, 0, 0)),
-            borderRadius: BorderRadius.all(Radius.circular(20.0)),
-          ),
-          elevation: 10,
-          content: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisSize: MainAxisSize.min,
-            children: updateInfo.upgradeInstructions
-                .map((item) => Text(item))
-                .toList(),
-          ),
-          actionsAlignment: MainAxisAlignment.spaceAround,
-          actions: [
-            TextButton(
-              onPressed: () {
-                overlayEntry.remove();
-              },
-              child: const Text(
-                "稍后更新",
-                style: TextStyle(color: Colors.red),
-              ),
-            ),
-            TextButton(
-              onPressed: () {
-                _downloadUpdate(updateInfo);
-                overlayEntry.remove();
-              },
-              child: const Text(
-                "立即更新",
-                style: TextStyle(color: Colors.red),
-              ),
-            ),
-          ],
-        ));
+    // Toast.showDialog((overlayEntry) => AlertDialog(
+    //       title: Text(
+    //         "V${updateInfo.version} 新版来袭！",
+    //         textAlign: TextAlign.center,
+    //         style: const TextStyle(fontSize: 18),
+    //       ),
+    //       backgroundColor: Colors.white,
+    //       shadowColor: const Color.fromARGB(80, 0, 0, 0),
+    //       shape: const RoundedRectangleBorder(
+    //         side: BorderSide(color: Color.fromARGB(10, 0, 0, 0)),
+    //         borderRadius: BorderRadius.all(Radius.circular(20.0)),
+    //       ),
+    //       elevation: 10,
+    //       content: Column(
+    //         crossAxisAlignment: CrossAxisAlignment.start,
+    //         mainAxisSize: MainAxisSize.min,
+    //         children: updateInfo.upgradeInstructions
+    //             .map((item) => Text(item))
+    //             .toList(),
+    //       ),
+    //       actionsAlignment: MainAxisAlignment.spaceAround,
+    //       actions: [
+    //         TextButton(
+    //           onPressed: () {
+    //             overlayEntry.remove();
+    //           },
+    //           child: const Text(
+    //             "稍后更新",
+    //             style: TextStyle(color: Colors.red),
+    //           ),
+    //         ),
+    //         TextButton(
+    //           onPressed: () {
+    //             _downloadUpdate(updateInfo);
+    //             overlayEntry.remove();
+    //           },
+    //           child: const Text(
+    //             "立即更新",
+    //             style: TextStyle(color: Colors.red),
+    //           ),
+    //         ),
+    //       ],
+    //     ));
   }
 
   // 下载更新
   static void _downloadUpdate(UpdateInfo updateInfo) async {
-    await Permission.notification.request();
+    // await Permission.notification.request();
 
-    PermissionStatus status = await Permission.requestInstallPackages.request();
-    if (!status.isGranted) return;
+    // PermissionStatus status = await Permission.requestInstallPackages.request();
+    // if (!status.isGranted) return;
 
-    await FlutterDownloader.initialize(debug: true, ignoreSsl: true);
-    initPort();
+    // await FlutterDownloader.initialize(debug: true, ignoreSsl: true);
+    // initPort();
 
-    Directory? downloadsDir = Directory("/storage/emulated/0/Download");
-    if (!downloadsDir.existsSync()) {
-      downloadsDir = await getDownloadsDirectory();
-    }
-    if (downloadsDir == null) return;
-    debugPrint("下载目录: ${downloadsDir.path}");
+    // Directory? downloadsDir = Directory("/storage/emulated/0/Download");
+    // if (!downloadsDir.existsSync()) {
+    //   downloadsDir = await getDownloadsDirectory();
+    // }
+    // if (downloadsDir == null) return;
+    // debugPrint("下载目录: ${downloadsDir.path}");
 
-    localPath = "${downloadsDir.path}/${updateInfo.fileName}";
-    File localFile = File(localPath!);
-    if (localFile.existsSync()) {
-      localFile.deleteSync();
-    }
+    // localPath = "${downloadsDir.path}/${updateInfo.fileName}";
+    // File localFile = File(localPath!);
+    // if (localFile.existsSync()) {
+    //   localFile.deleteSync();
+    // }
 
-    taskId = await FlutterDownloader.enqueue(
-      url:
-          '${Config.httpBase}/update_data/$env/v${updateInfo.version}/${updateInfo.fileName}',
-      savedDir: downloadsDir.path,
-      fileName: updateInfo.fileName,
-      saveInPublicStorage: true,
-    );
+    // taskId = await FlutterDownloader.enqueue(
+    //   url:
+    //       '${Config.httpBase}/update_data/$env/v${updateInfo.version}/${updateInfo.fileName}',
+    //   savedDir: downloadsDir.path,
+    //   fileName: updateInfo.fileName,
+    //   saveInPublicStorage: true,
+    // );
   }
 
   // 初始化隔离管道

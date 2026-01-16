@@ -18,8 +18,7 @@ class MusicModel extends GetxController {
   /// 加载音频数据
   Future<void> loadMusicSource() async {
     try {
-      http.Response response =
-          await http.get(Uri.parse('${Config.httpBase}/playlists.json'));
+      http.Response response = await http.get(Uri.parse(Config.playlistsUrl));
       List<dynamic> jsonMap =
           jsonDecode(const Utf8Decoder().convert(response.bodyBytes));
       source = MusicSource.fromJson(jsonMap);
