@@ -27,6 +27,64 @@ function readJsonFile(filePath) {
   }
 }
 
+// 将中文数字转换为阿拉伯数字
+function chineseToNumber(str) {
+  const chineseNum = {
+    '零': 0, '一': 1, '二': 2, '三': 3, '四': 4,
+    '五': 5, '六': 6, '七': 7, '八': 8, '九': 9,
+    '十': 10, '百': 100, '千': 1000, '万': 10000
+  };
+  
+  // 提取"第X章"格式中的中文数字部分
+  const match = str.match(/第([零一二三四五六七八九十百千万]+)章/);
+  if (!match) return null;
+  
+  const chinese = match[1];
+  let result = 0;
+  let temp = 0;
+  let unit = 1;
+  
+  for (let i = chinese.length - 1; i >= 0; i--) {
+    const char = chinese[i];
+    const num = chineseNum[char];
+    
+    if (num >= 10) {
+      if (num > unit) {
+        unit = num;
+        if (temp === 0) temp = 1;
+      }
+    } else {
+      temp = num;
+    }
+    
+    if (i === 0 || chineseNum[chinese[i - 1]] >= 10) {
+      result += temp * unit;
+      temp = 0;
+    }
+  }
+  
+  return result;
+}
+
+// 从名称中提取数字（支持阿拉伯数字和中文数字）
+function extractNumber(name) {
+  // 先尝试提取阿拉伯数字
+  const arabicMatch = name.match(/第?(\d+)章?/);
+  if (arabicMatch) {
+    return parseInt(arabicMatch[1]);
+  }
+  
+  // 尝试提取中文数字
+  const chineseNum = chineseToNumber(name);
+  if (chineseNum !== null) {
+    return chineseNum;
+  }
+  
+  // 如果都没有，尝试提取任何数字
+  const anyNum = name.match(/\d+/);
+  return anyNum ? parseInt(anyNum[0]) : 0;
+}
+
 function generatePlaylists() {
   const rootSortConfig = readJsonFile(path.join(dataDir, 'sort_config.json')) || [];
   const playlists = [];
@@ -66,11 +124,23 @@ function generatePlaylists() {
         const baseName = path.basename(file, path.extname(file));
         const fullUrl = URL_PREFIX ? `${URL_PREFIX}${urlPath}/${file}` : `${urlPath}/${file}`;
         sections.push({
-          name: file,
+          name: baseName,
           id: `${categoryIndex}_${chapterIndex}_${fileIndex}`,
           url: fullUrl,
           subtitle: `${category.folder}/${chapter.folder}`
         });
+      });
+
+      // 对sections进行升序排列（支持阿拉伯数字和中文数字）
+      sections.sort((a, b) => {
+        const numA = extractNumber(a.name);
+        const numB = extractNumber(b.name);
+        return numA - numB; // 升序
+      });
+
+      // 根据排序后的顺序重新分配连续的id，确保与顺序一致
+      sections.forEach((section, sortedIndex) => {
+        section.id = `${categoryIndex}_${chapterIndex}_${sortedIndex}`;
       });
 
       chapters.push({
