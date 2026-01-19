@@ -3,7 +3,7 @@ const path = require('path');
 
 const dataDir = path.join(__dirname, '../附件/远程数据/assets');
 const outputPath = path.join(__dirname, '../dist/assets/playlists.json');
-const URL_PREFIX = process.env.URL_PREFIX || 'https://sunrise666.top:14070/file_store/blble-player/'; // 从环境变量读取前缀，默认为空
+const URL_PREFIX = process.env.URL_PREFIX || 'https://sunrise.ink:14070/file_store/blble-player/'; // 从环境变量读取前缀，默认为空
 
 function readJsonFile(filePath) {
   try {

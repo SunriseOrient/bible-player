@@ -1,5 +1,5 @@
 class Config {
-  static const String httpBase = "https://sunrise666.top:14070";
+  static const String httpBase = "https://sunrise.ink:14070";
   static const String updateCheckUrl =
       "$httpBase/product-ops-server/api/update/check";
   static const String playlistsUrl =
