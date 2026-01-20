@@ -7,11 +7,7 @@ import https from 'https';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 const FAILURE_LOG_PATH = path.join(__dirname, 'fetch-scripture-failures.log');
-
-const BASE_DIRS = [
-  path.join(__dirname, '../附件/远程数据/assets/旧约全书'),
-  path.join(__dirname, '../附件/远程数据/assets/新约全书')
-];
+const NEW_FAILURE_LOG_PATH = path.join(__dirname, 'fetch-scripture-failures-new.log');
 
 // 简体转繁体映射表（旧约 + 新约）
 const SIMPLIFIED_TO_TRADITIONAL = {
@@ -94,12 +90,19 @@ function convertToTraditional(bookName) {
 }
 
 /**
- * 从文件名中提取章节号
- * 例如: "约翰福音-第3章.mp3" -> 3
+ * 从文件路径中提取书卷名和章节号
+ * 例如: "E:\...\约翰福音\约翰福音-第3章.txt" -> { book: '约翰福音', chapter: '3' }
  */
-function extractChapterNumber(filename) {
-  const match = filename.match(/第(\d+)章/);
-  return match ? match[1] : null;
+function parseFilePath(filePath) {
+  const filename = path.basename(filePath);
+  const match = filename.match(/^(.+?)-第(\d+)章\.txt$/);
+  if (match) {
+    return {
+      book: match[1],
+      chapter: match[2]
+    };
+  }
+  return null;
 }
 
 /**
@@ -107,7 +110,7 @@ function extractChapterNumber(filename) {
  */
 async function fetchScriptureFromAPI(bookName, chapter) {
   const traditionalName = convertToTraditional(bookName);
-  const url = `https://bible-api.com/${traditionalName}+${chapter}?translation=cuv`;
+  const url = `https://bible-api.com/${encodeURIComponent(traditionalName)}+${chapter}?translation=cuv`;
   
   console.log(`正在获取: ${url}`);
   
@@ -135,6 +138,9 @@ async function fetchScriptureFromAPI(bookName, chapter) {
   });
 }
 
+/**
+ * 带重试的获取经文
+ */
 async function fetchScriptureWithRetry(bookName, chapter, maxRetries = 5) {
   for (let attempt = 1; attempt <= maxRetries; attempt += 1) {
     const text = await fetchScriptureFromAPI(bookName, chapter);
@@ -142,7 +148,7 @@ async function fetchScriptureWithRetry(bookName, chapter, maxRetries = 5) {
 
     console.warn(`  尝试 ${attempt}/${maxRetries} 失败: ${bookName} 第 ${chapter} 章`);
     if (attempt < maxRetries) {
-      await new Promise(resolve => setTimeout(resolve, 500));
+      await new Promise(resolve => setTimeout(resolve, 1000));
     }
   }
 
@@ -150,99 +156,83 @@ async function fetchScriptureWithRetry(bookName, chapter, maxRetries = 5) {
 }
 
 /**
- * 主函数：遍历目录并生成文本文件
+ * 重试失败的经文获取
  */
-async function generateScriptureTextFiles() {
-  try {
-    await fs.writeFile(FAILURE_LOG_PATH, '', 'utf-8');
+async function retryFailures() {
+  console.log('开始重试失败的项...\n');
+  
+  // 检查失败日志是否存在
+  if (!(await fs.pathExists(FAILURE_LOG_PATH))) {
+    console.log('未找到失败日志文件');
+    return;
+  }
 
-    for (const baseDir of BASE_DIRS) {
-      console.log(`开始扫描目录: ${baseDir}\n`);
+  // 读取失败日志
+  const content = await fs.readFile(FAILURE_LOG_PATH, 'utf-8');
+  const failedPaths = content.trim().split('\n').filter(line => line.trim());
+  
+  if (failedPaths.length === 0) {
+    console.log('没有需要重试的项');
+    return;
+  }
 
-      if (!(await fs.pathExists(baseDir))) {
-        console.warn(`  路径不存在，跳过: ${baseDir}`);
-        continue;
-      }
+  console.log(`找到 ${failedPaths.length} 个失败的项\n`);
 
-      const books = await fs.readdir(baseDir);
+  // 清空新的失败日志
+  await fs.writeFile(NEW_FAILURE_LOG_PATH, '', 'utf-8');
 
-      for (const book of books) {
-        const bookPath = path.join(baseDir, book);
-        const stat = await fs.stat(bookPath);
+  let successCount = 0;
+  let failCount = 0;
 
-        if (!stat.isDirectory()) continue;
-
-        console.log(`\n处理书卷: ${book}`);
-
-        // 读取书卷目录中的所有MP3文件
-        const files = await fs.readdir(bookPath);
-        const mp3Files = files.filter(f => f.endsWith('.mp3'));
-
-        console.log(`  找到 ${mp3Files.length} 个MP3文件`);
-
-        for (const mp3File of mp3Files) {
-          const chapterNum = extractChapterNumber(mp3File);
-          if (!chapterNum) {
-            console.log(`  警告: 无法从文件名提取章节号 - ${mp3File}`);
-            continue;
-          }
-
-          const txtFileName = mp3File.replace(/\.mp3$/, '.txt');
-          const txtFilePath = path.join(bookPath, txtFileName);
-
-          // 检查文本文件是否已存在
-          if (await fs.pathExists(txtFilePath)) {
-            console.log(`  跳过: ${txtFileName} (已存在)`);
-            continue;
-          }
-
-          // 从 API 获取经文内容，带重试
-          const scriptureText = await fetchScriptureWithRetry(book, chapterNum);
-
-          if (scriptureText) {
-            await fs.writeFile(txtFilePath, scriptureText, 'utf-8');
-            console.log(`  ✓ 创建: ${txtFileName}`);
-          } else {
-            console.log(`  ✗ 失败: ${txtFileName}`);
-            await fs.appendFile(FAILURE_LOG_PATH, `${txtFilePath}\n`, 'utf-8');
-          }
-
-          // 延迟以避免 API 频率限制
-          await new Promise(resolve => setTimeout(resolve, 500));
-        }
-      }
+  for (const filePath of failedPaths) {
+    const parsed = parseFilePath(filePath);
+    if (!parsed) {
+      console.log(`无法解析路径: ${filePath}`);
+      await fs.appendFile(NEW_FAILURE_LOG_PATH, `${filePath}\n`, 'utf-8');
+      failCount++;
+      continue;
     }
 
-    console.log(`\n✓ 处理完成！失败记录保存在: ${FAILURE_LOG_PATH}`);
-  } catch (error) {
-    console.error('发生错误:', error);
-    process.exit(1);
+    const { book, chapter } = parsed;
+    console.log(`\n处理: ${book} 第 ${chapter} 章`);
+
+    // 检查文件是否已存在
+    if (await fs.pathExists(filePath)) {
+      console.log(`  跳过: 文件已存在`);
+      continue;
+    }
+
+    // 重试获取经文
+    const scriptureText = await fetchScriptureWithRetry(book, chapter, 5);
+
+    if (scriptureText) {
+      await fs.writeFile(filePath, scriptureText, 'utf-8');
+      console.log(`  ✓ 成功创建`);
+      successCount++;
+    } else {
+      console.log(`  ✗ 仍然失败`);
+      await fs.appendFile(NEW_FAILURE_LOG_PATH, `${filePath}\n`, 'utf-8');
+      failCount++;
+    }
+
+    // 延迟以避免 API 频率限制
+    await new Promise(resolve => setTimeout(resolve, 1000));
+  }
+
+  console.log(`\n\n=== 重试完成 ===`);
+  console.log(`成功: ${successCount}`);
+  console.log(`失败: ${failCount}`);
+  console.log(`新的失败日志: ${NEW_FAILURE_LOG_PATH}`);
+
+  // 如果没有失败项，删除新的失败日志
+  if (failCount === 0) {
+    await fs.remove(NEW_FAILURE_LOG_PATH);
+    console.log('所有项目已成功，已删除新的失败日志');
   }
 }
 
-/**
- * 测试函数：获取单个章节的文本
- */
-async function testFetchSingleChapter() {
-  console.log('=== 测试获取单个章节 ===\n');
-  
-  // 测试约翰福音第3章
-  const bookName = '约翰福音';
-  const chapter = '3';
-  
-  const text = await fetchScriptureFromAPI(bookName, chapter);
-  if (text) {
-    console.log(`\n成功获取 ${bookName} 第 ${chapter} 章:\n`);
-    console.log(text);
-  } else {
-    console.log('获取失败');
-  }
-}
-
-// 检查命令行参数
-const args = process.argv.slice(2);
-if (args.includes('--test')) {
-  testFetchSingleChapter();
-} else {
-  generateScriptureTextFiles();
-}
+// 运行重试
+retryFailures().catch(error => {
+  console.error('发生错误:', error);
+  process.exit(1);
+});
