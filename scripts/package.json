@@ -7,7 +7,9 @@
     "build:apk:z": "node ./build-apk.mjs -z",
     "build:apk:y": "node ./build-apk.mjs -y",
     "build:apk:x": "node ./build-apk.mjs -x",
-    "generate:playlists": "node ./generate-playlists.js"
+    "generate:playlists": "node ./generate-playlists.js",
+    "fetch:scripture": "node ./fetch-scripture.mjs",
+    "fetch:scripture:test": "node ./fetch-scripture.mjs --test"
   },
   "author": "",
   "license": "ISC",
