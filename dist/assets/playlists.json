@@ -181,6 +181,111 @@
         ]
       },
       {
+        "name": "马可福音",
+        "id": "0_1",
+        "desc": "赞美与祷告",
+        "icon": "groups_2",
+        "coverUrl": "https://sunrise.ink:14070/file_store/blble-player/assets/新约全书/马可福音/cover.png",
+        "sections": [
+          {
+            "name": "马可福音-第1章",
+            "id": "0_1_0",
+            "url": "https://sunrise.ink:14070/file_store/blble-player/assets/新约全书/马可福音/马可福音-第1章.mp3",
+            "subtitle": "新约全书/马可福音"
+          },
+          {
+            "name": "马可福音-第2章",
+            "id": "0_1_1",
+            "url": "https://sunrise.ink:14070/file_store/blble-player/assets/新约全书/马可福音/马可福音-第2章.mp3",
+            "subtitle": "新约全书/马可福音"
+          },
+          {
+            "name": "马可福音-第3章",
+            "id": "0_1_2",
+            "url": "https://sunrise.ink:14070/file_store/blble-player/assets/新约全书/马可福音/马可福音-第3章.mp3",
+            "subtitle": "新约全书/马可福音"
+          },
+          {
+            "name": "马可福音-第4章",
+            "id": "0_1_3",
+            "url": "https://sunrise.ink:14070/file_store/blble-player/assets/新约全书/马可福音/马可福音-第4章.mp3",
+            "subtitle": "新约全书/马可福音"
+          },
+          {
+            "name": "马可福音-第5章",
+            "id": "0_1_4",
+            "url": "https://sunrise.ink:14070/file_store/blble-player/assets/新约全书/马可福音/马可福音-第5章.mp3",
+            "subtitle": "新约全书/马可福音"
+          },
+          {
+            "name": "马可福音-第6章",
+            "id": "0_1_5",
+            "url": "https://sunrise.ink:14070/file_store/blble-player/assets/新约全书/马可福音/马可福音-第6章.mp3",
+            "subtitle": "新约全书/马可福音"
+          },
+          {
+            "name": "马可福音-第7章",
+            "id": "0_1_6",
+            "url": "https://sunrise.ink:14070/file_store/blble-player/assets/新约全书/马可福音/马可福音-第7章.mp3",
+            "subtitle": "新约全书/马可福音"
+          },
+          {
+            "name": "马可福音-第8章",
+            "id": "0_1_7",
+            "url": "https://sunrise.ink:14070/file_store/blble-player/assets/新约全书/马可福音/马可福音-第8章.mp3",
+            "subtitle": "新约全书/马可福音"
+          },
+          {
+            "name": "马可福音-第9章",
+            "id": "0_1_8",
+            "url": "https://sunrise.ink:14070/file_store/blble-player/assets/新约全书/马可福音/马可福音-第9章.mp3",
+            "subtitle": "新约全书/马可福音"
+          },
+          {
+            "name": "马可福音-第10章",
+            "id": "0_1_9",
+            "url": "https://sunrise.ink:14070/file_store/blble-player/assets/新约全书/马可福音/马可福音-第10章.mp3",
+            "subtitle": "新约全书/马可福音"
+          },
+          {
+            "name": "马可福音-第11章",
+            "id": "0_1_10",
+            "url": "https://sunrise.ink:14070/file_store/blble-player/assets/新约全书/马可福音/马可福音-第11章.mp3",
+            "subtitle": "新约全书/马可福音"
+          },
+          {
+            "name": "马可福音-第12章",
+            "id": "0_1_11",
+            "url": "https://sunrise.ink:14070/file_store/blble-player/assets/新约全书/马可福音/马可福音-第12章.mp3",
+            "subtitle": "新约全书/马可福音"
+          },
+          {
+            "name": "马可福音-第13章",
+            "id": "0_1_12",
+            "url": "https://sunrise.ink:14070/file_store/blble-player/assets/新约全书/马可福音/马可福音-第13章.mp3",
+            "subtitle": "新约全书/马可福音"
+          },
+          {
+            "name": "马可福音-第14章",
+            "id": "0_1_13",
+            "url": "https://sunrise.ink:14070/file_store/blble-player/assets/新约全书/马可福音/马可福音-第14章.mp3",
+            "subtitle": "新约全书/马可福音"
+          },
+          {
+            "name": "马可福音-第15章",
+            "id": "0_1_14",
+            "url": "https://sunrise.ink:14070/file_store/blble-player/assets/新约全书/马可福音/马可福音-第15章.mp3",
+            "subtitle": "新约全书/马可福音"
+          },
+          {
+            "name": "马可福音-第16章",
+            "id": "0_1_15",
+            "url": "https://sunrise.ink:14070/file_store/blble-player/assets/新约全书/马可福音/马可福音-第16章.mp3",
+            "subtitle": "新约全书/马可福音"
+          }
+        ]
+      },
+      {
         "name": "路加福音",
         "id": "0_2",
         "desc": "耶稣的生平",
@@ -1161,6 +1266,51 @@
             "id": "0_13_2",
             "url": "https://sunrise.ink:14070/file_store/blble-player/assets/新约全书/帖撒罗尼迦后书/帖撒罗尼迦后书-第3章.mp3",
             "subtitle": "新约全书/帖撒罗尼迦后书"
+          }
+        ]
+      },
+      {
+        "name": "提摩太前书",
+        "id": "0_14",
+        "desc": "赞美与祷告",
+        "icon": "groups_2",
+        "coverUrl": "https://sunrise.ink:14070/file_store/blble-player/assets/新约全书/提摩太前书/cover.png",
+        "sections": [
+          {
+            "name": "提摩太前书-第1章",
+            "id": "0_14_0",
+            "url": "https://sunrise.ink:14070/file_store/blble-player/assets/新约全书/提摩太前书/提摩太前书-第1章.mp3",
+            "subtitle": "新约全书/提摩太前书"
+          },
+          {
+            "name": "提摩太前书-第2章",
+            "id": "0_14_1",
+            "url": "https://sunrise.ink:14070/file_store/blble-player/assets/新约全书/提摩太前书/提摩太前书-第2章.mp3",
+            "subtitle": "新约全书/提摩太前书"
+          },
+          {
+            "name": "提摩太前书-第3章",
+            "id": "0_14_2",
+            "url": "https://sunrise.ink:14070/file_store/blble-player/assets/新约全书/提摩太前书/提摩太前书-第3章.mp3",
+            "subtitle": "新约全书/提摩太前书"
+          },
+          {
+            "name": "提摩太前书-第4章",
+            "id": "0_14_3",
+            "url": "https://sunrise.ink:14070/file_store/blble-player/assets/新约全书/提摩太前书/提摩太前书-第4章.mp3",
+            "subtitle": "新约全书/提摩太前书"
+          },
+          {
+            "name": "提摩太前书-第5章",
+            "id": "0_14_4",
+            "url": "https://sunrise.ink:14070/file_store/blble-player/assets/新约全书/提摩太前书/提摩太前书-第5章.mp3",
+            "subtitle": "新约全书/提摩太前书"
+          },
+          {
+            "name": "提摩太前书-第6章",
+            "id": "0_14_5",
+            "url": "https://sunrise.ink:14070/file_store/blble-player/assets/新约全书/提摩太前书/提摩太前书-第6章.mp3",
+            "subtitle": "新约全书/提摩太前书"
           }
         ]
       },
@@ -3147,6 +3297,201 @@
             "id": "1_7_3",
             "url": "https://sunrise.ink:14070/file_store/blble-player/assets/旧约全书/路得记/路得记-第4章.mp3",
             "subtitle": "旧约全书/路得记"
+          }
+        ]
+      },
+      {
+        "name": "撒母耳记上",
+        "id": "1_8",
+        "desc": "赞美与祷告",
+        "icon": "groups_2",
+        "coverUrl": "https://sunrise.ink:14070/file_store/blble-player/assets/旧约全书/撒母耳记上/cover.png",
+        "sections": [
+          {
+            "name": "撒母耳记上-第1章",
+            "id": "1_8_0",
+            "url": "https://sunrise.ink:14070/file_store/blble-player/assets/旧约全书/撒母耳记上/撒母耳记上-第1章.mp3",
+            "subtitle": "旧约全书/撒母耳记上"
+          },
+          {
+            "name": "撒母耳记上-第2章",
+            "id": "1_8_1",
+            "url": "https://sunrise.ink:14070/file_store/blble-player/assets/旧约全书/撒母耳记上/撒母耳记上-第2章.mp3",
+            "subtitle": "旧约全书/撒母耳记上"
+          },
+          {
+            "name": "撒母耳记上-第3章",
+            "id": "1_8_2",
+            "url": "https://sunrise.ink:14070/file_store/blble-player/assets/旧约全书/撒母耳记上/撒母耳记上-第3章.mp3",
+            "subtitle": "旧约全书/撒母耳记上"
+          },
+          {
+            "name": "撒母耳记上-第4章",
+            "id": "1_8_3",
+            "url": "https://sunrise.ink:14070/file_store/blble-player/assets/旧约全书/撒母耳记上/撒母耳记上-第4章.mp3",
+            "subtitle": "旧约全书/撒母耳记上"
+          },
+          {
+            "name": "撒母耳记上-第5章",
+            "id": "1_8_4",
+            "url": "https://sunrise.ink:14070/file_store/blble-player/assets/旧约全书/撒母耳记上/撒母耳记上-第5章.mp3",
+            "subtitle": "旧约全书/撒母耳记上"
+          },
+          {
+            "name": "撒母耳记上-第6章",
+            "id": "1_8_5",
+            "url": "https://sunrise.ink:14070/file_store/blble-player/assets/旧约全书/撒母耳记上/撒母耳记上-第6章.mp3",
+            "subtitle": "旧约全书/撒母耳记上"
+          },
+          {
+            "name": "撒母耳记上-第7章",
+            "id": "1_8_6",
+            "url": "https://sunrise.ink:14070/file_store/blble-player/assets/旧约全书/撒母耳记上/撒母耳记上-第7章.mp3",
+            "subtitle": "旧约全书/撒母耳记上"
+          },
+          {
+            "name": "撒母耳记上-第8章",
+            "id": "1_8_7",
+            "url": "https://sunrise.ink:14070/file_store/blble-player/assets/旧约全书/撒母耳记上/撒母耳记上-第8章.mp3",
+            "subtitle": "旧约全书/撒母耳记上"
+          },
+          {
+            "name": "撒母耳记上-第9章",
+            "id": "1_8_8",
+            "url": "https://sunrise.ink:14070/file_store/blble-player/assets/旧约全书/撒母耳记上/撒母耳记上-第9章.mp3",
+            "subtitle": "旧约全书/撒母耳记上"
+          },
+          {
+            "name": "撒母耳记上-第10章",
+            "id": "1_8_9",
+            "url": "https://sunrise.ink:14070/file_store/blble-player/assets/旧约全书/撒母耳记上/撒母耳记上-第10章.mp3",
+            "subtitle": "旧约全书/撒母耳记上"
+          },
+          {
+            "name": "撒母耳记上-第11章",
+            "id": "1_8_10",
+            "url": "https://sunrise.ink:14070/file_store/blble-player/assets/旧约全书/撒母耳记上/撒母耳记上-第11章.mp3",
+            "subtitle": "旧约全书/撒母耳记上"
+          },
+          {
+            "name": "撒母耳记上-第12章",
+            "id": "1_8_11",
+            "url": "https://sunrise.ink:14070/file_store/blble-player/assets/旧约全书/撒母耳记上/撒母耳记上-第12章.mp3",
+            "subtitle": "旧约全书/撒母耳记上"
+          },
+          {
+            "name": "撒母耳记上-第13章",
+            "id": "1_8_12",
+            "url": "https://sunrise.ink:14070/file_store/blble-player/assets/旧约全书/撒母耳记上/撒母耳记上-第13章.mp3",
+            "subtitle": "旧约全书/撒母耳记上"
+          },
+          {
+            "name": "撒母耳记上-第14章",
+            "id": "1_8_13",
+            "url": "https://sunrise.ink:14070/file_store/blble-player/assets/旧约全书/撒母耳记上/撒母耳记上-第14章.mp3",
+            "subtitle": "旧约全书/撒母耳记上"
+          },
+          {
+            "name": "撒母耳记上-第15章",
+            "id": "1_8_14",
+            "url": "https://sunrise.ink:14070/file_store/blble-player/assets/旧约全书/撒母耳记上/撒母耳记上-第15章.mp3",
+            "subtitle": "旧约全书/撒母耳记上"
+          },
+          {
+            "name": "撒母耳记上-第16章",
+            "id": "1_8_15",
+            "url": "https://sunrise.ink:14070/file_store/blble-player/assets/旧约全书/撒母耳记上/撒母耳记上-第16章.mp3",
+            "subtitle": "旧约全书/撒母耳记上"
+          },
+          {
+            "name": "撒母耳记上-第17章",
+            "id": "1_8_16",
+            "url": "https://sunrise.ink:14070/file_store/blble-player/assets/旧约全书/撒母耳记上/撒母耳记上-第17章.mp3",
+            "subtitle": "旧约全书/撒母耳记上"
+          },
+          {
+            "name": "撒母耳记上-第18章",
+            "id": "1_8_17",
+            "url": "https://sunrise.ink:14070/file_store/blble-player/assets/旧约全书/撒母耳记上/撒母耳记上-第18章.mp3",
+            "subtitle": "旧约全书/撒母耳记上"
+          },
+          {
+            "name": "撒母耳记上-第19章",
+            "id": "1_8_18",
+            "url": "https://sunrise.ink:14070/file_store/blble-player/assets/旧约全书/撒母耳记上/撒母耳记上-第19章.mp3",
+            "subtitle": "旧约全书/撒母耳记上"
+          },
+          {
+            "name": "撒母耳记上-第20章",
+            "id": "1_8_19",
+            "url": "https://sunrise.ink:14070/file_store/blble-player/assets/旧约全书/撒母耳记上/撒母耳记上-第20章.mp3",
+            "subtitle": "旧约全书/撒母耳记上"
+          },
+          {
+            "name": "撒母耳记上-第21章",
+            "id": "1_8_20",
+            "url": "https://sunrise.ink:14070/file_store/blble-player/assets/旧约全书/撒母耳记上/撒母耳记上-第21章.mp3",
+            "subtitle": "旧约全书/撒母耳记上"
+          },
+          {
+            "name": "撒母耳记上-第22章",
+            "id": "1_8_21",
+            "url": "https://sunrise.ink:14070/file_store/blble-player/assets/旧约全书/撒母耳记上/撒母耳记上-第22章.mp3",
+            "subtitle": "旧约全书/撒母耳记上"
+          },
+          {
+            "name": "撒母耳记上-第23章",
+            "id": "1_8_22",
+            "url": "https://sunrise.ink:14070/file_store/blble-player/assets/旧约全书/撒母耳记上/撒母耳记上-第23章.mp3",
+            "subtitle": "旧约全书/撒母耳记上"
+          },
+          {
+            "name": "撒母耳记上-第24章",
+            "id": "1_8_23",
+            "url": "https://sunrise.ink:14070/file_store/blble-player/assets/旧约全书/撒母耳记上/撒母耳记上-第24章.mp3",
+            "subtitle": "旧约全书/撒母耳记上"
+          },
+          {
+            "name": "撒母耳记上-第25章",
+            "id": "1_8_24",
+            "url": "https://sunrise.ink:14070/file_store/blble-player/assets/旧约全书/撒母耳记上/撒母耳记上-第25章.mp3",
+            "subtitle": "旧约全书/撒母耳记上"
+          },
+          {
+            "name": "撒母耳记上-第26章",
+            "id": "1_8_25",
+            "url": "https://sunrise.ink:14070/file_store/blble-player/assets/旧约全书/撒母耳记上/撒母耳记上-第26章.mp3",
+            "subtitle": "旧约全书/撒母耳记上"
+          },
+          {
+            "name": "撒母耳记上-第27章",
+            "id": "1_8_26",
+            "url": "https://sunrise.ink:14070/file_store/blble-player/assets/旧约全书/撒母耳记上/撒母耳记上-第27章.mp3",
+            "subtitle": "旧约全书/撒母耳记上"
+          },
+          {
+            "name": "撒母耳记上-第28章",
+            "id": "1_8_27",
+            "url": "https://sunrise.ink:14070/file_store/blble-player/assets/旧约全书/撒母耳记上/撒母耳记上-第28章.mp3",
+            "subtitle": "旧约全书/撒母耳记上"
+          },
+          {
+            "name": "撒母耳记上-第29章",
+            "id": "1_8_28",
+            "url": "https://sunrise.ink:14070/file_store/blble-player/assets/旧约全书/撒母耳记上/撒母耳记上-第29章.mp3",
+            "subtitle": "旧约全书/撒母耳记上"
+          },
+          {
+            "name": "撒母耳记上-第30章",
+            "id": "1_8_29",
+            "url": "https://sunrise.ink:14070/file_store/blble-player/assets/旧约全书/撒母耳记上/撒母耳记上-第30章.mp3",
+            "subtitle": "旧约全书/撒母耳记上"
+          },
+          {
+            "name": "撒母耳记上-第31章",
+            "id": "1_8_30",
+            "url": "https://sunrise.ink:14070/file_store/blble-player/assets/旧约全书/撒母耳记上/撒母耳记上-第31章.mp3",
+            "subtitle": "旧约全书/撒母耳记上"
           }
         ]
       },
